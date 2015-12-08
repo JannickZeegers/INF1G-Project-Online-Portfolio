@@ -9,7 +9,14 @@ include_once "constants.php";
 //Session start
 session_start();
 //Code die altijd gerunt wordt
-
+if(!isset($_SESSION["dbLink"]))
+{
+    $dbLink = portfolio_connect();
+    if($dbLink)
+    {
+        $_SESSION["dbLink"] = $dbLink;
+    }
+}
 
 //Functies
 function portfolio_test()
@@ -41,6 +48,14 @@ function portfolio_connect()
     return $dbConnect;
 }
 
+function portfolio_disconnect()
+{
+    if(isset($_SESSION["dbLink"]))
+    {
+        mysqli_close($_SESSION["dbLink"]);
+    }
+}
+
 /*
  * Returns a mysqli result object with all materials that are owned by that user
  */
@@ -68,7 +83,7 @@ function portfolio_get_user_details($gebruikersId)
 {
     $userDetails = array();
     
-    $link = portfolio_connect();
+    $link = (isset($_SESSION["dbLink"])) ? $_SESSION["dbLink"] : null;
     if($link)
     {
         $sql = "SELECT * FROM " . TABLE_USERS . " WHERE gebruikersId='" . $gebruikersId . "'";
@@ -90,7 +105,7 @@ function portfolio_get_user_details($gebruikersId)
 function portfolio_login($userName, $userPass)
 {
     $userId = null;
-    $link = portfolio_connect();
+    $link = (isset($_SESSION["dbLink"])) ? $_SESSION["dbLink"] : null;
     if($link)
     {
         $sql = "SELECT * FROM " . TABLE_USERS . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $userName) . "'";
@@ -111,7 +126,7 @@ function portfolio_login($userName, $userPass)
 
 function portfolio_register($userName, $userPass, $userMail, $voornaam = "henk", $achternaam = "henk", $type = "student")
 {
-    $link = portfolio_connect();
+    $link = (isset($_SESSION["dbLink"])) ? $_SESSION["dbLink"] : null;
     if($link)
     {
         $sql = "INSERT INTO " . TABLE_USERS . " VALUES(NULL, "
