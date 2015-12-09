@@ -15,7 +15,7 @@ and open the template in the editor.
         // put your code here
         if(isset($_POST["submit"]))
         {
-            portfolio_register($_POST["userName"], $_POST["userPass"], $_POST["userEmail"]);
+            portfolio_register($_POST["userName"], $_POST["userPass"], $_POST["userEmail"], "Voornaam", "Achternaam", "student");
         }
         ?>
         <h1>Registreer</h1>
