@@ -8,14 +8,15 @@ include_once 'portfolio.php';
  * Maakt de database aan met correcte tabellen.
  * !!! Zorg ervoor dat je EERST een user aanmaakt op je database ding met de naam en wachtwoord die in constants.php staan! !!!
  */
-
+/*
 function portfolio_dev_create_database($database_name)
 {
-    $link = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+    $link = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, DATABASE_NAME, MYSQL_PORT);
+    mysqli_connect_error();
     if($link)
     {
-        $sql = "CREATE DATABASE " . $database_name;
-        if(mysqli_query($link, $sql))
+        //$sql = "CREATE DATABASE " . $database_name;
+        //if(mysqli_query($link, $sql))
         {
             mysqli_select_db($link, $database_name);
             
@@ -86,10 +87,11 @@ CREATE TABLE " . TABLE_GRADE . " (
         echo mysqli_error($link) . "<br>\n";
     }
 }
-
+*/
 /*
- * Run me if you want to --live-- kill the database
+ * Come with me if you want to live
  */
+/*
 function portfolio_dev_terminate_database($database_name)
 {
     $link = portfolio_connect();
@@ -103,4 +105,4 @@ function portfolio_dev_terminate_database($database_name)
         }
     }
     echo "Something went wrong.<br>\n";
-}
+}*/

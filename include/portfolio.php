@@ -21,7 +21,7 @@ function portfolio_test()
  */
 function portfolio_connect()
 {
-    $dbConnect = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+    $dbConnect = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, DATABASE_NAME, MYSQL_PORT);
     if($dbConnect !== false)
     {
         $db = mysqli_select_db($dbConnect, DATABASE_NAME);
@@ -41,12 +41,23 @@ function portfolio_connect()
 }
 
 /*
- * Returns a mysqli result object with all materials that are owned by that user
+ * 
  */
 function portfolio_get_user_materials($userId)
 {
     //Do things
-    
+    $link = portfolio_connect();
+    if($link)
+    {
+        $returnResult = array();
+        $sql = "SELECT * FROM " . TABLE_MATERIAL . " WHERE eigenaarId=" . mysqli_real_escape_string($link, $userId) . "";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) !== null)
+        {
+            array_push($returnResult, $row);
+        }
+        return $returnResult;
+    }
     return null;
 }
 
@@ -73,6 +84,29 @@ function portfolio_get_user_details($gebruikersId)
     return $userDetails;
 }
 
+/*
+ * Upload een bestand. $file is de naam van het bestand e.g. $_FILES[$file]
+ */
+function portfolio_upload_material($file)
+{
+    if(!isset($_SESSION['user']))
+    {
+        return false;
+    }
+    
+    return false;
+    // Plaats het bestand op de correcte plaats
+    
+    //
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL, " . $_SESSION['user']['gebruikersId'] . ", "
+                . ")";
+    }
+    return false;
+}
+
 function portfolio_login($userName, $userPass)
 {
     $userId = null;
@@ -88,6 +122,8 @@ function portfolio_login($userName, $userPass)
                 if(password_verify($userPass, $array['wachtwoord']))
                 {
                     $userId = $array['gebruikersId'];
+                    $_SESSION['user'] = $array;
+                    $_SESSION['user']['wachtwoord'] = null;
                 }
             }
         }

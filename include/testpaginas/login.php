@@ -17,6 +17,8 @@ and open the template in the editor.
         {
             echo "<pre>";
             var_dump(portfolio_get_user_details(portfolio_login($_POST["userName"], $_POST["userPass"])));
+            
+            var_dump(portfolio_get_user_materials($_SESSION['user']['gebruikersId']));
             echo "</pre>";
         }
         ?>
