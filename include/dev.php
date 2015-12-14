@@ -38,7 +38,7 @@ CREATE TABLE " . TABLE_MATERIAL . " (
   `materiaalId` int(11) NOT NULL AUTO_INCREMENT,
   `eigenaarId` int(11) NOT NULL,
   `bestandsPad` varchar(255) NOT NULL,
-  `bestandsType` varchar(8) NOT NULL,
+  `bestandsType` varchar(255) NOT NULL,
   PRIMARY KEY (`materiaalId`),
   KEY `eigenaarId` (`eigenaarId`),
   CONSTRAINT `FK_eigenaar` FOREIGN KEY (`eigenaarId`) REFERENCES `gebruiker` (`gebruikersId`) ON UPDATE CASCADE

@@ -5,15 +5,21 @@
  */
 //Includes
 include_once "constants.php";
-
+//FIX FOR THINGS
+ini_set('session.cookie_domain', '.DOMAIN.EXT');
+//phpinfo();
+if (!is_writable(session_save_path())) {
+    echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
+}
 //Session start
 session_start();
 //Code die altijd gerunt wordt
-
+//DEBUG
+echo "<p>" . session_id() . "</p>";
 //Functies
 function portfolio_test()
 {
-    
+    return true;
 }
 /*
  * Verbindt met de database server. Returnt een mysqli_connect object bij succes of false bij falen.
@@ -41,7 +47,7 @@ function portfolio_connect()
 }
 
 /*
- * 
+ * Krijg alle materialen van een gebruiker
  */
 function portfolio_get_user_materials($userId)
 {
@@ -61,6 +67,9 @@ function portfolio_get_user_materials($userId)
     return null;
 }
 
+/*
+ * Haal de gebruikersgegevens van een gebruiker op aan de hand van het gebruikersId
+ */
 function portfolio_get_user_details($gebruikersId)
 {
     $userDetails = array();
@@ -75,7 +84,7 @@ function portfolio_get_user_details($gebruikersId)
             if(($array = mysqli_fetch_assoc($result)) != null)
             {
                 $userDetails = $array;
-                //Nee, je krijgt geen wachtwoord!
+                //je krijgt geen wachtwoord!
                 $userDetails['wachtwoord'] = null;
             }
         }
@@ -85,28 +94,45 @@ function portfolio_get_user_details($gebruikersId)
 }
 
 /*
- * Upload een bestand. $file is de naam van het bestand e.g. $_FILES[$file]
+ * Upload een bestand voor de huidige gebruiker. $file is de naam van het bestand e.g. $_FILES[$file]
  */
-function portfolio_upload_material($file)
+function portfolio_upload_material($userId, $file)
 {
-    if(!isset($_SESSION['user']))
+    if(!filter_var($userId, FILTER_VALIDATE_INT) || !isset($_FILES[$file]))
     {
         return false;
     }
-    
-    return false;
-    // Plaats het bestand op de correcte plaats
-    
-    //
-    $link = portfolio_connect();
-    if($link)
+    // TODO: Filetype blacklist!
+    $name = $_FILES[$file]['name'];
+    $ext = pathinfo($name)['extension'];
+    $newName = time() . '.' . $ext;
+    // MOGELIJKE BUG: portfolio.php MOET in dezelfde map staan als PORTFOLIO_UPLOAD_DIR!!!!
+    if(move_uploaded_file($_FILES[$file]['tmp_name'], __DIR__ . '/'  . PORTFOLIO_UPLOAD_DIR . "/" . $newName))
     {
-        $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL, " . $_SESSION['user']['gebruikersId'] . ", "
-                . ")";
+        $link = portfolio_connect();
+        if($link)
+        {
+            $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL, " . $userId . ", "
+                    . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
+                    . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "')";
+            if(mysqli_query($link, $sql))
+            {
+                return true;
+            }
+        }
     }
+    else 
+    {
+        echo "<p>ERROR WHEN MOVING FILE</p>";
+    }
+    //
+    
     return false;
 }
 
+/*
+ * Probeer in te loggen en sla de gebruikersdata op in $_SESSION['user']
+ */
 function portfolio_login($userName, $userPass)
 {
     $userId = null;
@@ -131,11 +157,21 @@ function portfolio_login($userName, $userPass)
     return $userId;
 }
 
+/*
+ * Registreer een gebruiker.
+ */
 function portfolio_register($gebruikersnaam, $wachtwoord, $mail, $voornaam, $achternaam, $type = "student")
 {
     $link = portfolio_connect();
     if($link)
     {
+        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $gebruikersnaam) . "' OR `e-mail`='" . mysqli_real_escape_string($link, $mail) . "'";
+        $result = mysqli_query($link, $sql);
+        if(mysqli_fetch_assoc($result))
+        {
+            echo "<p>Deze gebruikersnaam of e-mail is al in gebruik!</p>";
+            return false;
+        }
         $sql = "INSERT INTO " . TABLE_USER . " VALUES(NULL, "
                  . "'" . mysqli_real_escape_string($link, $voornaam) . "', "
                  . "'" . mysqli_real_escape_string($link, $achternaam) . "', "
@@ -144,12 +180,10 @@ function portfolio_register($gebruikersnaam, $wachtwoord, $mail, $voornaam, $ach
                  . "'" . mysqli_real_escape_string($link, password_hash($wachtwoord, PASSWORD_DEFAULT)) . "', "
                  . "'" . mysqli_real_escape_string($link, $type) . "')";
         $result = mysqli_query($link, $sql);
-        if(!$result)
+        if($result)
         {
-            echo "Somthing went wrong!\n";
-            echo mysqli_errno($link) . "\n";
-            echo mysqli_error($link) . "\n";
-            //echo $sql . "\n";
+            return true;
         }
     }
+    return false;
 }
