@@ -5,22 +5,14 @@
  */
 //Includes
 include_once "constants.php";
-//FIX FOR THINGS
-ini_set('session.cookie_domain', '.DOMAIN.EXT');
-//phpinfo();
-if (!is_writable(session_save_path())) {
-    echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
-}
+
 //Session start
 session_start();
 //Code die altijd gerunt wordt
 //DEBUG
 echo "<p>" . session_id() . "</p>";
+
 //Functies
-function portfolio_test()
-{
-    return true;
-}
 /*
  * Verbindt met de database server. Returnt een mysqli_connect object bij succes of false bij falen.
  * NOOT: Probeer dit niet op te slaan in een sessie, dat werkt niet....
@@ -67,6 +59,20 @@ function portfolio_get_user_materials($userId)
     return null;
 }
 
+function portfolio_get_material($materialId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "SELECT * FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
+        $result = mysqli_query($link, $sql);
+        if(($row = mysqli_fetch_assoc($result)) !== null)
+        {
+            return $row;
+        }
+    }
+    return null;
+}
 /*
  * Haal de gebruikersgegevens van een gebruiker op aan de hand van het gebruikersId
  */
@@ -112,6 +118,7 @@ function portfolio_upload_material($userId, $file)
         $link = portfolio_connect();
         if($link)
         {
+            //materiaal(materiaalId, naam, eigenaarId, bestandsPad, bestandsType, isOpenbaar)
             $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL, " . $userId . ", "
                     . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
                     . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "')";
