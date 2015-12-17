@@ -20,6 +20,7 @@ include_once 'portfolio.php';
         if(isset($_SESSION['user']))
         {
             //Alles
+            echo "<h2>Welkom " . $_SESSION['user']['gebruikersnaam'] . "</h2>";
         }
         else
         {
