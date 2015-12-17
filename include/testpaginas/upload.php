@@ -10,23 +10,35 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
+        <h1>Upload file</h1>
         <?php
         include "../portfolio.php";
-        // put your code here
-        if(isset($_POST["submit"]))
+        if(isset($_SESSION['user']))
         {
-            echo "<pre>";
-            //FIX: SESSION NIET CONSISTENT OP SERVER
-            var_dump($_SESSION['user']);
-            //DEBUG: UPLOAD ALTIJD VOOR USER ID 7
-            var_dump(portfolio_upload_material(7, 'file'));
-            echo "</pre>";
+            echo "<p>Gebruiker: " . $_SESSION['user']['gebruikersnaam'] . "</p>";
+            // put your code here
+            if(isset($_POST["submit"]))
+            {
+                echo "<pre>";
+                var_dump($_SESSION['user']);
+                $public = 0;
+                if(isset($_POST['public']) && $_POST['public'] === "true")
+                    $public = true;
+                var_dump(portfolio_upload_material($_SESSION['user']['gebruikersId'], 'file', $public));
+                echo "</pre>";
+            }
+            ?>
+            <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
+                <p>File<br><input type="file" name="file"></p>
+                <p>Openbaar zichtbaar?<br><input type="checkbox" name="public" value="true" checked="checked"></p>
+                <p><input type='submit' name='submit' value='upload'></p>
+            </form>
+            <?php
+        }
+        else
+        {
+            echo '<p><a href="login.php">Log in om materialen te uploaden</a></p>';
         }
         ?>
-        <h1>Upload file</h1>
-        <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
-            <p>File<br><input type="file" name="file"></p>
-            <p><input type='submit' name='submit' value='upload'></p>
-        </form>
     </body>
 </html>

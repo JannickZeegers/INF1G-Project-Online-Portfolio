@@ -33,11 +33,14 @@ else        //PORTFOLIO_MODE_SERVER
     define("MYSQL_PORT", 3306);
     define("MYSQL_USER", "u219753_pfs");
     define("MYSQL_PASS", "{ix38ZA(XF8tRK|o");
+    //Fix voor sessies op server
+    //Update: NIET MEER NODIG?!
+    //ini_set('session.save_path', '/var/www/vhosts/55/236077/tmp/');
 }
 define("TABLE_USER", "gebruiker");
 define("TABLE_MATERIAL", "materiaal");
 define("TABLE_GRADE", "cijfer");
 define("TABLE_SUBJECT", "vak");
-define("TABLE_GUESTBOOK", "gastenboek");
+define("TABLE_GUESTBOOK", "bericht");
 define("TABLE_MATERIAL_SUBJECT", "materiaal_vak");
 define("PORTFOLIO_UPLOAD_DIR", "files");

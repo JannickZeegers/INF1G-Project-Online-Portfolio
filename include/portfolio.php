@@ -10,7 +10,11 @@ include_once "constants.php";
 session_start();
 //Code die altijd gerunt wordt
 //DEBUG
-echo "<p>" . session_id() . "</p>";
+/*echo "<p>" . session_id() . "</p>";
+if(fileperms(session_save_path()))
+{
+    echo "<p>Allowed to save: " . session_save_path() . "</p>";
+}*/
 
 //Functies
 /*
@@ -102,7 +106,7 @@ function portfolio_get_user_details($gebruikersId)
 /*
  * Upload een bestand voor de huidige gebruiker. $file is de naam van het bestand e.g. $_FILES[$file]
  */
-function portfolio_upload_material($userId, $file)
+function portfolio_upload_material($userId, $file, $isPublic)
 {
     if(!filter_var($userId, FILTER_VALIDATE_INT) || !isset($_FILES[$file]))
     {
@@ -119,9 +123,12 @@ function portfolio_upload_material($userId, $file)
         if($link)
         {
             //materiaal(materiaalId, naam, eigenaarId, bestandsPad, bestandsType, isOpenbaar)
-            $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL, " . $userId . ", "
+            $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL,"
+                    . "'" . mysqli_real_escape_string($link, $name) . "', "
+                    . $userId . ", "
                     . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
-                    . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "')";
+                    . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "', "
+                    . $isPublic . ")";
             if(mysqli_query($link, $sql))
             {
                 return true;
@@ -172,7 +179,7 @@ function portfolio_register($gebruikersnaam, $wachtwoord, $mail, $voornaam, $ach
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $gebruikersnaam) . "' OR `e-mail`='" . mysqli_real_escape_string($link, $mail) . "'";
+        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $gebruikersnaam) . "' OR eMail='" . mysqli_real_escape_string($link, $mail) . "'";
         $result = mysqli_query($link, $sql);
         if(mysqli_fetch_assoc($result))
         {

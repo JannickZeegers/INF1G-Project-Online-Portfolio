@@ -3,23 +3,23 @@
  * Geeft een materiaal terug.
  * POST: material=id-van-materiaal&user=id-van-eigenaar
  */
-if(!isset($_POST['material']) || filter_input(INPUT_POST, 'material', FILTER_VALIDATE_INT) || 
-        !isset($_POST['user']) || filter_input(INPUT_POST, 'user', FILTER_VALIDATE_INT))
+if(!isset($_GET['material']) || !filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT))
 {
     die;
 }
 
 include 'portfolio.php';
 
-$matId = filter_input(INPUT_POST, 'material', FILTER_VALIDATE_INT);
-$usrId = filter_input(INPUT_POST, 'user', FILTER_VALIDATE_INT);
+$matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
 
 $matData = portfolio_get_material($matId);
-if(!$matData || $matData['eigenaarId'] !== $usrId)
+//var_dump($matData);
+//Note: returns all as string!
+if(!$matData || $matData['isOpenbaar'] == false)
 {
     die;
 }
-$imgMime = array('image/png');
+$imgMime = array("image/jpeg","image/pjpeg","image/gif","image/bmp","image/x-windows-bmp","image/png");
 if(in_array($matData['bestandsType'], $imgMime))
 {
     //IMAGE

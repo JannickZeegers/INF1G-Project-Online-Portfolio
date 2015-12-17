@@ -15,14 +15,18 @@ and open the template in the editor.
         // put your code here
         if(isset($_POST["submit"]))
         {
-            echo "<pre>";
-            var_dump(portfolio_get_user_details(portfolio_login($_POST["userName"], $_POST["userPass"])));
-            
-            var_dump(portfolio_get_user_materials($_SESSION['user']['gebruikersId']));
-            echo "</pre>";
+            if(portfolio_login($_POST["userName"], $_POST["userPass"]))
+            {
+                echo "<p>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</p>\n";
+            }
+            else
+            {
+                echo "<p>Gebruikersnaam en/of wachtwoord niet correct!</p>\n";
+            }
         }
         ?>
         <h1>Login</h1>
+        <p>Hint:<br>test<br>test</p>
         <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
             <p>Username:<br><input type='text' name='userName'></p>
             <p>Password:<br><input type='password' name='userPass'></p>
