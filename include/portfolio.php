@@ -1,6 +1,13 @@
 <?php
 
 /* 
+ * Bevat code/functies die door het gehele systeem gedeeld worden
+ * Gebruik altijd 
+ * 
+ * include_once "portfolio.php";
+ * 
+ * bij het aanmaken van een nieuwe PHP pagina voor de backend (login-, admin-, uploadpagina, etc.)
+ * 
  * Functies in dit bestand beginnen met portfolio_
  */
 //Includes
@@ -62,7 +69,9 @@ function portfolio_get_user_materials($userId)
     }
     return null;
 }
-
+/*
+ * Haal alle informatie over een materiaal op
+ */
 function portfolio_get_material($materialId)
 {
     $link = portfolio_connect();
@@ -77,6 +86,7 @@ function portfolio_get_material($materialId)
     }
     return null;
 }
+
 /*
  * Haal de gebruikersgegevens van een gebruiker op aan de hand van het gebruikersId
  */
@@ -200,4 +210,76 @@ function portfolio_register($gebruikersnaam, $wachtwoord, $mail, $voornaam, $ach
         }
     }
     return false;
+}
+
+/*
+ * Beoordeel een materiaal met een cijfer
+ * - Mag alleen als ingelogde gebruiker SLB'er is (slb) (of admin)
+ * - Mag alleen als cijfer nog niet gegeven is
+ * OF
+ *   Alleen beoordelaar mag cijfer aanpassen
+ * - 1 <= cijfer <= 10
+ */
+
+function portfolio_set_note($materialId, $note)
+{
+    $link = portfolio_connect();
+    
+    if($link && $_SESSION['user']['rol'] === 'slb' && $note >= 1 && $note <= 10)
+    {
+        //Check of er al een cijfer is gegeven!
+        $sql = 'SELECT * FROM ' . TABLE_GRADE . ' WHERE materiaalId=' . mysqli_real_escape_string($link, $materialId);
+        $result = mysqli_query($link, $sql);
+        $row = null;    //pak $row BUITEN de if statement
+        if(($row = mysqli_fetch_assoc($result)) == null)
+        {
+            $sql = 'INSERT INTO ' . TABLE_GRADE . ' VALUES(' . 
+            mysqli_real_escape_string($link, $materialId) . ', ' . 
+            mysqli_real_escape_string($link, $_SESSION['user']['gebruikersId']) . ', ' .  
+            mysqli_real_escape_string($link, $note) . 
+            ')';
+            $result = mysqli_query($link, $sql);
+            if($result)
+            {
+                //succes!
+                return true;
+            }
+        }
+        else
+        {
+            //Er is al een cijfer gegeven!
+            if($_SESSION['user']['gebruikersId'] === $row['beoordelaarId'])
+            {
+                $sql = 'UPDATE ' . TABLE_GRADE . ' SET cijfer='
+                        . mysqli_real_escape_string($link, $note)
+                        . ' WHERE materiaalId='
+                        . mysqli_real_escape_string($link, $materialId);
+                $result = mysqli_query($link, $sql);
+                if($result)
+                {
+                    //succes!
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+/*
+ * Geeft info over het cijfer (indien aanwezig) van een materiaal
+ */
+function portfolio_get_note($materialId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "SELECT * FROM " . TABLE_GRADE . " WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
+        $result = mysqli_query($link, $sql);
+        if(($row = mysqli_fetch_assoc($result)) !== null)
+        {
+            return $row;
+        }
+    }
+    return null;
 }

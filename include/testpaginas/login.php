@@ -26,7 +26,8 @@ and open the template in the editor.
         }
         ?>
         <h1>Login</h1>
-        <p>Hint:<br>test<br>test</p>
+        <p>Student:<br>test<br>test</p>
+        <p>SLB:<br>henk<br>test</p>
         <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
             <p>Username:<br><input type='text' name='userName'></p>
             <p>Password:<br><input type='password' name='userPass'></p>

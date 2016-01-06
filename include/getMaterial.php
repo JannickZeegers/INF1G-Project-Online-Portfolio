@@ -1,7 +1,11 @@
 <?php
 /*
- * Geeft een materiaal terug.
- * POST: material=id-van-materiaal&user=id-van-eigenaar
+ * Geeft een materiaal terug, zolang MATERIAAL.isOpenbaar op true staat
+ * POST: material=id-van-materiaal
+ * RESULTAAT: 
+ * afbeelding (als het MIME type een afbeelding is)
+ * OF
+ * 'textdocument' met de bestandslocatie (files/bestandsnaam.extensie)
  */
 if(!isset($_GET['material']) || !filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT))
 {

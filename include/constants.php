@@ -3,13 +3,16 @@
 /* 
  * Constantes
  * ZET PORTFOLIO_DATABASE_MODE OP PORTFOLIO_MODE_SERVER VOOR UPLOAD NAAR SERVER!
+ * 
+ * NOOT: Voor PORTFOLIO_MODE_LOCAL is het nodig om een database te hebben op de localhost.
+ * Zie de dropbox - Project -/SQL map voor de benodigde SQL scripts om dit op te zetten.
  */
 //0 = lokaal, 1 = op server, php 'thuis', 2 = op server
 define("PORTFOLIO_MODE_LOCAL", 0);
 define("PORTFOLIO_MODE_SERVER_REMOTE", 1);
 define("PORTFOLIO_MODE_SERVER", 2);
 
-define("PORTFOLIO_DATABASE_MODE", PORTFOLIO_MODE_SERVER_REMOTE);
+define("PORTFOLIO_DATABASE_MODE", PORTFOLIO_MODE_LOCAL);
 if(PORTFOLIO_DATABASE_MODE === PORTFOLIO_MODE_LOCAL)
 {
     define("DATABASE_NAME", "portfolio_systeem");
@@ -33,9 +36,6 @@ else        //PORTFOLIO_MODE_SERVER
     define("MYSQL_PORT", 3306);
     define("MYSQL_USER", "u219753_pfs");
     define("MYSQL_PASS", "{ix38ZA(XF8tRK|o");
-    //Fix voor sessies op server
-    //Update: NIET MEER NODIG?!
-    //ini_set('session.save_path', '/var/www/vhosts/55/236077/tmp/');
 }
 define("TABLE_USER", "gebruiker");
 define("TABLE_MATERIAL", "materiaal");
