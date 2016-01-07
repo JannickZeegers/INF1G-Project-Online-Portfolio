@@ -1,3 +1,6 @@
+<?php
+include_once "../portfolio.php";
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -11,7 +14,6 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        include "../portfolio.php";
         // put your code here
         if(isset($_POST["submit"]))
         {

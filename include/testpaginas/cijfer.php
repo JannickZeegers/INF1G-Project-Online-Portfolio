@@ -1,3 +1,6 @@
+<?php
+include_once "../portfolio.php";
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -12,7 +15,6 @@ and open the template in the editor.
     <body>
         <h1>Geef cijfer</h1>
         <?php
-        include "../portfolio.php";
         if(isset($_SESSION['user']))
         {
             echo "<p>Gebruiker: " . $_SESSION['user']['gebruikersnaam'] . "</p>";

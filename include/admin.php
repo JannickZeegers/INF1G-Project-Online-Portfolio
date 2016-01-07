@@ -1,3 +1,6 @@
+<?php
+include_once 'portfolio.php';
+?>
 <!DOCTYPE html>
 <!--
 
@@ -6,9 +9,6 @@
     Ook het gastenboek/berichtensysteem via dit bereikbaar?
 
 -->
-<?php
-include_once 'portfolio.php';
-?>
 <html>
     <head>
         <meta charset="UTF-8">
