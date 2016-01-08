@@ -13,20 +13,41 @@ include_once 'portfolio.php';
     <head>
         <meta charset="UTF-8">
         <title>Ons Portfolio - Admin panel</title>
+        <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <!-- TODO: EVERYTHING -->
+        <div id="container">
         <?php
         if(isset($_SESSION['user']))
         {
             //Alles
-            echo "<h2>Welkom " . $_SESSION['user']['gebruikersnaam'] . "</h2>";
+            echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
             if($_SESSION['user']['rol'] == 'slb')
             {
                 //TEST: Lijst met alle materialen van 'test'
                 echo '<h2>LIJST MATERIALEN</h2>';
                 echo '<hr>';
-                $mats = portfolio_get_user_materials(1);
+                
+                $students = portfolio_get_students();
+                foreach($students as $s)
+                {
+                    echo '<h3>' . $s['voornaam'] . ' ' . $s['achternaam'] . '</h3>';
+                    $mats = portfolio_get_user_materials($s['gebruikersId']);
+                    foreach($mats as $mat)
+                    {
+                        echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . '</p>';
+                    }
+                }
+            }
+            else if($_SESSION['user']['rol'] == 'student')
+            {
+                //TEST: Lijst met alle materialen van 'test'
+                echo '<h2>LIJST MATERIALEN</h2>';
+                echo '<hr>';
+                
+                echo '<h3>Jouw materialen</h3>';
+                $mats = portfolio_get_user_materials($_SESSION['user']['gebruikersId']);
                 foreach($mats as $mat)
                 {
                     echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . '</p>';
@@ -38,5 +59,6 @@ include_once 'portfolio.php';
             echo "<h2>Log eerst in!</h2>";
         }
         ?>
+        </div>
     </body>
 </html>

@@ -21,13 +21,17 @@ and open the template in the editor.
             // put your code here
             if(isset($_POST["submit"]))
             {
-                echo "<pre>";
-                var_dump($_SESSION['user']);
                 $public = 0;
                 if(isset($_POST['public']) && $_POST['public'] === "true")
                     $public = true;
-                var_dump(portfolio_upload_material($_SESSION['user']['gebruikersId'], 'file', $public));
-                echo "</pre>";
+                if(portfolio_upload_material($_SESSION['user']['gebruikersId'], 'file', $public))
+                {
+                    echo '<p>Upload succesvol</p>';
+                }
+                else
+                {
+                    echo '<p>FOUT: Upload mislukt!</p>';
+                }
             }
             ?>
             <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">

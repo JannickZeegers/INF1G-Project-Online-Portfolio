@@ -283,3 +283,23 @@ function portfolio_get_note($materialId)
     }
     return null;
 }
+
+/*
+ * Geeft alle studentinfo terug
+ */
+function portfolio_get_students()
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT * FROM " . TABLE_USER . " WHERE rol='student'";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            array_push($return, $row);
+        }
+        return $return;
+    }
+    return null;
+}
