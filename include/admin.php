@@ -36,7 +36,7 @@ include_once 'portfolio.php';
                     $mats = portfolio_get_user_materials($s['gebruikersId']);
                     foreach($mats as $mat)
                     {
-                        echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . '</p>';
+                        echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
                     }
                 }
             }

@@ -303,3 +303,43 @@ function portfolio_get_students()
     }
     return null;
 }
+
+/*
+ * Update gegevens van een materiaal
+ */
+function portfolio_update_material($materialId, $name=null, $isPublic=null)
+{
+    $link = portfolio_connect();
+    if($link && ($name != null || $isPublic != null))
+    {
+        $sql = "UPDATE " . TABLE_MATERIAL . " SET ";
+        if($name != null)
+            $sql .= "naam='" . mysqli_real_escape_string($link, $name) . "' ";
+        if($isPublic != null)
+            $sql .= "isOpenbaar='" . mysqli_real_escape_string($link, $isPublic) . "' ";
+        $sql .= "WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
+        $result = mysqli_query($link, $sql);
+        if($result)
+            return true;
+    }
+    return null;
+}
+
+/*
+ * Verwijder een materiaal, zolang het niet beoordeeld is
+ */
+function portfolio_delete_material($materialId, $forceDeletion=false)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        if(!portfolio_get_note($materialId) || $forceDeletion)
+        {
+            $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalIc=" . $materialId;
+            $result = mysqli_query($link, $sql);
+            if($result)
+                return true;
+        }
+    }
+    return null;
+}
