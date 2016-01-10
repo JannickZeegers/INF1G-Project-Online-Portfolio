@@ -22,7 +22,7 @@ include_once "portfolio.php";
             <div id="content">
             <h2>Cijfer</h2>
             <?php
-            if(isset($_SESSION['user']))
+            if(portfolio_user_is_of_type(array('slb', 'admin')))
             {            
                 $matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
                 if($matId)
@@ -71,7 +71,7 @@ include_once "portfolio.php";
             }
             else
             {
-                echo '<p><a href="login.php">Log in om te beoordelen</a></p>';
+                echo '<p>Niet gemachtigd om te beoordelen</p>';
             }
             ?>
             </div>

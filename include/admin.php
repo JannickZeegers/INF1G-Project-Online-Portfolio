@@ -38,7 +38,8 @@ include_once 'portfolio.php';
                  * TEST VOOR SLB ACCOUNT
                  * Lijst alle materialen, gegroepeerd student
                  */
-                if($_SESSION['user']['rol'] == 'slb')
+                //if($_SESSION['user']['rol'] == 'slb')
+                if(portfolio_user_is_of_type(array('admin', 'slb', 'docent')))
                 {
                     //TEST: Lijst met alle materialen van 'test'
                     echo '<h2>LIJST MATERIALEN</h2>';

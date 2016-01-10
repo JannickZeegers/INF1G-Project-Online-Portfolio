@@ -123,6 +123,12 @@ function portfolio_upload_material($userId, $file, $isPublic)
         return false;
     }
     // TODO: Filetype blacklist!
+    $blacklist = array('application/octet-stream', 'application/x-bsh', 'application/x-sh', 'application/x-shar', 'text/x-script.sh', 'text/html', 'text/x-server-parsed-html');
+    if(in_array($_FILES[$file]['type'], $blacklist))
+    {
+        echo '<p>FILE TYPE NOT ALLOWED</p>';
+        return false;
+    }
     $name = $_FILES[$file]['name'];
     $ext = pathinfo($name)['extension'];
     $newName = time() . '.' . $ext;
@@ -234,7 +240,7 @@ function portfolio_set_note($materialId, $note)
 {
     $link = portfolio_connect();
     
-    if($link && $_SESSION['user']['rol'] === 'slb' && $note >= 1 && $note <= 10)
+    if($link && portfolio_user_is_of_type(array('slb', 'admin')) && $note >= 1 && $note <= 10)
     {
         //Check of er al een cijfer is gegeven!
         $sql = 'SELECT * FROM ' . TABLE_GRADE . ' WHERE materiaalId=' . mysqli_real_escape_string($link, $materialId);
@@ -256,8 +262,11 @@ function portfolio_set_note($materialId, $note)
         }
         else
         {
+            /*
+             * TODO: Verander beoordelaarId
+             */
             //Er is al een cijfer gegeven!
-            if($_SESSION['user']['gebruikersId'] === $row['beoordelaarId'])
+            if($_SESSION['user']['gebruikersId'] === $row['beoordelaarId'] || portfolio_user_is_of_type(array('admin')))
             {
                 $sql = 'UPDATE ' . TABLE_GRADE . ' SET cijfer='
                         . mysqli_real_escape_string($link, $note)
@@ -359,4 +368,16 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
         }
     }
     return null;
+}
+
+/*
+ * Check of de ingelogde gebruiker een van deze rollen heeft
+ */
+function portfolio_user_is_of_type($types = array('student', 'slb', 'admin', 'docent'))
+{
+    if(isset($_SESSION['user']))
+    {
+        return in_array($_SESSION['user']['rol'], $types);
+    }
+    return false;
 }

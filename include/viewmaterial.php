@@ -75,9 +75,10 @@ include_once 'portfolio.php';
                                 }
                                 echo '</td></tr>';
                                 echo '</table>';
-                                if($_SESSION['user']['rol'] == 'slb')
+                                //if($_SESSION['user']['rol'] == 'slb')
+                                if(portfolio_user_is_of_type(array('slb', 'admin')))
                                 {
-                                    if($_SESSION['user']['gebruikersId'] === $cijferData['beoordelaarId'])
+                                    if($_SESSION['user']['gebruikersId'] === $cijferData['beoordelaarId'] || portfolio_user_is_of_type(array('admin')))
                                     {
                                         echo '<p><a href="cijfer.php?material=' . $matId . '">Wijzig cijfer</p>';
                                     }
@@ -93,11 +94,12 @@ include_once 'portfolio.php';
                             }
 
                             /*
-                             * Menu voor student zelf
+                             * Menu voor student zelf + admin
                              */
-                            if($_SESSION['user']['rol'] == 'student')
+                            //if($_SESSION['user']['rol'] == 'student')
+                            if(portfolio_user_is_of_type(array('student', 'admin')))
                             {
-                                if($_SESSION['user']['gebruikersId'] === $matData['eigenaarId'])
+                                if($_SESSION['user']['gebruikersId'] === $matData['eigenaarId'] || portfolio_user_is_of_type(array('admin')))
                                 {
                                     echo '<h3>Opties</h3>';
                                     //Wijzig materiaal

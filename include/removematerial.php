@@ -38,37 +38,36 @@ include_once 'portfolio.php';
                         /*
                          * Checks + verwijderen van materiaal.
                          */
-                        $pwCorrect = false;
-                        $deleted = false;
-                        if(isset($_POST['submit']) && isset($_SESSION['user']) && $matId)
+                        if($_SESSION['user']['gebruikersId'] === $matData['eigenaarId'] || portfolio_user_is_of_type(array('admin')))
                         {
-                            $userId = $_SESSION['user']['gebruikersId'];
-                            $userPass = filter_input(INPUT_POST, 'userPass');
-                            $link = portfolio_connect();
-                            if($link)
+                            $pwCorrect = false;
+                            $deleted = false;
+                            if(isset($_POST['submit']) && isset($_SESSION['user']) && $matId)
                             {
-                                $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersId='" . mysqli_real_escape_string($link, $userId) . "'";
-                                $result = mysqli_query($link, $sql);
-                                if($result !== false)
+                                $userId = $_SESSION['user']['gebruikersId'];
+                                $userPass = filter_input(INPUT_POST, 'userPass');
+                                $link = portfolio_connect();
+                                if($link)
                                 {
-                                     if(($array = mysqli_fetch_assoc($result)) != null)
+                                    $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersId='" . mysqli_real_escape_string($link, $userId) . "'";
+                                    $result = mysqli_query($link, $sql);
+                                    if($result !== false)
                                     {
-                                        if(password_verify($userPass, $array['wachtwoord']))
+                                         if(($array = mysqli_fetch_assoc($result)) != null)
                                         {
-                                            $pwCorrect = true;
-                                            $deleted = portfolio_delete_material($matId);
+                                            if(password_verify($userPass, $array['wachtwoord']))
+                                            {
+                                                $pwCorrect = true;
+                                                $deleted = portfolio_delete_material($matId);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        
-                        /*
-                         * Wachtwoord prompt + teruggave info over succes van verwijderen
-                         */
-                        
-                        if($_SESSION['user']['gebruikersId'] === $matData['eigenaarId'])
-                        {
+
+                            /*
+                             * Wachtwoord prompt + teruggave info over succes van verwijderen
+                             */
                             if(!$pwCorrect)
                             {
                                 echo '<h3>Typ hieronder uw wachtwoord in om het materiaal te verwijderen</h3>';
