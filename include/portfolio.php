@@ -262,14 +262,13 @@ function portfolio_set_note($materialId, $note)
         }
         else
         {
-            /*
-             * TODO: Verander beoordelaarId
-             */
             //Er is al een cijfer gegeven!
             if($_SESSION['user']['gebruikersId'] === $row['beoordelaarId'] || portfolio_user_is_of_type(array('admin')))
             {
                 $sql = 'UPDATE ' . TABLE_GRADE . ' SET cijfer='
                         . mysqli_real_escape_string($link, $note)
+                        . ' SET beoordelaarId='
+                        . mysqli_real_escape_string($link, $_SESSION['user']['gebruikersId'])
                         . ' WHERE materiaalId='
                         . mysqli_real_escape_string($link, $materialId);
                 $result = mysqli_query($link, $sql);

@@ -46,8 +46,12 @@ include_once 'portfolio.php';
 
                             echo '<tr><th rel="row">' . 'Materiaal ID' . '</th><td>' . $matData['materiaalId'] . '</td></tr>';
                             echo '<tr><th rel="row">' . 'Eigenaar' . '</th><td>' . $eigenaar['voornaam'] . ' ' . $eigenaar['achternaam'] . ' (' . $matData['eigenaarId'] . ')' . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'Bestandslocatie' . '</th><td>' . $matData['bestandsPad'] . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'MIME type' . '</th><td>' . $matData['bestandsType'] . '</td></tr>';
+                            //Technische info eigenlijk alleen nuttig voor admin
+                            if(portfolio_user_is_of_type(array('admin')))
+                            {
+                                echo '<tr><th rel="row">' . 'Bestandslocatie' . '</th><td>' . $matData['bestandsPad'] . '</td></tr>';
+                                echo '<tr><th rel="row">' . 'MIME type' . '</th><td>' . $matData['bestandsType'] . '</td></tr>';
+                            }
                             $janee = ($matData['isOpenbaar']) ? 'Ja' : 'Nee';
                             echo '<tr><th rel="row">' . 'Openbaar' . '</th><td>' . $janee . '</td></tr>';
 
@@ -87,7 +91,8 @@ include_once 'portfolio.php';
                             else
                             {
                                 echo '<p>Dit materiaal is nog niet beoordeeld</p>';
-                                if($_SESSION['user']['rol'] == 'slb')
+                                //if($_SESSION['user']['rol'] == 'slb')
+                                if(portfolio_user_is_of_type(array('admin')))
                                 {
                                     echo '<p><a href="cijfer.php?material=' . $matId . '">Geef cijfer</p>';
                                 }

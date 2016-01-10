@@ -176,7 +176,7 @@ body{
 
 #content{
     max-width: 1000px;
-    height: 570px;
+    min-height: 570px;
     background-image: url("../files/paper-background.jpg");
     background-position: left top;
     background-repeat: repeat;
