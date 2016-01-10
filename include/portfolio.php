@@ -344,10 +344,18 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
     {
         if(!portfolio_get_note($materialId) || $forceDeletion)
         {
-            $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . $materialId;
-            $result = mysqli_query($link, $sql);
-            //if($result)
-            return $result;
+            $matData = portfolio_get_material($materialId);
+            if($matData)
+            {
+                $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . $materialId;
+                $result = mysqli_query($link, $sql);
+                if($result)
+                {
+                    //var_dump(__DIR__ . '/' . $matData['bestandsPad']);
+                    unlink(__DIR__ . '/' . $matData['bestandsPad']);
+                }
+                return $result;
+            }
         }
     }
     return null;
