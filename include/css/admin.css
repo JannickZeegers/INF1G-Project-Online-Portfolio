@@ -19,8 +19,16 @@ and open the template in the editor.
     src: url(../fonts/Full-TiltBoogieNF.ttf);
 }
 
+h1, h2, h3, h4, h5, h6{
+    margin-bottom: 0.6em;
+}
+
+p{
+    margin-bottom: 0.6em;
+}
+
 a{
-    text-decoration: none;
+    /*text-decoration: none;*/
     color: inherit;
 }
 
@@ -186,4 +194,15 @@ body{
     height: 30px;
     background-color: lightblue;
     text-align: center;
+}
+
+/*
+    TABEL KLASSEN VOOR OVERZICHTEN
+*/
+.tableLeft{
+    text-align: left;
+}
+
+th, td{
+    padding: 2px;
 }

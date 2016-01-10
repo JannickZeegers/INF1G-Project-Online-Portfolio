@@ -15,18 +15,11 @@ include_once 'portfolio.php';
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- TODO: EVERYTHING -->
         <div id="container">
             <div id="header">
-                <a id="homelink" href="portfolio.php"><div id="title">
-                    <h1 class="title_text">Ons-Portfolio</h1>
-                </div></a>
-            <div id="cssmenu">
-                <ul>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="logout.php">Logout</a></li>
-                </ul>
-            </div>
+                <div id="header">
+                    <?php include 'inc/header.php'; ?>
+                </div>
             </div>
             <div id="content">
             <?php
@@ -34,6 +27,17 @@ include_once 'portfolio.php';
             {
                 //Alles
                 echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
+                
+                /*
+                 * TODO: Verplaats dit overzicht naar een andere pagina?
+                 * Admin pagina links geven naar verschillende pagina's die de nodige overzichten bieden
+                 * In FO staat misschien wel welke overzichten we nodig hebben per rol
+                 */
+                
+                /*
+                 * TEST VOOR SLB ACCOUNT
+                 * Lijst alle materialen, gegroepeerd student
+                 */
                 if($_SESSION['user']['rol'] == 'slb')
                 {
                     //TEST: Lijst met alle materialen van 'test'
@@ -45,12 +49,19 @@ include_once 'portfolio.php';
                     {
                         echo '<h3>' . $s['voornaam'] . ' ' . $s['achternaam'] . '</h3>';
                         $mats = portfolio_get_user_materials($s['gebruikersId']);
+                        echo '<table class="tableLeft">';
                         foreach($mats as $mat)
                         {
-                            echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . '</p>';
+                            //echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
+                            echo '<tr><td><a href="viewmaterial.php?material=' . $mat['materiaalId'] . '">' . $mat['naam'] . '</a></td></tr>';
                         }
+                        echo '</table>';
                     }
                 }
+                /*
+                 * TEST VOOR STUDENT ACCOUNT
+                 * Lijst alle materialen van deze student
+                 */
                 else if($_SESSION['user']['rol'] == 'student')
                 {
                     //TEST: Lijst met alle materialen van 'test'
@@ -59,10 +70,13 @@ include_once 'portfolio.php';
 
                     echo '<h3>Jouw materialen</h3>';
                     $mats = portfolio_get_user_materials($_SESSION['user']['gebruikersId']);
+                    echo '<table class="tableLeft">';
                     foreach($mats as $mat)
                     {
-                        echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
+                        //echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
+                        echo '<tr><td><a href="viewmaterial.php?material=' . $mat['materiaalId'] . '">' . $mat['naam'] . '</a></td></tr>';
                     }
+                    echo '</table>';
                 }
             }
             else

@@ -181,6 +181,15 @@ function portfolio_login($userName, $userPass)
     return $userId;
 }
 
+function portfolio_logout()
+{
+    if(isset($_SESSION['user']))
+    {
+        unset($_SESSION['user']);
+    }
+    return session_destroy();
+}
+
 /*
  * Registreer een gebruiker.
  */
@@ -335,10 +344,10 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
     {
         if(!portfolio_get_note($materialId) || $forceDeletion)
         {
-            $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalIc=" . $materialId;
+            $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . $materialId;
             $result = mysqli_query($link, $sql);
-            if($result)
-                return true;
+            //if($result)
+            return $result;
         }
     }
     return null;
