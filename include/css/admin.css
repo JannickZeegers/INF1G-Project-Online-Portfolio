@@ -5,17 +5,185 @@ and open the template in the editor.
 */
 /* 
     Created on : Jan 8, 2016, 9:37:23 AM
-    Author     : Wouter
+    Author     : Wouter and Jannick
 */
 
 *{
     margin: 0;
     padding: 0;
+    font-family: arial;
+}
+
+@font-face{
+    font-family: FullTilt Boogie NF;
+    src: url(../fonts/Full-TiltBoogieNF.ttf);
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+body{
+    background-color: black;
+    background-image: url("../files/background-pattern.jpg"); 
+    background-position: left top;
+    background-repeat: repeat;
 }
 
 #container{
     width: 1000px;
     min-height: 800px;
-    background-color: gray;
+    background-color: lightblue;
     margin: 0 auto;
+    box-shadow: 0px 0px 50px #888888;
+    border: solid;
+    border-style: outset;
+    border-color: azure;
+}
+
+#header{
+    max-width: 1000px;
+    height: 175px;
+    background-color: lightblue;
+}
+
+#title{
+    float: left;
+}
+
+.title_text{
+    font-family: FullTilt Boogie NF;
+    font-size: 50pt;
+    margin: 20px;
+    border: solid;
+    border-style: groove;
+    padding: 10px;
+}
+
+#cssmenu ul,
+#cssmenu li,
+#cssmenu a {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  line-height: 1;
+}
+#cssmenu {
+  border: 1px solid #133e40;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  width: auto;
+}
+#cssmenu ul {
+  zoom: 1;
+  background: #36b0b6;
+  background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #36b0b6), color-stop(100%, #2a8a8f));
+  background: -webkit-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+  background: -o-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+  background: -ms-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+  background: linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top-color', endColorstr='@bottom-color', GradientType=0);
+  padding: 5px 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+#cssmenu ul:before {
+  content: '';
+  display: block;
+}
+#cssmenu ul:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+#cssmenu li {
+  float: left;
+  margin: 0 5px 0 0;
+  border: 1px solid transparent;
+}
+#cssmenu li a {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  padding: 8px 15px 9px 15px;
+  display: block;
+  text-decoration: none;
+  color: #ffffff;
+  border: 1px solid transparent;
+  font-size: 16px;
+}
+#cssmenu li.active {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #36b0b6;
+}
+#cssmenu li.active a {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  display: block;
+  background: #1e6468;
+  border: 1px solid #133e40;
+  -moz-box-shadow: inset 0 5px 10px #133e40;
+  -webkit-box-shadow: inset 0 5px 10px #133e40;
+  box-shadow: inset 0 5px 10px #133e40;
+}
+#cssmenu li:hover {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #36b0b6;
+}
+#cssmenu li:hover a {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  display: block;
+  background: #1e6468;
+  border: 1px solid #133e40;
+  -moz-box-shadow: inset 0 5px 10px #133e40;
+  -webkit-box-shadow: inset 0 5px 10px #133e40;
+  box-shadow: inset 0 5px 10px #133e40;
+}
+
+#content{
+    max-width: 1000px;
+    height: 570px;
+    background-image: url("../files/paper-background.jpg");
+    background-position: left top;
+    background-repeat: repeat;
+    border: solid;
+    border-style: inset;
+    border-color: cadetblue;
+    margin: 10px;
+    padding: 10px;
+}
+
+
+
+#footer{
+    max-width: 1000px;
+    height: 30px;
+    background-color: lightblue;
+    text-align: center;
 }

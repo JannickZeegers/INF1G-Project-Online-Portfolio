@@ -7,7 +7,6 @@ include_once 'portfolio.php';
     Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
     Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
     Ook het gastenboek/berichtensysteem via dit bereikbaar?
-
 -->
 <html>
     <head>
@@ -18,47 +17,63 @@ include_once 'portfolio.php';
     <body>
         <!-- TODO: EVERYTHING -->
         <div id="container">
-        <?php
-        if(isset($_SESSION['user']))
-        {
-            //Alles
-            echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
-            if($_SESSION['user']['rol'] == 'slb')
+            <div id="header">
+                <a id="homelink" href="portfolio.php"><div id="title">
+                    <h1 class="title_text">Ons-Portfolio</h1>
+                </div></a>
+            <div id="cssmenu">
+                <ul>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                </ul>
+            </div>
+            </div>
+            <div id="content">
+            <?php
+            if(isset($_SESSION['user']))
             {
-                //TEST: Lijst met alle materialen van 'test'
-                echo '<h2>LIJST MATERIALEN</h2>';
-                echo '<hr>';
-                
-                $students = portfolio_get_students();
-                foreach($students as $s)
+                //Alles
+                echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
+                if($_SESSION['user']['rol'] == 'slb')
                 {
-                    echo '<h3>' . $s['voornaam'] . ' ' . $s['achternaam'] . '</h3>';
-                    $mats = portfolio_get_user_materials($s['gebruikersId']);
+                    //TEST: Lijst met alle materialen van 'test'
+                    echo '<h2>LIJST MATERIALEN</h2>';
+                    echo '<hr>';
+
+                    $students = portfolio_get_students();
+                    foreach($students as $s)
+                    {
+                        echo '<h3>' . $s['voornaam'] . ' ' . $s['achternaam'] . '</h3>';
+                        $mats = portfolio_get_user_materials($s['gebruikersId']);
+                        foreach($mats as $mat)
+                        {
+                            echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . '</p>';
+                        }
+                    }
+                }
+                else if($_SESSION['user']['rol'] == 'student')
+                {
+                    //TEST: Lijst met alle materialen van 'test'
+                    echo '<h2>LIJST MATERIALEN</h2>';
+                    echo '<hr>';
+
+                    echo '<h3>Jouw materialen</h3>';
+                    $mats = portfolio_get_user_materials($_SESSION['user']['gebruikersId']);
                     foreach($mats as $mat)
                     {
                         echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
                     }
                 }
             }
-            else if($_SESSION['user']['rol'] == 'student')
+            else
             {
-                //TEST: Lijst met alle materialen van 'test'
-                echo '<h2>LIJST MATERIALEN</h2>';
-                echo '<hr>';
-                
-                echo '<h3>Jouw materialen</h3>';
-                $mats = portfolio_get_user_materials($_SESSION['user']['gebruikersId']);
-                foreach($mats as $mat)
-                {
-                    echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . '</p>';
-                }
+                echo "<h2>Log eerst in!</h2>";
             }
-        }
-        else
-        {
-            echo "<h2>Log eerst in!</h2>";
-        }
-        ?>
+            ?>
+            </div>
+            <div id="footer">
+                INF1G - 2016
+            </div>
         </div>
     </body>
 </html>
