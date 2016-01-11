@@ -11,7 +11,7 @@ include_once 'portfolio.php';
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Verwijder materiaal</title>
+        <title>Ons Portfolio - Verwijder gebruiker</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -24,25 +24,25 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {
-                //$matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
-                $matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
-                if($matId)
+                //$usrId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
+                $usrId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
+                if($usrId)
                 {
                     //Alles
                     echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
-                    $matData = portfolio_get_material($matId);
-                    if($matData)
+                    $usrData = portfolio_get_user_details($usrId);
+                    if($usrData)
                     {
-                        echo '<h2>' . $matData['naam'] . '</h2>';
+                        echo '<h2>' . $usrData['voornaam'] . ' ' . $usrData['achternaam'] . '</h2>';
                         
                         /*
-                         * Checks + verwijderen van materiaal.
+                         * Checks + verwijderen van gebruiker.
                          */
-                        if($_SESSION['user']['gebruikersId'] === $matData['eigenaarId'] || portfolio_user_is_of_type(array('admin')))
+                        if(portfolio_user_is_of_type(array('admin')))
                         {
                             $pwCorrect = false;
                             $deleted = false;
-                            if(isset($_POST['submit']) && isset($_SESSION['user']) && $matId)
+                            if(isset($_POST['submit']) && isset($_SESSION['user']) && $usrId)
                             {
                                 $userId = $_SESSION['user']['gebruikersId'];
                                 $userPass = filter_input(INPUT_POST, 'userPass');
@@ -70,7 +70,7 @@ include_once 'portfolio.php';
                              */
                             if(!$pwCorrect)
                             {
-                                echo '<h3>Typ hieronder uw wachtwoord in om het materiaal te verwijderen</h3>';
+                                echo '<h3>Typ hieronder uw wachtwoord in om de gebruiker te verwijderen</h3>';
                                 ?>
                                 <form action='<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING']?>' method='post' enctype="multipart/form-data">
                                     <p>Wachtwoord:<br><input type='password' name='userPass'></p>
@@ -80,21 +80,21 @@ include_once 'portfolio.php';
                             }
                             else if($deleted)
                             {
-                                echo '<p>Materiaal verwijderd</p>';
+                                echo '<p>Gebruiker verwijderd</p>';
                             }
                             else
                             {
-                                echo '<p>Kon materiaal niet verwijderen. Mogelijk heeft dit materiaal een cijfer!</p>';
+                                echo '<p>Kon gebruiker niet verwijderen</p>';
                             }
                         }
                         else
                         {
-                            echo '<p>U bent niet gemachtigd dit materiaal te verwijderen</p>';
+                            echo '<p>U bent niet gemachtigd een gebruiker te verwijderen</p>';
                         }
                     }
                     else
                     {
-                        echo '<p>Materiaal niet gevonden!</p>';
+                        echo '<p>Gebruiker niet gevonden!</p>';
                     }
                 }
                 echo '<p><a href="admin.php">Ga terug</a></p>';

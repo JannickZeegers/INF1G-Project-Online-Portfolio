@@ -370,6 +370,46 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
 }
 
 /*
+ * Verwijder een gebruiker
+ * TODO: Set cijfers beoordelaarId op NULL indien gebruiker een SLB'er OF admin is!
+ */
+function portfolio_delete_user($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        if(!portfolio_user_is_of_type(array('admin')))
+        {
+            return null;
+        }
+        $matData = portfolio_get_user_materials($userId);
+        foreach($matData as $m)
+        {
+            //Verwijder het cijfer!
+            if(portfolio_get_note($m['materiaalId']))
+            {
+                $sql = "DELETE FROM " . TABLE_GRADE . " WHERE materiaalId=" . mysqli_real_escape_string($link, $m['materiaalId']);
+                if(!mysqli_query($link, $sql))
+                {
+                    return false;
+                }
+            }
+            //Verwijder het materiaal
+            if(!portfolio_delete_material($m['materiaalId']))
+            {
+                return false;
+            }
+            $sql = "DELETE FROM " . TABLE_USER . " WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
+            if(mysqli_query($link, $sql))
+            {
+                return true;
+            }
+        }
+    }
+    return null;
+}
+
+/*
  * Check of de ingelogde gebruiker een van deze rollen heeft
  */
 function portfolio_user_is_of_type($types = array('student', 'slb', 'admin', 'docent'))
