@@ -26,7 +26,7 @@ a{
 
 body{
     background-color: black;
-    background-image: url("../files/background-pattern.jpg"); 
+    background-image: url("background-pattern.jpg"); 
     background-position: left top;
     background-repeat: repeat;
 }
@@ -169,7 +169,7 @@ body{
 #content{
     max-width: 1000px;
     height: 570px;
-    background-image: url("../files/paper-background.jpg");
+    background-image: url("paper-background.jpg");
     background-position: left top;
     background-repeat: repeat;
     border: solid;
