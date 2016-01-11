@@ -3,9 +3,8 @@ include_once "../portfolio.php";
 ?>
 <!DOCTYPE html>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+    TODO: Volledige versie hiervan maken
+    TODO: Alleen ADMIN toestaan nieuwe gebruikers toe te voegen.
 -->
 <html>
     <head>

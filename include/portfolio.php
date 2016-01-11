@@ -123,6 +123,12 @@ function portfolio_upload_material($userId, $file, $isPublic)
         return false;
     }
     // TODO: Filetype blacklist!
+    $blacklist = array('application/octet-stream', 'application/x-bsh', 'application/x-sh', 'application/x-shar', 'text/x-script.sh', 'text/html', 'text/x-server-parsed-html');
+    if(in_array($_FILES[$file]['type'], $blacklist))
+    {
+        echo '<p>FILE TYPE NOT ALLOWED</p>';
+        return false;
+    }
     $name = $_FILES[$file]['name'];
     $ext = pathinfo($name)['extension'];
     $newName = time() . '.' . $ext;
@@ -181,6 +187,15 @@ function portfolio_login($userName, $userPass)
     return $userId;
 }
 
+function portfolio_logout()
+{
+    if(isset($_SESSION['user']))
+    {
+        unset($_SESSION['user']);
+    }
+    return session_destroy();
+}
+
 /*
  * Registreer een gebruiker.
  */
@@ -225,7 +240,7 @@ function portfolio_set_note($materialId, $note)
 {
     $link = portfolio_connect();
     
-    if($link && $_SESSION['user']['rol'] === 'slb' && $note >= 1 && $note <= 10)
+    if($link && portfolio_user_is_of_type(array('slb', 'admin')) && $note >= 1 && $note <= 10)
     {
         //Check of er al een cijfer is gegeven!
         $sql = 'SELECT * FROM ' . TABLE_GRADE . ' WHERE materiaalId=' . mysqli_real_escape_string($link, $materialId);
@@ -248,10 +263,12 @@ function portfolio_set_note($materialId, $note)
         else
         {
             //Er is al een cijfer gegeven!
-            if($_SESSION['user']['gebruikersId'] === $row['beoordelaarId'])
+            if($_SESSION['user']['gebruikersId'] === $row['beoordelaarId'] || portfolio_user_is_of_type(array('admin')))
             {
                 $sql = 'UPDATE ' . TABLE_GRADE . ' SET cijfer='
                         . mysqli_real_escape_string($link, $note)
+                        . ' SET beoordelaarId='
+                        . mysqli_real_escape_string($link, $_SESSION['user']['gebruikersId'])
                         . ' WHERE materiaalId='
                         . mysqli_real_escape_string($link, $materialId);
                 $result = mysqli_query($link, $sql);
@@ -335,11 +352,31 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
     {
         if(!portfolio_get_note($materialId) || $forceDeletion)
         {
-            $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalIc=" . $materialId;
-            $result = mysqli_query($link, $sql);
-            if($result)
-                return true;
+            $matData = portfolio_get_material($materialId);
+            if($matData)
+            {
+                $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . $materialId;
+                $result = mysqli_query($link, $sql);
+                if($result)
+                {
+                    //var_dump(__DIR__ . '/' . $matData['bestandsPad']);
+                    unlink(__DIR__ . '/' . $matData['bestandsPad']);
+                }
+                return $result;
+            }
         }
     }
     return null;
+}
+
+/*
+ * Check of de ingelogde gebruiker een van deze rollen heeft
+ */
+function portfolio_user_is_of_type($types = array('student', 'slb', 'admin', 'docent'))
+{
+    if(isset($_SESSION['user']))
+    {
+        return in_array($_SESSION['user']['rol'], $types);
+    }
+    return false;
 }

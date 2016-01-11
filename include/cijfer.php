@@ -3,9 +3,10 @@ include_once "portfolio.php";
 ?>
 <!DOCTYPE html>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+    
+    Deze pagina stelt de gebruiker (alleen ingelogde SLBer) in staat een cijfer te geven aan een materiaal.
+    Dit kan echter alleen wanneer er nog geen cijfer is gegeven OF de momenteel ingelogde SLBer het eerdere cijfer heeft gegeven.
+
 -->
 <html>
     <head>
@@ -15,59 +16,68 @@ and open the template in the editor.
     </head>
     <body>
         <div id="container">
-        <h1>Cijfer</h1>
-        <?php
-        if(isset($_SESSION['user']))
-        {            
-            $matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
-            if($matId)
-            {
-                $matData = portfolio_get_material($matId);
-                if($matData)
+            <div id="header">
+                <?php include 'inc/header.php'; ?>
+            </div>
+            <div id="content">
+            <h2>Cijfer</h2>
+            <?php
+            if(portfolio_user_is_of_type(array('slb', 'admin')))
+            {            
+                $matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
+                if($matId)
                 {
-                    echo '<p>Geef cijfer voor ' . $matData['naam'] . '</p>';
-                    if(isset($_POST["submit"]))
+                    $matData = portfolio_get_material($matId);
+                    if($matData)
                     {
-                        $cijfer = filter_input(INPUT_POST, 'cijfer', FILTER_VALIDATE_FLOAT);
-                        if($cijfer)
+                        echo '<p>Geef cijfer voor ' . $matData['naam'] . '</p>';
+                        if(isset($_POST["submit"]))
                         {
-                            if(portfolio_set_note($matId, $cijfer))
+                            $cijfer = filter_input(INPUT_POST, 'cijfer', FILTER_VALIDATE_FLOAT);
+                            if($cijfer)
                             {
-                                echo '<p>Cijfer gegeven!</p>';
-                            }
-                            else
-                            {
-                                echo '<p>Er ging iets mis!</p>';
+                                if(portfolio_set_note($matId, $cijfer))
+                                {
+                                    echo '<p>Cijfer gegeven!</p>';
+                                }
+                                else
+                                {
+                                    echo '<p>Er ging iets mis!</p>';
+                                }
                             }
                         }
-                    }
-                    $huidigCijfer = portfolio_get_note($matId);
-                    if($huidigCijfer)
-                    {
-                        echo '<p>Huidig cijfer is ' . $huidigCijfer['cijfer'] . '</p>';
+                        $huidigCijfer = portfolio_get_note($matId);
+                        if($huidigCijfer)
+                        {
+                            echo '<p>Huidig cijfer is ' . $huidigCijfer['cijfer'] . '</p>';
+                        }
+                        else
+                        {
+                            echo '<p>Nog geen cijfer gegeven!</p>';
+                        }
+                    ?>
+                    <form action='<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] ?>' method='post'>
+                        <p>Cijfer<br><input type="text" name="cijfer"></p>
+                        <p><input type='submit' name='submit' value='bevestig'></p>
+                    </form>
+                    <?php
                     }
                     else
                     {
-                        echo '<p>Nog geen cijfer gegeven!</p>';
+                        echo '<p>Materiaal niet gevonden!</p>';
                     }
-                ?>
-                <form action='<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] ?>' method='post'>
-                    <p>Cijfer<br><input type="text" name="cijfer"></p>
-                    <p><input type='submit' name='submit' value='bevestig'></p>
-                </form>
-                <?php
                 }
-                else
-                {
-                    echo '<p>Materiaal niet gevonden!</p>';
-                }
+                echo '<p><a href="viewmaterial.php' . "?" . $_SERVER['QUERY_STRING'] . '">Ga terug</a></p>';
             }
-        }
-        else
-        {
-            echo '<p><a href="login.php">Log in om te beoordelen</a></p>';
-        }
-        ?>
+            else
+            {
+                echo '<p>Niet gemachtigd om te beoordelen</p>';
+            }
+            ?>
+            </div>
+            <div id="footer">
+                INF1G - 2016
+            </div>
         </div>
     </body>
 </html>
