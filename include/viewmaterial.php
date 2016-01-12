@@ -45,12 +45,17 @@ include_once 'portfolio.php';
                             $eigenaar = portfolio_get_user_details($matData['eigenaarId']);
 
                             echo '<tr><th rel="row">' . 'Materiaal ID' . '</th><td>' . $matData['materiaalId'] . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'Eigenaar' . '</th><td>' . $eigenaar['voornaam'] . ' ' . $eigenaar['achternaam'] . ' (' . $matData['eigenaarId'] . ')' . '</td></tr>';
+                            
                             //Technische info eigenlijk alleen nuttig voor admin
                             if(portfolio_user_is_of_type(array('admin')))
                             {
+                                echo '<tr><th rel="row">' . 'Eigenaar' . '</th><td><a href="viewuser.php?user=' . $matData['eigenaarId'] . '">' . $eigenaar['voornaam'] . ' ' . $eigenaar['achternaam'] . ' (' . $matData['eigenaarId'] . ')' . '</a></td></tr>';
                                 echo '<tr><th rel="row">' . 'Bestandslocatie' . '</th><td>' . $matData['bestandsPad'] . '</td></tr>';
                                 echo '<tr><th rel="row">' . 'MIME type' . '</th><td>' . $matData['bestandsType'] . '</td></tr>';
+                            }
+                            else
+                            {
+                                echo '<tr><th rel="row">' . 'Eigenaar' . '</th><td>' . $eigenaar['voornaam'] . ' ' . $eigenaar['achternaam'] . ' (' . $matData['eigenaarId'] . ')' . '</td></tr>';
                             }
                             $janee = ($matData['isOpenbaar']) ? 'Ja' : 'Nee';
                             echo '<tr><th rel="row">' . 'Openbaar' . '</th><td>' . $janee . '</td></tr>';
@@ -92,7 +97,7 @@ include_once 'portfolio.php';
                             {
                                 echo '<p>Dit materiaal is nog niet beoordeeld</p>';
                                 //if($_SESSION['user']['rol'] == 'slb')
-                                if(portfolio_user_is_of_type(array('admin')))
+                                if(portfolio_user_is_of_type(array('slb', 'admin')))
                                 {
                                     echo '<p><a href="cijfer.php?material=' . $matId . '">Geef cijfer</p>';
                                 }

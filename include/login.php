@@ -27,7 +27,7 @@ include_once "portfolio.php";
                 $pw = filter_input(INPUT_POST, 'userPass');
                 if(!empty($un) && !empty($pw))
                 {
-                    if(portfolio_login($_POST["userName"], $_POST["userPass"]))
+                    if(portfolio_login($un, $pw))
                     {
                         echo "<p>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</p>\n";
                     }

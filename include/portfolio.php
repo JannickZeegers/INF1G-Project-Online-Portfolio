@@ -267,7 +267,7 @@ function portfolio_set_note($materialId, $note)
             {
                 $sql = 'UPDATE ' . TABLE_GRADE . ' SET cijfer='
                         . mysqli_real_escape_string($link, $note)
-                        . ' SET beoordelaarId='
+                        . ' , beoordelaarId='
                         . mysqli_real_escape_string($link, $_SESSION['user']['gebruikersId'])
                         . ' WHERE materiaalId='
                         . mysqli_real_escape_string($link, $materialId);
@@ -371,7 +371,6 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
 
 /*
  * Verwijder een gebruiker
- * TODO: Set cijfers beoordelaarId op NULL indien gebruiker een SLB'er OF admin is!
  */
 function portfolio_delete_user($userId)
 {
@@ -379,6 +378,11 @@ function portfolio_delete_user($userId)
     if($link)
     {
         if(!portfolio_user_is_of_type(array('admin')))
+        {
+            return null;
+        }
+        $userData = portfolio_get_user_details($userId);
+        if($userData['gebruikersId'] === $_SESSION['user']['gebruikersId'])
         {
             return null;
         }
@@ -399,11 +403,21 @@ function portfolio_delete_user($userId)
             {
                 return false;
             }
-            $sql = "DELETE FROM " . TABLE_USER . " WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
-            if(mysqli_query($link, $sql))
+        }
+        //Gegeven cijfers
+        if($userData['rol'] !== 'student')
+        {
+            $sql = "UPDATE " . TABLE_GRADE . " SET beoordelaarId=NULL WHERE beoordelaarId=" . mysqli_real_escape_string($link, $userData['gebruikersId']);
+            if(!mysqli_query($link, $sql))
             {
-                return true;
+                return false;
             }
+        }
+        //Verwijder de gebruiker
+        $sql = "DELETE FROM " . TABLE_USER . " WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
+        if(mysqli_query($link, $sql))
+        {
+            return true;
         }
     }
     return null;
@@ -419,4 +433,43 @@ function portfolio_user_is_of_type($types = array('student', 'slb', 'admin', 'do
         return in_array($_SESSION['user']['rol'], $types);
     }
     return false;
+}
+
+/*
+ * Wijzig gebruiker
+ * - Alleen voor ingelogde admin
+ * - NULL parameters worden niet geupdate!
+ */
+function portfolio_update_user($userId, $voornaam = null, $achternaam = null, $gebruikersnaam = null, $email = null, $rol = null)
+{
+    if(!portfolio_user_is_of_type(array('admin')))
+    {
+        return null;
+    }
+    
+    $link = portfolio_connect();
+    if($link)
+    {
+        $userData = portfolio_get_user_details($userId);
+        if($userData)
+        {
+            $voornaam = ($voornaam) ? $voornaam : $userData['voornaam'];
+            $achternaam = ($achternaam) ? $achternaam : $userData['achternaam'];
+            $gebruikersnaam = ($gebruikersnaam) ? $gebruikersnaam : $userData['gebruikersnaam'];
+            $email = ($email) ? $email : $userData['eMail'];
+            //$wachtwoord = ($wachtwoord) ? $wachtwoord : $userData['wachtwoord'];
+            $rol = ($rol) ? $rol : $userData['rol'];
+            $sql = "UPDATE " . TABLE_USER . " SET "
+                    . "voornaam='" . mysqli_real_escape_string($link, $voornaam) . "', "
+                    . "achternaam='" . mysqli_real_escape_string($link, $achternaam) . "', "
+                    . "gebruikersnaam='" . mysqli_real_escape_string($link, $gebruikersnaam) . "', "
+                    . "eMail='" . mysqli_real_escape_string($link, $email) . "', "
+                    . "rol='" . mysqli_real_escape_string($link, $rol)
+                    . "' WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
+            $result = mysqli_query($link, $sql);
+            return $result;
+        }
+    }
+    
+    return null;
 }

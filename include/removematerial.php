@@ -33,7 +33,7 @@ include_once 'portfolio.php';
                     $matData = portfolio_get_material($matId);
                     if($matData)
                     {
-                        echo '<h2>' . $matData['naam'] . '</h2>';
+                        echo '<h2>Verwijder ' . $matData['naam'] . '</h2>';
                         
                         /*
                          * Checks + verwijderen van materiaal.
@@ -58,7 +58,7 @@ include_once 'portfolio.php';
                                             if(password_verify($userPass, $array['wachtwoord']))
                                             {
                                                 $pwCorrect = true;
-                                                $deleted = portfolio_delete_user($usrId);
+                                                $deleted = portfolio_delete_material($matId);
                                             }
                                         }
                                     }
