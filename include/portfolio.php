@@ -554,3 +554,23 @@ function portfolio_get_student_notes($userId)
     }
     return null;
 }
+
+function registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol) 	
+{  
+	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
+	$hash = crypt($pass);
+	
+	$stmt = $DataBaseConnect->prepare("INSERT INTO gebruiker (voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)
+									   VALUES (?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("ssssss", $voornaam, $achternaam, $mail, $hash, $gebrnaam, $rol);
+	$invoer = $stmt->execute();                                                                                                     
+	
+	if ($invoer === FALSE) 
+	{ 
+		echo "<p class='error'>De opdracht kan niet worden uitgevoerd.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
+	} 
+	$stmt->close();
+	$DataBaseConnect->close();
+}
+
+

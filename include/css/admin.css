@@ -5,7 +5,7 @@ and open the template in the editor.
 */
 /* 
     Created on : Jan 8, 2016, 9:37:23 AM
-    Author     : Wouter and Jannick
+    Author     : Wouter and Jannick and Martijn 
 */
 
 *{
@@ -58,6 +58,9 @@ body{
 
 #title{
     float: left;
+}
+form.registreer{
+	float: left;
 }
 
 .title_text{
