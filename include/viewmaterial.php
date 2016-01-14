@@ -85,9 +85,10 @@ include_once 'portfolio.php';
                                 echo '</td></tr>';
                                 echo '</table>';
                                 //if($_SESSION['user']['rol'] == 'slb')
-                                if(portfolio_user_is_of_type(array('slb', 'admin')))
+                                //NOTE: REVOKED ADMINS ABILITY TO GIVE NOTES
+                                if(portfolio_user_is_of_type(array('slb')))
                                 {
-                                    if($_SESSION['user']['gebruikersId'] === $cijferData['beoordelaarId'] || portfolio_user_is_of_type(array('admin')))
+                                    if($_SESSION['user']['gebruikersId'] === $cijferData['beoordelaarId'])
                                     {
                                         echo '<p><a href="cijfer.php?material=' . $matId . '">Wijzig cijfer</p>';
                                     }

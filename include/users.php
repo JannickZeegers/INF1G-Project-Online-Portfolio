@@ -28,41 +28,10 @@ include_once 'portfolio.php';
                 {
                     echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
                     
-                    /*if(isset($_POST['submit']))
-                    {
-                        $naam = filter_input(INPUT_POST, 'vaknaam', FILTER_SANITIZE_STRING);
-                        if($naam)
-                        {
-                            if(strlen($naam) <= 45)
-                            {
-                                $id = portfolio_add_subject($naam);
-                                if($id)
-                                {
-                                    echo '<p>Vak ' . $naam . ' aangemaakt met id ' . $id . '</p>';
-                                }
-                            }
-                            else
-                            {
-                                echo '<p>Naam te lang!</p>';
-                            }
-                        }
-                        else
-                        {
-                            echo '<p>Vul a.u.b. een naam in</p>';
-                        }
-                    }
-                    
-                    ?>
-                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                    <p>Naam van vak (max 45 karakters)</p>
-                    <input type="text" value="" name="vaknaam">
-                    <input type="submit" value="Maak aan" name="submit">
-                </form>
-                <?php
-                     */
+                    echo '<p><a href="adduser.php">Maak nieuwe gebruiker aan</a></p>';
                     echo '<h3>Lijst gebruikers</h3>';
                     //TODO: Verander dit naar ALLE gebruikers
-                    $gebruikers = portfolio_get_students();
+                    $gebruikers = portfolio_get_users();
                     if(count($gebruikers) > 0)
                     {
                         echo '<table class="tableLeft">';

@@ -22,7 +22,7 @@ include_once "portfolio.php";
             <div id="content">
             <h2>Cijfer</h2>
             <?php
-            if(portfolio_user_is_of_type(array('slb', 'admin')))
+            if(portfolio_user_is_of_type(array('slb')))
             {            
                 $matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
                 if($matId)

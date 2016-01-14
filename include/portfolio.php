@@ -221,7 +221,7 @@ function portfolio_register($gebruikersnaam, $wachtwoord, $mail, $voornaam, $ach
         $result = mysqli_query($link, $sql);
         if($result)
         {
-            return true;
+            return mysqli_insert_id($link);
         }
     }
     return false;

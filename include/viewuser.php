@@ -49,9 +49,14 @@ include_once 'portfolio.php';
                             echo '</table>';
                             
                             /*
-                             * TODO: Pagina's + links voor deze opties
+                             * TODO: Pagina's voor deze opties
                              */
-                            echo '<h3>Opties</h3>';
+                            if($targetData['rol'] === 'student')
+                            {
+                                echo '<h3>Opties</h3>';
+                                echo '<p><a href="viewnotes.php?student=' . $targetId . '">Overzicht cijfers</a></p>';
+                                echo '<p><a href="viewmaterials.php?student=' . $targetId . '">Overzicht materialen</a></p>';
+                            }
                             //Ga naar cijferoverzicht student
                             //Ga naar materiaaloverzicht student
                             
