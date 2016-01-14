@@ -16,6 +16,18 @@
                 {
                     echo '<li><a href="upload.php">Upload</a></li>';
                 }
+                if($_SESSION['user']['rol'] === 'docent' || $_SESSION['user']['rol'] === 'slb')
+                {
+                    //Naar overzicht studenten
+                    echo '<li><a href="students.php">Studenten</a></li>';
+                }
+                if($_SESSION['user']['rol'] === 'admin')
+                {
+                    //Naar overzicht gebruikers
+                    echo '<li><a href="users.php">Gebruikers</a></li>';
+                    //Naar overzicht vakken
+                    echo '<li><a href="subjects.php">Vakken</a></li>';
+                }
             }
             else
             {

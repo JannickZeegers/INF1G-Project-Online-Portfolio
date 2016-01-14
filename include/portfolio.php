@@ -493,3 +493,64 @@ function portfolio_update_user($userId, $voornaam = null, $achternaam = null, $g
     
     return null;
 }
+
+/*
+ * Maak nieuw vak aan
+ * Returnt het vakId van het aangemaakte vak
+ */
+function portfolio_add_subject($name)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "INSERT INTO " . TABLE_SUBJECT . " VALUES (NULL, '" . mysqli_real_escape_string($link, $name) . "')";
+        if(mysqli_query($link, $sql))
+        {
+            return mysqli_insert_id($link);
+        }
+    }
+    return false;
+}
+
+function portfolio_get_subjects()
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT * FROM " . TABLE_SUBJECT;
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            array_push($return, $row);
+        }
+        return $return;
+    }
+    return null;
+}
+
+/*
+ * Geeft alle cijfers van een student terug
+ */
+function portfolio_get_student_notes($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $mats = portfolio_get_user_materials($userId);
+        if(count($mats) > 0)
+        {
+            $result = array();
+            foreach($mats as $m)
+            {
+                $c = portfolio_get_note($m['materiaalId']);
+                if($c)
+                {
+                    array_push($result, $c);
+                }
+            }
+            return $result;
+        }
+    }
+    return null;
+}

@@ -94,11 +94,26 @@ include_once 'portfolio.php';
                             /*
                              * TODO: Drop down ipv text field!
                              */
-                            echo '<tr><th rel="row">' . 'Rol' . '</th><td>'
+                            /*echo '<tr><th rel="row">' . 'Rol' . '</th><td>'
                                     . '<input type="text" name="rol" value="'
                                     . $targetData['rol']
                                     . '">'
                                     . '</td></tr>';
+                            echo '</table>';*/
+                            echo '<tr><th rel="row">' . 'Rol' . '</th><td>';
+                            echo '<select name="rol">';
+                            $rollen = array('student', 'docent', 'slb', 'admin');
+                                   /* . '<input type="text" name="rol" value="'
+                                    . $targetData['rol']
+                                    . '">'*/
+                            foreach($rollen as $r)
+                            {
+                                echo '<option value="' . $r . '"';
+                                echo ($r === $targetData['rol']) ? ' selected="selected">' : '>';
+                                echo $r . '</option>';
+                            }
+                            echo '</select>';
+                            echo '</td></tr>';
                             echo '</table>';
                             echo '<input type="submit" name="submit" value="Apply">';
                             echo '</form>';
