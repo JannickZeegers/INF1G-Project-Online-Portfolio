@@ -28,19 +28,45 @@ include_once 'portfolio.php';
                             echo "<option value='" . $s['gebruikersId'] . "'>" . $s['voornaam'] . ' ' . $s['achternaam'] . ':     ' . $s['rol'] . "</option>";
                         }
                         echo "</select></p>";
-                echo "<p>Subject: <input type='text' name='reason'></p>";
-                echo "<p>Message:</p><p><textarea name='message' rows='40' cols='100'>Nothing to see, no healthkit here!</textarea></p>";
+                echo "<p>Subject: <input type='text' name='reason'> (max 155 characters)</p>";                              
+                echo "<p>Message (max 500 characters):</p><p><textarea name='message' rows='40' cols='100'></textarea></p>";
                 echo "<p><input type='submit' name='send' value='send'></p>";
                 echo "</form>";
                 
                 if(isset($_POST['send']))
                 {
-                    echo "<p>Your message has been send!";
-                    $user = $_SESSION['user'];
+                    $dbConnect = portfolio_connect();                    
                     $subject = htmlentities($_POST['reason']);
-                    $subject = mysqli_real_escape_string($subject);
+                    $subject = mysqli_real_escape_string($dbConnect, $subject);
                     $message = htmlentities($_POST['message']);
-                    $message = mysqli_real_escape_string($message);
+                    $message = mysqli_real_escape_string($dbConnect, $message);
+                    
+                    if(empty($subject) || empty($message))
+                    {
+                        echo "U heeft geen onderwerp of bericht ingevult.";
+                    }
+                    else
+                    {
+                        if(strlen($subject) > 155 || strlen($message) > 500)
+                        {
+                            if(strlen($subject) > 155)
+                            {
+                                echo "<p style='color: red'>Your subject is too long. (max 155 characters)</p>";  
+                            }
+                            else
+                            {
+                                echo "<p style='color: red'>Your message is to long. (max 500 characters)</p>";
+                            }
+                        }
+                        else
+                        {
+                            $recieverId = $_POST['reciever'];
+                            $senderId = $_SESSION['user']['gebruikersId'];
+                            $SQLstring = "INSERT INTO" . TABLE_MESSAGE . " VALUES(NULL, '$senderId', '$recieverId' , '$subject' , '$message')";
+                            $QueryResult = mysqli_query($dbConnect, $SQLstring);
+                            echo "<p>Your message has been send!</p>";
+                        }
+                    }                   
                 }
             }  
             ?>
