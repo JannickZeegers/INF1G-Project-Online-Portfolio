@@ -322,6 +322,26 @@ function portfolio_get_students()
 }
 
 /*
+ * Geeft alle studentinfo terug
+ */
+function portfolio_get_users()
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT * FROM " . TABLE_USER . " ORDER BY rol ASC";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            array_push($return, $row);
+        }
+        return $return;
+    }
+    return null;
+}
+
+/*
  * Update gegevens van een materiaal
  */
 function portfolio_update_material($materialId, $name=null, $isPublic=null)
