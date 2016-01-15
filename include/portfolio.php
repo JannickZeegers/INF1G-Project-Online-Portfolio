@@ -593,8 +593,8 @@ function resetpass($userID, $oudpass, $newpass)
 			echo "<p>Password does not match</p>"; 
 			}
 	}
-	mysqli_free_result($QueryResult);
-	mysqli_close($DataBaseConnect);
+	$stmt->close();
+	$DataBaseConnect->close();
 }
 
 
