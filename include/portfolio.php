@@ -344,7 +344,7 @@ function portfolio_get_users()
 /*
  * Geeft de berichten voor de gebruiker terug
  */
-function portfolio_get_messages($userId)
+function portfolio_get_user_messages($userId)
 {
     $link = portfolio_connect();
     if($link)
@@ -616,7 +616,7 @@ function registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol)
 }
 
 /*
- * Is 
+ * IS - Allahoe akbar
  */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {

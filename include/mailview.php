@@ -29,7 +29,8 @@ include_once 'portfolio.php';
                 if($mailId)
                 {
                     //Ingelogd
-                    $mailData = portfolio_get_messages($mailId);
+                    //Todo: maak functie
+                    $mailData = portfolio_get_message($mailId);
                     if($mailData)
                     {
                         //Is dit geen admin? Zo ja, ga alleen verder als hij/zij de eigenaar is van dit materiaal.

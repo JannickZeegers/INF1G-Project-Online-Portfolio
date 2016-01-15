@@ -20,7 +20,7 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {   
-                    $messages = portfolio_get_messages($_SESSION['user']['gebruikersId']);
+                    $messages = portfolio_get_user_messages($_SESSION['user']['gebruikersId']);
                     $users = portfolio_get_users();
                     
                         echo "<h3>Inbox:</h3>";
@@ -42,7 +42,7 @@ include_once 'portfolio.php';
                         
                     $messages = portfolio_get_send_messages($_SESSION['user']['gebruikersId']);
                     
-                        echo "<p>Verzonden berichten:</p>";
+                        echo "<h3>Verzonden berichten:</h3>";
                         echo "<table class='tableLeft' width='100%' border='1'>";
                         echo "<tr><th>Ontvanger</th><th>Onderwerp</th></tr>";
                         foreach($messages as $m)
