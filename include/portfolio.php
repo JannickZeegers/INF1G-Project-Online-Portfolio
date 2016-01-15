@@ -344,14 +344,14 @@ function portfolio_get_users()
 /*
  * Geeft de berichten voor de gebruiker terug
  */
-function portfolio_get_messages()
+function portfolio_get_messages($userId)
 {
     $link = portfolio_connect();
     if($link)
     {
         $return = array();
-        $userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE ontvangerID = '$userId' ORDER BY berichtID ASC";
+        //$userId = $_SESSION['user']['gebruikersId'];
+        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE ontvangerID = '$userId' ORDER BY berichtId ASC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -594,21 +594,28 @@ function registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol)
 	$DataBaseConnect->close();
 }
 
-
+/*
+ * Is 
+ */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
+        //Misschien niet handig als je een wachtwoord wil resetten als je het oude niet meer weet :P
 	if (password_verify($oudpass, $hash)) 
 	{
-		$newhash = crypt($pass); 
+            //wat?
+		//$newhash = crypt($pass); 
+                $newhash = password_hash($nieuwpass, PASSWORD_DEFAULT);
 		$stmt = $DataBaseConnect->prepare("UPDATE userId gebruiker 
 										   SET wachtwoord=?
 										   WHERE userID=?");
-		$stmt->bind_param("ss", $oudpass, $newpass);
+		$stmt->bind_param("ss", $newhash, $userID);
 		$invoer = $stmt->execute(); 
-			
-		if ($invoer !== FALSE) {
+		
+                //Tip:
+                //($var !== false) ---> ($var), zelfde resultaat, meestal beter
+		if ($invoer) {
 			echo "<p>Your password-values have been succesfully changed</p>";
 		} else {
 			echo "<p>Password does not match</p>"; 

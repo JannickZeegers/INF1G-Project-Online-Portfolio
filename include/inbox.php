@@ -20,7 +20,7 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {   
-                    $messages = portfolio_get_messages();
+                    $messages = portfolio_get_messages($_SESSION['user']['gebruikersId']);
                     
                         echo "<p>Your inbox:</p>";
                         echo "<table class='tableLeft' width='100%' border='1'>";
@@ -28,8 +28,8 @@ include_once 'portfolio.php';
                         foreach($messages as $m)
                         {                                         
                         echo "<tr><td>{$m['zenderID']}</td>";
-                        echo "<tr><td><a href='viewmail.php?material=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
-                        }                   
+                        echo "<tr><td><a href='viewmail.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                        }
             }           echo "</table>";
             ?>
             </div>

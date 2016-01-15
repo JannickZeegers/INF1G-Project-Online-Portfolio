@@ -25,15 +25,15 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {
-                $mailId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
+                $mailId = filter_input(INPUT_GET, 'mail', FILTER_VALIDATE_INT);
                 if($mailId)
                 {
                     //Ingelogd
                     $mailData = portfolio_get_messages($mailId);
                     if($mailData)
                     {
-                        //Is dit een student? Zo ja, ga alleen verder als hij/zij de eigenaar is van dit materiaal.
-                        //Alle andere rollen hebben altijd toegang.
+                        //Is dit geen admin? Zo ja, ga alleen verder als hij/zij de eigenaar is van dit materiaal.
+                        //admin heeft altijd toegang.
                         if(($_SESSION['user']['rol'] == 'student' && $_SESSION['user']['gebruikersId'] === $matData['eigenaarId']) || $_SESSION['user']['rol'] != 'student')
                         {
                            
