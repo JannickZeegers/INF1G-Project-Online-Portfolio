@@ -31,7 +31,7 @@
                 }
                 //Mail
                 //Andere mail pagina's bereikbaar via inbox om menu niet te vol te krijgen?
-                echo '<li><a href="inbox.php">Mail</a></li>';
+                echo '<li><a href="mailinbox.php">Mail</a></li>';
                 //Als laatste
                 echo '<li><a href="logout.php">Logout</a></li>';
             }

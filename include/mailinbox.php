@@ -23,26 +23,38 @@ include_once 'portfolio.php';
                     $messages = portfolio_get_messages($_SESSION['user']['gebruikersId']);
                     $users = portfolio_get_users();
                     
-                        echo "<p>Your inbox:</p>";
+                        echo "<h3>Inbox:</h3>";
                         echo "<table class='tableLeft' width='100%' border='1'>";
-                        echo "<tr><th>Recieved by</th><th>Subject</th></tr>";
+                        echo "<tr><th>Zender</th><th>Onderwerp</th></tr>";
                         foreach($messages as $m)
-                        {                                         
-                        echo "<tr><td>{$m['zenderID']}</td>";
-                        echo "<td><a href='viewmail.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                        {
+                            $o = portfolio_get_user_details($m['zenderID']);
+                            if(count($o) < 1)
+                            {
+                                $o['voornaam'] = 'Onbekend';
+                                $o['achternaam'] = '';
+                            }
+                            echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
+                            echo "<td><a href='mailview.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
                         }
                         echo "</table>";
                         echo "<p><hr></p>";
                         
                     $messages = portfolio_get_send_messages($_SESSION['user']['gebruikersId']);
                     
-                        echo "<p>Your send messages:</p>";
+                        echo "<p>Verzonden berichten:</p>";
                         echo "<table class='tableLeft' width='100%' border='1'>";
-                        echo "<tr><th>Send to</th><th>Subject</th></tr>";
+                        echo "<tr><th>Ontvanger</th><th>Onderwerp</th></tr>";
                         foreach($messages as $m)
-                        {                                         
-                        echo "<tr><td>{$m['ontvangerID']}</td>";
-                        echo "<td><a href='viewmail.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                        {                     
+                            $o = portfolio_get_user_details($m['ontvangerID']);
+                            if(count($o) < 1)
+                            {
+                                $o['voornaam'] = 'Onbekend';
+                                $o['achternaam'] = '';
+                            }
+                            echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
+                            echo "<td><a href='mailview.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
                         }
                         echo "</table>";
             }           

@@ -97,7 +97,7 @@ function portfolio_get_user_details($gebruikersId)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersId='" . $gebruikersId . "'";
+        $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersId=" . mysqli_real_escape_string($link, $gebruikersId);
         $result = mysqli_query($link, $sql);
         if($result !== false)
         {
@@ -351,7 +351,7 @@ function portfolio_get_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE ontvangerID = '$userId' ORDER BY berichtId ASC";
+        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId ASC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -372,7 +372,7 @@ function portfolio_get_send_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE ontvangerID = '$userId' ORDER BY zenderId ASC";
+        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " ORDER BY zenderId ASC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {

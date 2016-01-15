@@ -20,19 +20,7 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {
-                echo "<p><form method='post' action='" . $_SERVER['PHP_SELF'] . "'></p>"
-                        . "<p>Send to: <select name='reciever'>";
-                        $users = portfolio_get_users();
-                        foreach($users as $s)
-                        {
-                            echo "<option value='" . $s['gebruikersId'] . "'>" . $s['voornaam'] . ' ' . $s['achternaam'] . ':     ' . $s['rol'] . "</option>";
-                        }
-                        echo "</select></p>";
-                echo "<p>Subject: <input type='text' name='reason'> (max 155 characters)</p>";                              
-                echo "<p>Message (max 500 characters):</p><p><textarea name='message' rows='40' cols='100'></textarea></p>";
-                echo "<p><input type='submit' name='send' value='send'></p>";
-                echo "</form>";
-                
+                //Boven aan pagina gezet voor makkelijker lezen
                 if(isset($_POST['send']))
                 {
                     $dbConnect = portfolio_connect();                    
@@ -60,14 +48,31 @@ include_once 'portfolio.php';
                         }
                         else
                         {
+                            /*
+                             * TODO: Filter input
+                             */
                             $recieverId = $_POST['reciever'];
                             $senderId = $_SESSION['user']['gebruikersId'];
-                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " VALUES(NULL, '$senderId', '$recieverId' , '$subject' , '$message')";
+                            //Getallen bij een insert/where e.d. niet tussen '' zetten
+                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " VALUES(NULL, $senderId, $recieverId , '$subject' , '$message')";
                             $QueryResult = mysqli_query($dbConnect, $SQLstring);
                             echo "<p>Your message has been send!</p>";
                         }
                     }                   
                 }
+                
+                echo "<p><form method='post' action='" . $_SERVER['PHP_SELF'] . "'></p>"
+                        . "<p>Send to: <select name='reciever'>";
+                        $users = portfolio_get_users();
+                        foreach($users as $s)
+                        {
+                            echo "<option value='" . $s['gebruikersId'] . "'>" . $s['voornaam'] . ' ' . $s['achternaam'] . ':     ' . $s['rol'] . "</option>";
+                        }
+                        echo "</select></p>";
+                echo "<p>Subject: <input type='text' name='reason'> (max 155 characters)</p>";                              
+                echo "<p>Message (max 500 characters):</p><p><textarea name='message' rows='40' cols='100'></textarea></p>";
+                echo "<p><input type='submit' name='send' value='send'></p>";
+                echo "</form>";
             }  
             ?>
             </div>
