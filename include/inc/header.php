@@ -15,6 +15,7 @@
                 if($_SESSION['user']['rol'] === 'student')
                 {
                     echo '<li><a href="upload.php">Upload</a></li>';
+                    echo '<li><a href="viewnotes.php?student=' . $_SESSION['user']['gebruikersId'] . '">Mijn cijfers</a></li>';
                 }
                 if($_SESSION['user']['rol'] === 'docent' || $_SESSION['user']['rol'] === 'slb')
                 {
