@@ -578,17 +578,20 @@ function resetpass($userID, $oudpass, $newpass)
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	if (password_verify($oudpass, $hash)) {
-
-			$SQLbericht = "UPDATE userId
-						   SET wachtwoord='{$newpass}'
-						   WHERE userID='{$userID}'";
-			$QueryResult = mysqli_query($DataBaseConnect, $SQLbericht); 
-			if ($QueryResult !== FALSE) {
-				echo "<p>Your password-values have been succesfully changed</p>";
-			} else {
-				echo "<p>Password does not match</p>"; 
-				}
+	if (password_verify($oudpass, $hash)) 
+	{
+		$newhash = crypt($pass); 
+		$stmt = $DataBaseConnect->prepare("UPDATE userId gebruiker 
+										   SET wachtwoord=?
+										   WHERE userID=?";
+		$stmt->bind_param("ss", $oudpass, $newpass);
+		$invoer = $stmt->execute(); 
+			
+		if ($invoer !== FALSE) {
+			echo "<p>Your password-values have been succesfully changed</p>";
+		} else {
+			echo "<p>Password does not match</p>"; 
+			}
 	}
 	mysqli_free_result($QueryResult);
 	mysqli_close($DataBaseConnect);
