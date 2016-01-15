@@ -363,6 +363,27 @@ function portfolio_get_messages($userId)
 }
 
 /*
+ * Geeft de berichten van de gebruiker terug
+ */
+function portfolio_get_send_messages($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        //$userId = $_SESSION['user']['gebruikersId'];
+        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE ontvangerID = '$userId' ORDER BY zenderId ASC";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            array_push($return, $row);
+        }
+        return $return;
+    }
+    return null;
+}
+
+/*
  * Update gegevens van een materiaal
  */
 function portfolio_update_material($materialId, $name=null, $isPublic=null)

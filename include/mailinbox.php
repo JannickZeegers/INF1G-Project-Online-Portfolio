@@ -21,6 +21,7 @@ include_once 'portfolio.php';
             if(isset($_SESSION['user']))
             {   
                     $messages = portfolio_get_messages($_SESSION['user']['gebruikersId']);
+                    $users = portfolio_get_users();
                     
                         echo "<p>Your inbox:</p>";
                         echo "<table class='tableLeft' width='100%' border='1'>";
@@ -28,9 +29,24 @@ include_once 'portfolio.php';
                         foreach($messages as $m)
                         {                                         
                         echo "<tr><td>{$m['zenderID']}</td>";
-                        echo "<tr><td><a href='viewmail.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                        echo "<td><a href='viewmail.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
                         }
-            }           echo "</table>";
+                        echo "</table>";
+                        echo "<p><hr></p>";
+                        
+                    $messages = portfolio_get_send_messages($_SESSION['user']['gebruikersId']);
+                    
+                        echo "<p>Your send messages:</p>";
+                        echo "<table class='tableLeft' width='100%' border='1'>";
+                        echo "<tr><th>Send to</th><th>Subject</th></tr>";
+                        foreach($messages as $m)
+                        {                                         
+                        echo "<tr><td>{$m['ontvangerID']}</td>";
+                        echo "<td><a href='viewmail.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                        }
+                        echo "</table>";
+            }           
+                        
             ?>
             </div>
             <div id="footer">

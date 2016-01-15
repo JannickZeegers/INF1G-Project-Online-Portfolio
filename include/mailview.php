@@ -36,7 +36,7 @@ include_once 'portfolio.php';
                         //admin heeft altijd toegang.
                         if(($_SESSION['user']['rol'] == 'student' && $_SESSION['user']['gebruikersId'] === $matData['eigenaarId']) || $_SESSION['user']['rol'] != 'student')
                         {
-                           
+                            
                         }
                         else
                         {

@@ -62,7 +62,7 @@ include_once 'portfolio.php';
                         {
                             $recieverId = $_POST['reciever'];
                             $senderId = $_SESSION['user']['gebruikersId'];
-                            $SQLstring = "INSERT INTO" . TABLE_MESSAGE . " VALUES(NULL, '$senderId', '$recieverId' , '$subject' , '$message')";
+                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " VALUES(NULL, '$senderId', '$recieverId' , '$subject' , '$message')";
                             $QueryResult = mysqli_query($dbConnect, $SQLstring);
                             echo "<p>Your message has been send!</p>";
                         }
