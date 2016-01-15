@@ -574,7 +574,7 @@ function registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol)
 }
 
 
-function resetpass($userID, $oudpass, $newpass) 
+function resetpass($userID, $oudpass, $nieuwpass) 
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
