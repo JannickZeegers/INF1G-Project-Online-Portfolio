@@ -173,7 +173,7 @@ function portfolio_login($userName, $userPass)
         $result = mysqli_query($link, $sql);
         if($result !== false)
         {
-             if(($array = mysqli_fetch_assoc($result)) != null)
+            if(($array = mysqli_fetch_assoc($result)) != null)
             {
                 if(password_verify($userPass, $array['wachtwoord']))
                 {

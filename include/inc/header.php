@@ -11,7 +11,7 @@
             <?php
             if(isset($_SESSION['user']))
             {
-                echo '<li><a href="logout.php">Logout</a></li>';
+                echo '<li><a href="admin.php">Home</a></li>';
                 if($_SESSION['user']['rol'] === 'student')
                 {
                     echo '<li><a href="upload.php">Upload</a></li>';
@@ -28,6 +28,11 @@
                     //Naar overzicht vakken
                     echo '<li><a href="subjects.php">Vakken</a></li>';
                 }
+                //Mail
+                //Andere mail pagina's bereikbaar via inbox om menu niet te vol te krijgen?
+                echo '<li><a href="inbox.php">Mail</a></li>';
+                //Als laatste
+                echo '<li><a href="logout.php">Logout</a></li>';
             }
             else
             {

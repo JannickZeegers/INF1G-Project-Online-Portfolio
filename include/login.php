@@ -1,5 +1,32 @@
 <?php
 include_once "portfolio.php";
+
+/*
+ * Code voor de rest van de pagina zodat het menu klopt na inloggen
+ */
+$loggedIn = false;
+$message = '';
+if(isset($_POST["submit"]))
+{
+    $un = filter_input(INPUT_POST, 'userName');
+    $pw = filter_input(INPUT_POST, 'userPass');
+    if(!empty($un) && !empty($pw))
+    {
+        if(portfolio_login($un, $pw))
+        {
+            $message = "<p>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</p>\n";
+            $loggedIn = true;
+        }
+        else
+        {
+            $message = "<p>Gebruikersnaam en/of wachtwoord niet correct!</p>\n";
+        }
+    }
+    else
+    {
+        $message = "<p>Vul aub een gebruikersnaam en wachtwoord in</p>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <!--
@@ -21,26 +48,7 @@ include_once "portfolio.php";
             <div id="content">
             <h1>Login</h1>
             <?php
-            if(isset($_POST["submit"]))
-            {
-                $un = filter_input(INPUT_POST, 'userName');
-                $pw = filter_input(INPUT_POST, 'userPass');
-                if(!empty($un) && !empty($pw))
-                {
-                    if(portfolio_login($un, $pw))
-                    {
-                        echo "<p>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</p>\n";
-                    }
-                    else
-                    {
-                        echo "<p>Gebruikersnaam en/of wachtwoord niet correct!</p>\n";
-                    }
-                }
-                else
-                {
-                    echo "<p>Vul aub een gebruikersnaam en wachtwoord in</p>";
-                }
-            }
+            echo $message;
             if(!isset($_SESSION['user']))
             {
                 // put your code here
@@ -58,7 +66,7 @@ include_once "portfolio.php";
             else
             {
                 echo '<p>U bent al ingelogd als ' . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . '</p>';
-                echo '<p><a href="logout.php">Klik hier om uit te loggen</a></p>';
+                echo '<p><a href="admin.php">Ga terug</a></p>';
             }
             ?>
             </div>

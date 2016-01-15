@@ -3,10 +3,7 @@ include_once 'portfolio.php';
 ?>
 <!DOCTYPE html>
 <!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
+    Een scherm waarmee een admin een gebruikersaccount aan kan passen.
 -->
 <html>
     <head>
@@ -51,12 +48,12 @@ include_once 'portfolio.php';
                                 {
                                     if(portfolio_update_user($targetId, $voornaam, $achternaam, $gebruikersnaam, $email, $rol))
                                     {
-                                        echo '<p>Gebruiker geupdate</p>';
+                                        echo '<p>Gebruiker aangepast</p>';
                                         $targetData = portfolio_get_user_details($targetId);
                                     }
                                     else
                                     {
-                                        echo '<p>Gebruiker kon niet worden geupdate</p>';
+                                        echo '<p>Gebruiker kon niet worden aangepast</p>';
                                     }
                                 }
                                 else
@@ -117,6 +114,8 @@ include_once 'portfolio.php';
                             echo '</table>';
                             echo '<input type="submit" name="submit" value="Apply">';
                             echo '</form>';
+                            echo '<p><a href="#">Reset wachtwoord van deze gebruiker</a></p>';
+                            echo '<p><a href="viewuser.php?user=' . $targetId . '">Terug</a></p>';
                         }
                         else
                         {

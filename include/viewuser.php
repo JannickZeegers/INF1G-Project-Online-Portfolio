@@ -3,10 +3,7 @@ include_once 'portfolio.php';
 ?>
 <!DOCTYPE html>
 <!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
+    Een pagina waarop gegevens van een gebruiker worden weergeven. Bevat links naar andere pagina's,afhankelijk van context.
 -->
 <html>
     <head>

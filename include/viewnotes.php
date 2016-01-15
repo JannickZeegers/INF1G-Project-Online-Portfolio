@@ -3,10 +3,7 @@ include_once 'portfolio.php';
 ?>
 <!DOCTYPE html>
 <!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
+    Pagina waarop een lijst met cijfers van een student wordt weergeven.
 -->
 <html>
     <head>
@@ -24,7 +21,7 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {
-                $targetId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
+                $targetId = filter_input(INPUT_GET, 'student', FILTER_VALIDATE_INT);
                 if($targetId)
                 {
                     //Alles
@@ -35,7 +32,7 @@ include_once 'portfolio.php';
                     {
                         if(($targetData['rol'] === 'student' && portfolio_user_is_of_type(array('slb', 'docent')))
                             || portfolio_user_is_of_type(array('admin'))
-                            || $targetId === $_SESSION['user']['gebruikersId'])
+                            || $targetId == $_SESSION['user']['gebruikersId'])
                         {
                             echo '<h2>' . $targetData['voornaam'] . ' ' . $targetData['achternaam'] . '</h2>';
                             echo '<h3>Cijfers</h3>';
@@ -43,13 +40,15 @@ include_once 'portfolio.php';
                             if(count($notes) > 0)
                             {
                                 echo '<table class="tableLeft">';
-
-                                echo '<tr><th rel="row">' . 'Gebruikers ID' . '</th><td>' . $targetData['gebruikersId'] . '</td></tr>';
-                                echo '<tr><th rel="row">' . 'Voornaam' . '</th><td>' . $targetData['voornaam'] . '</td></tr>';
-                                echo '<tr><th rel="row">' . 'Achternaam' . '</th><td>' . $targetData['achternaam'] . '</td></tr>';
-                                echo '<tr><th rel="row">' . 'E-Mail adres' . '</th><td>' . $targetData['eMail'] . '</td></tr>';
-                                echo '<tr><th rel="row">' . 'Rol' . '</th><td>' . $targetData['rol'] . '</td></tr>';
-
+                                echo '<tr><th rel="col">naam materiaal</th><th rel="col">cijfer</th></tr>';
+                                foreach($notes as $n)
+                                {
+                                    $m = portfolio_get_material($n['materiaalId']);
+                                    echo '<tr>';
+                                    echo '<td><a href="viewmaterial.php?material=' . $m['materiaalId'] . '">' . $m['naam'] . '</a></td>';
+                                    echo '<td>' . $n['cijfer'] . '</td>';
+                                    echo '</tr>';
+                                }
                                 echo '</table>';
                             }
                             else

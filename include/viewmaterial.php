@@ -49,9 +49,12 @@ include_once 'portfolio.php';
                             //Technische info eigenlijk alleen nuttig voor admin
                             if(portfolio_user_is_of_type(array('admin')))
                             {
-                                echo '<tr><th rel="row">' . 'Eigenaar' . '</th><td><a href="viewuser.php?user=' . $matData['eigenaarId'] . '">' . $eigenaar['voornaam'] . ' ' . $eigenaar['achternaam'] . ' (' . $matData['eigenaarId'] . ')' . '</a></td></tr>';
                                 echo '<tr><th rel="row">' . 'Bestandslocatie' . '</th><td>' . $matData['bestandsPad'] . '</td></tr>';
                                 echo '<tr><th rel="row">' . 'MIME type' . '</th><td>' . $matData['bestandsType'] . '</td></tr>';
+                            }
+                            if(portfolio_user_is_of_type(array('admin', 'slb', 'docent')))
+                            {
+                                echo '<tr><th rel="row">' . 'Eigenaar' . '</th><td><a href="viewuser.php?user=' . $matData['eigenaarId'] . '">' . $eigenaar['voornaam'] . ' ' . $eigenaar['achternaam'] . ' (' . $matData['eigenaarId'] . ')' . '</a></td></tr>';
                             }
                             else
                             {
