@@ -610,7 +610,7 @@ function resetpass($userID, $oudpass, $nieuwpass)
 		$stmt = $DataBaseConnect->prepare("UPDATE userId gebruiker 
 										   SET wachtwoord=?
 										   WHERE userID=?");
-		$stmt->bind_param("ss", $newhash, $userID);
+		$stmt->bind_param("si", $newhash, $userID);
 		$invoer = $stmt->execute(); 
 		
                 //Tip:

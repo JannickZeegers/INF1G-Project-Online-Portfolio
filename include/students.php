@@ -8,7 +8,7 @@ include_once "portfolio.php";
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Login</title>
+        <title>Ons Portfolio - Overzicht studenten</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
