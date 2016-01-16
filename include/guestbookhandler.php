@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 include 'portfolio.php';
 
 $action = filter_input(INPUT_POST, 'action');
