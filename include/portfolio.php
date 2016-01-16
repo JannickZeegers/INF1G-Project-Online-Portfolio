@@ -372,7 +372,7 @@ function portfolio_get_send_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " ORDER BY zenderId ASC";
+        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtIdId ASC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {

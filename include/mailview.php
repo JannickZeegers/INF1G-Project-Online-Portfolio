@@ -30,14 +30,15 @@ include_once 'portfolio.php';
                 {
                     //Ingelogd
                     //Todo: maak functie
-                    $mailData = portfolio_get_message($mailId);
+                    $mailData = portfolio_get_user_messages($mailId);
                     if($mailData)
                     {
                         //Is dit geen admin? Zo ja, ga alleen verder als hij/zij de eigenaar is van dit materiaal.
                         //admin heeft altijd toegang.
-                        if(($_SESSION['user']['rol'] == 'student' && $_SESSION['user']['gebruikersId'] === $matData['eigenaarId']) || $_SESSION['user']['rol'] != 'student')
+                        if(($_SESSION['user']['rol'] == 'student' && ($_SESSION['user']['gebruikersId'] === $mailData['ontvangerId'] || $_SESSION['user']['gebruikersId'] === $mailData['zenderId'])) || $_SESSION['user']['rol'] != 'student')
                         {
-                            
+                            echo "<h2>" . $mailData['onderwerp'] . "</h2>";
+                            echo "<p>" . $mailData['bericht'] . "</p>";
                         }
                         else
                         {
@@ -49,7 +50,7 @@ include_once 'portfolio.php';
                         echo '<p>Mail niet gevonden!</p>';
                     }
                 }
-                echo '<p><a href="admin.php">Ga terug</a></p>';
+                echo '<p><a href="mailinbox.php">Ga terug</a></p>';
             }
             else
             {
