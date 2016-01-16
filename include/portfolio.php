@@ -30,22 +30,22 @@ if(fileperms(session_save_path()))
  */
 function portfolio_connect()
 {
-    $dbConnect = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, DATABASE_NAME, MYSQL_PORT);
+    $dbConnect = @mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, DATABASE_NAME, MYSQL_PORT);
     if($dbConnect !== false)
     {
-        $db = mysqli_select_db($dbConnect, DATABASE_NAME);
+        $db = @mysqli_select_db($dbConnect, DATABASE_NAME);
         if($db === false)
         {
-            echo "<p>Unable to connect to the database server.</p>";
-            echo "<p>" . mysqli_error($dbConnect) . "</p>";
+            /*echo "<p>Unable to connect to the database server.</p>";
+            echo "<p>" . mysqli_error($dbConnect) . "</p>";*/
             mysqli_close($dbConnect);
             $dbConnect = false;
         }
     }
-    else
+    /*else
     {
         echo "<p>Unable to connect to the database server.</p>";
-    }
+    }*/
     return $dbConnect;
 }
 
