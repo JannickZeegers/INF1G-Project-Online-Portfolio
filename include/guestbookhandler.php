@@ -34,7 +34,7 @@ switch($action)
         $mail = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
         $msg = filter_input(INPUT_POST, 'message');
         $userId = filter_input(INPUT_POST, 'userId', FILTER_VALIDATE_INT);
-        if($userId){
+        if(!empty($userId) && !empty($name) && !empty($mail) && !empty($msg)){
             if($mail){
                 if(strlen($name) <= 35 && strlen($msg) <= 700){
                     $link = portfolio_connect();
