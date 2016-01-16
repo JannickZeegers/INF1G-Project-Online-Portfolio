@@ -21,42 +21,41 @@ include_once 'portfolio.php';
             if(isset($_SESSION['user']))
             {   
                     $messages = portfolio_get_user_messages($_SESSION['user']['gebruikersId']);
-                    $users = portfolio_get_users();
                     
-                        echo "<h3>Inbox:</h3>";
-                        echo "<table class='tableLeft' width='100%' border='1'>";
-                        echo "<tr><th>Zender</th><th>Onderwerp</th></tr>";
-                        foreach($messages as $m)
+                    echo "<h3>Inbox:</h3>";
+                    echo "<table class='tableLeft' width='100%' border='1'>";
+                    echo "<tr><th>Zender</th><th>Onderwerp</th></tr>";
+                    foreach($messages as $m)
+                    {
+                        $o = portfolio_get_user_details($m['zenderId']);
+                        if(count($o) < 1)
                         {
-                            $o = portfolio_get_user_details($m['zenderID']);
-                            if(count($o) < 1)
-                            {
-                                $o['voornaam'] = 'Onbekend';
-                                $o['achternaam'] = '';
-                            }
-                            echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
-                            echo "<td><a href='mailview.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                            $o['voornaam'] = 'Onbekend';
+                            $o['achternaam'] = '';
                         }
-                        echo "</table>";
-                        echo "<p><hr></p>";
+                        echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
+                        echo "<td><a href='mailview.php?mail=" . $m['berichtId'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                    }
+                    echo "</table>";
+                    echo "<p><hr></p>";
                         
                     $messages = portfolio_get_send_messages($_SESSION['user']['gebruikersId']);
                     
-                        echo "<h3>Verzonden berichten:</h3>";
-                        echo "<table class='tableLeft' width='100%' border='1'>";
-                        echo "<tr><th>Ontvanger</th><th>Onderwerp</th></tr>";
-                        foreach($messages as $m)
-                        {                     
-                            $o = portfolio_get_user_details($m['ontvangerID']);
-                            if(count($o) < 1)
-                            {
-                                $o['voornaam'] = 'Onbekend';
-                                $o['achternaam'] = '';
-                            }
-                            echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
-                            echo "<td><a href='mailview.php?mail=" . $m['berichtID'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                    echo "<h3>Verzonden berichten:</h3>";
+                    echo "<table class='tableLeft' width='100%' border='1'>";
+                    echo "<tr><th>Ontvanger</th><th>Onderwerp</th></tr>";
+                    foreach($messages as $m)
+                    {                     
+                        $o = portfolio_get_user_details($m['ontvangerId']);
+                        if(count($o) < 1)
+                        {
+                            $o['voornaam'] = 'Onbekend';
+                            $o['achternaam'] = '';
                         }
-                        echo "</table>";
+                        echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
+                        echo "<td><a href='mailview.php?mail=" . $m['berichtId'] . "'>{$m['onderwerp']}</a></td></tr>"; 
+                    }
+                    echo "</table>";
             }           
                         
             ?>

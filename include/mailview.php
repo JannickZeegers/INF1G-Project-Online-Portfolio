@@ -30,13 +30,18 @@ include_once 'portfolio.php';
                 {
                     //Ingelogd
                     //Todo: maak functie
-                    $mailData = portfolio_get_user_messages($mailId);
+                    $mailData = portfolio_get_message($mailId);
                     if($mailData)
                     {
                         //Is dit geen admin? Zo ja, ga alleen verder als hij/zij de eigenaar is van dit materiaal.
                         //admin heeft altijd toegang.
-                        if(($_SESSION['user']['rol'] == 'student' && ($_SESSION['user']['gebruikersId'] === $mailData['ontvangerId'] || $_SESSION['user']['gebruikersId'] === $mailData['zenderId'])) || $_SESSION['user']['rol'] != 'student')
+                        //if(($_SESSION['user']['rol'] == 'student' && ($_SESSION['user']['gebruikersId'] === $mailData['ontvangerId'] || $_SESSION['user']['gebruikersId'] === $mailData['zenderId'])) || $_SESSION['user']['rol'] != 'student')
+                        if( (!portfolio_user_is_of_type(array('admin')) && ($mailData['ontvangerId'] == $_SESSION['user']['gebruikersId'] || $mailData['zenderId'] == $_SESSION['user']['gebruikersId']))
+                                || portfolio_user_is_of_type(array('admin')))
                         {
+                            /*
+                             * TODO: Layout + zender en ontvanger info
+                             */
                             echo "<h2>" . $mailData['onderwerp'] . "</h2>";
                             echo "<p>" . $mailData['bericht'] . "</p>";
                         }
