@@ -16,12 +16,12 @@ include_once "constants.php";
 //Session start
 session_start();
 //Code die altijd gerunt wordt
-//DEBUG
-/*echo "<p>" . session_id() . "</p>";
-if(fileperms(session_save_path()))
-{
-    echo "<p>Allowed to save: " . session_save_path() . "</p>";
-}*/
+
+/*
+ * De url van de pagina waarvan de gebruiker net is gekomen
+ */
+//$previousPageURL = filter_input(INPUT_GET, 'ref', FILTER_SANITIZE_URL);
+
 
 //Functies
 /*
@@ -587,6 +587,60 @@ function portfolio_get_subjects()
             array_push($return, $row);
         }
         return $return;
+    }
+    return null;
+}
+
+function portfolio_get_subject($subjectId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "SELECT * FROM " . TABLE_SUBJECT . " WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
+        $result = mysqli_query($link, $sql);
+        if(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            return $row;
+        }
+    }
+    return null;
+}
+
+/*
+ * Geeft de vakken die bij een bepaald materiaal horen terug in een array. 
+ * Array kan leeg zijn als het materiaal niet bestaat of geen vakken aan zich gekoppeld heeft.
+ * NOOT: Geeft ook vaknaam terug!
+ */
+function portfolio_get_material_subjects($materialId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT " . TABLE_MATERIAL_SUBJECT . ".vakId AS vakId, "
+                . TABLE_MATERIAL_SUBJECT . ".materiaalId AS materiaalId, "
+                . TABLE_SUBJECT . ".vaknaam AS vaknaam"
+                . " FROM " . TABLE_MATERIAL_SUBJECT . ", " . TABLE_SUBJECT
+                . " WHERE " . TABLE_MATERIAL_SUBJECT . ".materiaalId=" . mysqli_real_escape_string($link, $materialId)
+                . " AND " . TABLE_MATERIAL_SUBJECT . ".vakId=" . TABLE_SUBJECT . ".vakId";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            array_push($return, $row);
+        }
+        return $return;
+    }
+    return null;
+}
+
+function portfolio_delete_subject($subjectId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "DELETE FROM " . TABLE_SUBJECT . " WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
+        $result = mysqli_query($link, $sql);
+        return $result;
     }
     return null;
 }

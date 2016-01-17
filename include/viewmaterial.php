@@ -62,14 +62,29 @@ include_once 'portfolio.php';
                             }
                             $janee = ($matData['isOpenbaar']) ? 'Ja' : 'Nee';
                             echo '<tr><th rel="row">' . 'Openbaar' . '</th><td>' . $janee . '</td></tr>';
-
+                            
+                            /*
+                             * Extra tabelrij voor vakken
+                             */
+                            $vakken = portfolio_get_material_subjects($matId);
+                            if(count($vakken) > 0)
+                            {
+                                echo '<tr><th rel="row">' . 'Vakken' . '</th><td>';
+                                for($i = 0; $i < count($vakken); $i++)
+                                {
+                                    echo $vakken[$i]['vaknaam'];
+                                    if($i !== count($vakken) - 1){
+                                        echo ', ';
+                                    }
+                                }
+                                echo '</td></tr>';
+                            }
                             echo '</table>';
-
-                            echo '<h3>Beoordeling</h3>';
 
                             /*
                              * Cijfer
                              */
+                            echo '<h3>Beoordeling</h3>';
                             $cijferData = portfolio_get_note($matId);
                             if($cijferData)
                             {

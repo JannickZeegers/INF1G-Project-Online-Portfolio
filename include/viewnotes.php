@@ -40,12 +40,25 @@ include_once 'portfolio.php';
                             if(count($notes) > 0)
                             {
                                 echo '<table class="tableLeft">';
-                                echo '<tr><th rel="col">naam materiaal</th><th rel="col">cijfer</th></tr>';
+                                echo '<tr><th rel="col">naam materiaal</th><th rel="col">verbonden vakken</th><th rel="col">cijfer</th></tr>';
                                 foreach($notes as $n)
                                 {
                                     $m = portfolio_get_material($n['materiaalId']);
+                                    $v = portfolio_get_material_subjects($n['materiaalId']);
                                     echo '<tr>';
+                                    //naam
                                     echo '<td><a href="viewmaterial.php?material=' . $m['materiaalId'] . '">' . $m['naam'] . '</a></td>';
+                                    //vakken
+                                    echo '<td>';
+                                    for($i = 0; $i < count($v); $i++)
+                                    {
+                                        echo $v[$i]['vaknaam'];
+                                        if($i !== count($v) - 1){
+                                            echo ', ';
+                                        }
+                                    }
+                                    echo '</td>';
+                                    //cijfer
                                     echo '<td>' . $n['cijfer'] . '</td>';
                                     echo '</tr>';
                                 }
