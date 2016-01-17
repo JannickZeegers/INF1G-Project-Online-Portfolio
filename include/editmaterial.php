@@ -8,7 +8,7 @@ include_once 'portfolio.php';
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Bewerk gebruiker</title>
+        <title>Ons Portfolio - Bewerk materiaal</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -21,24 +21,27 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {
-                $targetId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
+                $targetId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
                 if($targetId)
                 {
                     //Alles
                     echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
                     
-                    $targetData = portfolio_get_user_details($targetId);
+                    $targetData = portfolio_get_material($targetId);
                     if($targetData)
                     {
-                        if(portfolio_user_is_of_type(array('admin')))
+                        if($_SESSION['user']['gebruikersId'] === $targetData['eigenaarId'] || portfolio_user_is_of_type(array('admin')))
                         {
                             echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] . '">';
-                            echo '<h2>' . $targetData['voornaam'] . ' ' . $targetData['achternaam'] . '</h2>';
+                            echo '<h2>' . $targetData['naam'] . '</h2>';
                             
                             //HIER SUBMIT TROEP
                             if(isset($_POST['submit']))
                             {
-                                $gebruikersnaam = filter_input(INPUT_POST, 'gebruikersnaam', FILTER_SANITIZE_STRING);
+                                /*
+                                 * TODO: Deze meuk
+                                 */
+                                /*$gebruikersnaam = filter_input(INPUT_POST, 'gebruikersnaam', FILTER_SANITIZE_STRING);
                                 $voornaam = filter_input(INPUT_POST, 'voornaam', FILTER_SANITIZE_STRING);
                                 $achternaam = filter_input(INPUT_POST, 'achternaam', FILTER_SANITIZE_STRING);
                                 $email = filter_input(INPUT_POST, 'eMail', FILTER_SANITIZE_STRING);
@@ -59,51 +62,51 @@ include_once 'portfolio.php';
                                 else
                                 {
                                     echo '<p>Niet alle velden zijn correct ingevuld!</p>';
-                                }
+                                }*/
                             }
 
                             echo '<h3>Gegevens</h3>';
                             echo '<table class="tableLeft">';
 
-                            echo '<tr><th rel="row">' . 'Gebruikers ID' . '</th><td>'
-                                    . $targetData['gebruikersId'] 
+                            echo '<tr><th rel="row">' . 'Materiaal ID' . '</th><td>'
+                                    . $targetData['materiaalId'] 
                                     . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'Gebruikersnaam' . '</th><td>'
-                                    . '<input type="text" name="gebruikersnaam" value="'
-                                    . $targetData['gebruikersnaam'] 
+                            echo '<tr><th rel="row">' . 'Eigenaar ID' . '</th><td>'
+                                    . $targetData['eigenaarId'] 
+                                    . '</td></tr>';
+                            echo '<tr><th rel="row">' . 'Bestandspad' . '</th><td>'
+                                    . $targetData['bestandsPad'] 
+                                    . '</td></tr>';
+                            echo '<tr><th rel="row">' . 'Bestandstype' . '</th><td>'
+                                    . $targetData['bestandsType'] 
+                                    . '</td></tr>';
+                            echo '<tr><th rel="row">' . 'Naam' . '</th><td>'
+                                    . '<input type="text" name="naam" value="'
+                                    . $targetData['naam'] 
                                     . '">'
                                     . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'Voornaam' . '</th><td>'
-                                    . '<input type="text" name="voornaam" value="'
-                                    . $targetData['voornaam']
-                                    . '">'
-                                    . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'Achternaam' . '</th><td>'
-                                    . '<input type="text" name="achternaam" value="'
-                                    . $targetData['achternaam']
-                                    . '">'
-                                    . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'E-Mail adres' . '</th><td>'
-                                    . '<input type="text" name="eMail" value="'
-                                    . $targetData['eMail']
-                                    . '">'
-                                    . '</td></tr>';
-                            echo '<tr><th rel="row">' . 'Rol' . '</th><td>';
-                            echo '<select name="rol">';
-                            $rollen = array('student', 'docent', 'slb', 'admin');
-                            foreach($rollen as $r)
+                            $janee = ($targetData['isOpenbaar']) ? 'Ja' : 'Nee';
+                            echo '<tr><th rel="row">' . 'Is openbaar' . '</th><td>';
+                            echo '<select name="isOpenbaar">';
+                            if($targetData['isOpenbaar'])
                             {
-                                echo '<option value="' . $r . '"';
-                                echo ($r === $targetData['rol']) ? ' selected="selected">' : '>';
-                                echo $r . '</option>';
+                                echo '<option value="1" selected="selected">Ja</option><option value="0">Nee</option>';
+                            }
+                            else
+                            {
+                                echo '<option value="1">Ja</option><option value="0" selected="selected">Nee</option>';
                             }
                             echo '</select>';
                             echo '</td></tr>';
+                            /*
+                             * TODO: Iets met vakken
+                             */
                             echo '</table>';
+                            
                             echo '<input type="submit" name="submit" value="Apply">';
                             echo '</form>';
-                            echo '<p><a href="#">Reset wachtwoord van deze gebruiker</a></p>';
-                            echo '<p><a href="viewuser.php?user=' . $targetId . '">Terug</a></p>';
+                            
+                            echo '<p><a href="viewmaterial.php?material=' . $targetId . '">Terug</a></p>';
                         }
                         else
                         {
@@ -112,7 +115,7 @@ include_once 'portfolio.php';
                     }
                     else
                     {
-                        echo '<p>Gebruiker niet gevonden!</p>';
+                        echo '<p>Materiaal niet gevonden!</p>';
                     }
                 }
                 else
