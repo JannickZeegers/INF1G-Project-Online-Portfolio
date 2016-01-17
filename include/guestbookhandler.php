@@ -36,7 +36,7 @@ switch($action)
         $userId = filter_input(INPUT_POST, 'userId', FILTER_VALIDATE_INT);
         if(!empty($userId) && !empty($name) && !empty($mail) && !empty($msg)){
             if($mail){
-                if(strlen($name) <= 35 && strlen($msg) <= 700){
+                if(strlen($name) <= 60 && strlen($msg) <= 700){
                     $link = portfolio_connect();
                     if($link){
                         $sql = "INSERT INTO " . TABLE_GUESTBOOK . " (berichtID, zendernaam, email, bericht, ontvangerID) VALUES(NULL, '"
