@@ -21,7 +21,6 @@ include_once 'portfolio.php';
             if(isset($_SESSION['user']))
             {   
                     $messages = portfolio_get_user_messages($_SESSION['user']['gebruikersId']);
-                    
                     echo "<h3>Inbox:</h3>";
                     echo "<table class='tableLeft' width='100%' border='1'>";
                     echo "<tr><th>Zender</th><th>Onderwerp</th></tr>";
@@ -55,7 +54,9 @@ include_once 'portfolio.php';
                         echo "<tr><td>{$o['voornaam']} {$o['achternaam']}</td>";
                         echo "<td><a href='mailview.php?mail=" . $m['berichtId'] . "'>{$m['onderwerp']}</a></td></tr>"; 
                     }
-                    echo "</table>";
+                    echo "</table>"; 
+                    echo "<p><hr></p>";
+                    echo "<h3><a href='mailsend.php'> Nieuw bericht opstellen</a></h3>";
             }           
                         
             ?>
