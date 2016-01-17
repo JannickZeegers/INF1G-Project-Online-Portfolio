@@ -35,7 +35,7 @@ include_once 'portfolio.php';
                     }
                     else
                     {
-                        if(strlen($subject) > 155 || strlen($message) > 500)
+                        if(strlen($subject) > 155 || strlen($message) > 65535)
                         {
                             if(strlen($subject) > 155)
                             {
@@ -43,7 +43,7 @@ include_once 'portfolio.php';
                             }
                             else
                             {
-                                echo "<p style='color: red'>Your message is to long. (max 500 characters)</p>";
+                                echo "<p style='color: red'>Your message is to long. (max 65535 characters)</p>";
                             }
                         }
                         else
@@ -70,7 +70,7 @@ include_once 'portfolio.php';
                         }
                         echo "</select></p>";
                 echo "<p>Subject: <input type='text' name='reason'> (max 155 characters)</p>";                              
-                echo "<p>Message (max 500 characters):</p><p><textarea name='message' rows='40' cols='100'></textarea></p>";
+                echo "<p>Message :</p><p><textarea name='message' rows='40' cols='100'></textarea></p>";
                 echo "<p><input type='submit' name='send' value='send'></p>";
                 echo "</form>";
             }  
