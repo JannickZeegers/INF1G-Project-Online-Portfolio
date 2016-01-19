@@ -28,22 +28,23 @@ include_once 'portfolio.php';
                 $mailId = filter_input(INPUT_GET, 'mail', FILTER_VALIDATE_INT);
                 if($mailId)
                 {
-                    //Ingelogd
-                    //Todo: maak functie
                     $mailData = portfolio_get_message($mailId);
                     if($mailData)
                     {
-                        //Is dit geen admin? Zo ja, ga alleen verder als hij/zij de eigenaar is van dit materiaal.
-                        //admin heeft altijd toegang.
-                        //if(($_SESSION['user']['rol'] == 'student' && ($_SESSION['user']['gebruikersId'] === $mailData['ontvangerId'] || $_SESSION['user']['gebruikersId'] === $mailData['zenderId'])) || $_SESSION['user']['rol'] != 'student')
                         if( (!portfolio_user_is_of_type(array('admin')) && ($mailData['ontvangerId'] == $_SESSION['user']['gebruikersId'] || $mailData['zenderId'] == $_SESSION['user']['gebruikersId']))
                                 || portfolio_user_is_of_type(array('admin')))
                         {
-                            /*
-                             * TODO: Layout + zender en ontvanger info
-                             */
-                            echo "<h2>" . $mailData['onderwerp'] . "</h2>";
-                            echo "<p>" . $mailData['bericht'] . "</p>";
+                            echo "<h2>Onderwerp: " . htmlentities($mailData['onderwerp']) . "</h2>";
+                            
+                            $sender = portfolio_get_user_details($mailData['zenderId']);
+                            $reciever = portfolio_get_user_details($mailData['ontvangerId']);
+                            echo '<table class="tableLeft"><tr><th rel="row">Zender:</th><td>';
+                            echo (count($sender) > 0) ? $sender['voornaam'] . ' ' . $sender['achternaam'] : 'Onbekend';
+                            echo '</td></tr><tr><th rel="row">Ontvanger:</th><td>';
+                            echo (count($reciever) > 0) ? $reciever['voornaam'] . ' ' . $reciever['achternaam'] : 'Onbekend';
+                            echo '</td></tr></table>';
+                            
+                            echo "<hr><p>" . str_replace("\n", "<br>", htmlentities($mailData['bericht'])) . "</p><hr>";
                         }
                         else
                         {

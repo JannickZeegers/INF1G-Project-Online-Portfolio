@@ -371,7 +371,7 @@ function portfolio_get_user_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT berichtId, zenderId, ontvangerId, onderwerp FROM " . TABLE_MESSAGE . " WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId ASC";
+        $sql = "SELECT berichtId, zenderId, ontvangerId, onderwerp FROM " . TABLE_MESSAGE . " WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -392,7 +392,7 @@ function portfolio_get_send_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId ASC";
+        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {

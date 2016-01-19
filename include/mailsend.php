@@ -20,14 +20,16 @@ include_once 'portfolio.php';
             <?php
             if(isset($_SESSION['user']))
             {
+                $subject = '';
+                $message = '';
+                $recieverId = 1;    //Sorry martijn
                 //Boven aan pagina gezet voor makkelijker lezen
                 if(isset($_POST['send']))
                 {
-                    $dbConnect = portfolio_connect();                    
-                    $subject = htmlentities($_POST['reason']);
-                    $subject = mysqli_real_escape_string($dbConnect, $subject);
-                    $message = htmlentities($_POST['message']);
-                    $message = mysqli_real_escape_string($dbConnect, $message);
+                    $dbConnect = portfolio_connect();
+                    $subject = filter_input(INPUT_POST, 'subject');
+                    $message = filter_input(INPUT_POST, 'message');
+                    $recieverId = filter_input(INPUT_POST, 'reciever');
                     
                     if(empty($subject) || empty($message))
                     {
@@ -44,17 +46,18 @@ include_once 'portfolio.php';
                             else
                             {
                                 echo "<p style='color: red'>Your message is to long. (max 65535 characters)</p>";
+                                echo "<p style='color: red'>Seriously, how did you do that?</p>";
                             }
                         }
                         else
                         {
-                            /*
-                             * TODO: Filter input
-                             */
-                            $recieverId = $_POST['reciever'];
                             $senderId = $_SESSION['user']['gebruikersId'];
+                            //Put newlines back!
+                            
                             //Getallen bij een insert/where e.d. niet tussen '' zetten
-                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " VALUES(NULL, $senderId, $recieverId , '$subject' , '$message')";
+                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " VALUES(NULL, $senderId, $recieverId , '" .
+                                    mysqli_real_escape_string($dbConnect, $subject) . "' , '" .
+                                    mysqli_real_escape_string($dbConnect, $message) . "')";
                             $QueryResult = mysqli_query($dbConnect, $SQLstring);
                             echo "<p>Your message has been send!</p>";
                         }
@@ -66,11 +69,17 @@ include_once 'portfolio.php';
                         $users = portfolio_get_users();
                         foreach($users as $s)
                         {
-                            echo "<option value='" . $s['gebruikersId'] . "'>" . $s['voornaam'] . ' ' . $s['achternaam'] . ':     ' . $s['rol'] . "</option>";
+                            if($recieverId === $s['gebruikersId']){
+                                echo "<option value='" . $s['gebruikersId'] . "' selected='selected'>" . $s['voornaam'] . ' ' . $s['achternaam'] . ':     ' . $s['rol'] . "</option>";
+                            }else{
+                                echo "<option value='" . $s['gebruikersId'] . "'>" . $s['voornaam'] . ' ' . $s['achternaam'] . ':     ' . $s['rol'] . "</option>";
+                            }
+                            
                         }
                         echo "</select></p>";
-                echo "<p>Subject: <input type='text' name='reason'> (max 155 characters)</p>";                              
-                echo "<p>Message :</p><p><textarea name='message' rows='40' cols='100'></textarea></p>";
+                echo "<p>Subject: <input type='text' name='subject' value='" . htmlentities($subject) . "'> (max 155 characters)</p>";
+                //Vervang newlines met breaks zodat het goed wordt weergeven!
+                echo "<p>Message :</p><p><textarea name='message' rows='40' cols='100'>" . htmlentities($message) . "</textarea></p>";
                 echo "<p><input type='submit' name='send' value='send'></p>";
                 echo "</form>";
             }  
