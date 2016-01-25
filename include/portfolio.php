@@ -726,8 +726,26 @@ function resetpass($userID, $oudpass, $nieuwpass)
 	$DataBaseConnect->close();
 }
 
-
-
+/*
+ * Ophalen leerlingen   
+ */
+function ophalen_img($imgarray) 
+{ 
+$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
+	
+	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
+										   FROM img
+										   WHERE naam LIKE 'Avatar%'";);
+	$retrieve->bind_param("is", $userID, $gebrnaam);
+	$retrieve->execute();
+	$imgarray = array();
+	while ($row = mysql_fetch_array($QueryResult))  {   
+				$queryArray['naam'] = $row['naam'];  
+				$queryArray['url'] = $row['url'];  
+				$queryArray['ext'] = $row['ext'];
+				array_push($imgarray, $queryArray);   
+}
+ 
 /*
  * Ophalen leerlingen   
  */
@@ -749,5 +767,7 @@ function retrieve_students()
 	$retrieve->close();
 	$DataBaseConnect->close();
 }
+
+
 
 

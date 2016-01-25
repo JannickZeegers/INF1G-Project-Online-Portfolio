@@ -19,6 +19,10 @@ include 'portfolio.php';
 				portfolio_connect();
 				retrieve_students();
 				
+				foreach ($students as $student) { 
+					echo '<p><a href="img/avatar_{$student}"</p>'; 
+				}
+				
             ?>
             </div>
             <div id="footer">
