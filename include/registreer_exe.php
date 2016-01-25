@@ -20,6 +20,7 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
+				if (!empty($_POST['voornaam']) || !empty($_POST['achternaam']) || !empty($_POST['mail']) || !empty($_POST['pass']) || !empty($_POST['gebrnaam']) || !empty($_POST['rol'])) {
 					$voornaam = $_POST['voornaam'];
 					$achternaam = $_POST['achternaam'];
 					$mail = $_POST['mail'];
@@ -29,9 +30,9 @@ include_once "portfolio.php";
 					registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
 					echo "<p class='error'>Registration-process succesfull. You are being redirected.</p>"; 
 					header("refresh:10; url=../../index.php"  );
-				//} else {
-				//	echo "<p class='error'>You need to fill in the form</p>";
-				//	} 
+				} else {
+					echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
+				} 
 						
 			?>
             </div>
