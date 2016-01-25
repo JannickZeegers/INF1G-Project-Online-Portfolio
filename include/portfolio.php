@@ -675,6 +675,32 @@ function portfolio_get_student_notes($userId)
 }
 
 /*
+ * 
+   .           .        .                     .        .            .
+             .               .    .          .              .   .         .
+               _________________      ____         __________
+ .       .    /                 |    /    \    .  |          \
+     .       /    ______   _____| . /      \      |    ___    |     .     .
+             \    \    |   |       /   /\   \     |   |___>   |
+           .  \    \   |   |      /   /__\   \  . |         _/               .
+ .     ________>    |  |   | .   /            \   |   |\    \_______    .
+      |            /   |   |    /    ______    \  |   | \           |
+      |___________/    |___|   /____/      \____\ |___|  \__________|    .
+  .     ____    __  . _____   ____      .  __________   .  _________
+       \    \  /  \  /    /  /    \       |          \    /         |      .
+        \    \/    \/    /  /      \      |    ___    |  /    ______|  .
+         \              /  /   /\   \ .   |   |___>   |  \    \
+   .      \            /  /   /__\   \    |         _/.   \    \            +
+           \    /\    /  /            \   |   |\    \______>    |   .
+            \  /  \  /  /    ______    \  |   | \              /          .
+ .       .   \/    \/  /____/      \____\ |___|  \____________/  LS
+                               .                                        .
+     .                           .         .               .                 .
+                .                                   .            .
+
+ */
+
+/*
  * Registreer een gebruiker.
  */
 function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol) 	
@@ -696,7 +722,7 @@ function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 }
 
 /*
- * Reset een wachtwoord.    
+ * Reset een wachtwoord
  */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {
@@ -734,25 +760,32 @@ function resetpass($userID, $oudpass, $nieuwpass)
 /*
  * Ophalen mainplaatjes   
  */
-function ophalen_img($imgarray) 
+function ophalen_img(&$imgarray)    //Pass by reference if you plan to supply an array. 
 { 
 $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
 										   FROM img
-										   WHERE naam LIKE 'Avatar%'";);
+										   WHERE naam LIKE 'Avatar%'");
 	$retrieve->bind_param("is", $userID, $gebrnaam);
 	$retrieve->execute();
 	$imgarray = array();
+    //WARNING: QueryResult doesn't exist and this will spew out errors.
 	while ($row = mysql_fetch_array($QueryResult))  {   
 				$queryArray['naam'] = $row['naam'];  
 				$queryArray['url'] = $row['url'];  
 				$queryArray['ext'] = $row['ext'];
-				array_push($imgarray, $queryArray);   
+				array_push($imgarray, $queryArray);
+    }
+	$retrieve->close();
+	$DataBaseConnect->close();
 }
- 
+
 /*
  * Ophalen leerlingen   
+ * NOTE: don't put functions inside other functions if you plan to call them outside that function!
+ * Also, 
+ * http://php.net/manual/en/mysqli.quickstart.prepared-statements.php
  */
 function retrieve_students() 
 {
@@ -766,11 +799,8 @@ function retrieve_students()
 	while ($row = mysqli_fetch_assoc($QueryResult)) {      
 		$id = $row['gebruikdersId'];
 		$gebrnaam = $row['gebruikersnaam'];
-	}	
-	return $id, $gebrnaam;
-}
-	$retrieve->close();
-	$DataBaseConnect->close();
+	}
+	return array($id, $gebrnaam);  //No
 }
 
 

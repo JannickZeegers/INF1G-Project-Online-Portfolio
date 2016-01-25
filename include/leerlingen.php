@@ -16,14 +16,14 @@ include 'portfolio.php';
             <div id="content">
             <h2>Leerling</h2>
             <?php
-				portfolio_connect();
-				retrieve_students();
-				
-				
-				foreach ($students as $student) { 
-					echo '<p><a href="img/avatar_{$student}"</p>'; 
-				}
-				
+            
+            portfolio_connect();    //???
+            retrieve_students();
+
+
+            foreach ($students as $student) { 
+                echo '<p><a href="img/avatar_{$student}"</p>'; 
+            }
             ?>
             </div>
             <div id="footer">
