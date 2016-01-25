@@ -727,7 +727,7 @@ function resetpass($userID, $oudpass, $nieuwpass)
 }
 
 /*
- * Ophalen leerlingen   
+ * Ophalen mainplaatjes   
  */
 function ophalen_img($imgarray) 
 { 
