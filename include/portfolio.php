@@ -672,7 +672,7 @@ function portfolio_get_student_notes($userId)
 /*
  * Registreer een gebruiker.
  */
-function registreer($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol) 	
+function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol) 	
 {  
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	$hash = crypt($wachtwoord);
@@ -691,7 +691,7 @@ function registreer($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 }
 
 /*
- * IS - Allahoe akbar    
+ * Reset een wachtwoord.    
  */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {
@@ -701,7 +701,7 @@ function resetpass($userID, $oudpass, $nieuwpass)
 										SET wachtwoord=?
 										WHERE userID=?");
 	$check->bind_param("i", $userID);
-	$inv = $check->execute();
+	$check->execute();
 	while ($row = mysqli_fetch_assoc($QueryResult)) {      
 			$oudpass = $row['wachtwoord'];
 	}	
@@ -716,12 +716,37 @@ function resetpass($userID, $oudpass, $nieuwpass)
 		if ($invoer !== FALSE) 
 		{
 			echo "<p>Wachtwoord is succesvol her-zet</p>";
-	} 
+		}
+	}
 	else 
 	{ 
 		echo "<p>Wachtwoord incorrect</p>"; 
 	}
 	$reset->close();
+	$DataBaseConnect->close();
+}
+
+
+
+/*
+ * Ophalen leerlingen   
+ */
+function retrieve_students() 
+{
+	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
+	
+	$retrieve = $DataBaseConnect->prepare("SELECT *
+										   FROM gebruikers 
+										   WHERE rol = 'student'");
+	$retrieve->bind_param("is", $userID, $gebrnaam);
+	$retrieve->execute();
+	while ($row = mysqli_fetch_assoc($QueryResult)) {      
+		$id = $row['gebruikdersId'];
+		$gebrnaam = $row['gebruikersnaam'];
+	}	
+	return $id, $gebrnaam;
+}
+	$retrieve->close();
 	$DataBaseConnect->close();
 }
 
