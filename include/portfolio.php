@@ -59,7 +59,9 @@ function portfolio_get_user_materials($userId)
     if($link)
     {
         $returnResult = array();
-        $sql = "SELECT * FROM " . TABLE_MATERIAL . " WHERE eigenaarId=" . mysqli_real_escape_string($link, $userId) . "";
+        $sql = "SELECT * 
+				FROM " . TABLE_MATERIAL . " 
+				WHERE eigenaarId=" . mysqli_real_escape_string($link, $userId) . "";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) !== null)
         {
@@ -77,7 +79,9 @@ function portfolio_get_material($materialId)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT * FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
+        $sql = "SELECT * 
+				FROM " . TABLE_MATERIAL . " 
+				WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
         $result = mysqli_query($link, $sql);
         if(($row = mysqli_fetch_assoc($result)) !== null)
         {
@@ -97,7 +101,9 @@ function portfolio_get_user_details($gebruikersId)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersId=" . mysqli_real_escape_string($link, $gebruikersId);
+        $sql = "SELECT * 
+				FROM " . TABLE_USER . "
+				WHERE gebruikersId=" . mysqli_real_escape_string($link, $gebruikersId);
         $result = mysqli_query($link, $sql);
         if($result !== false)
         {
@@ -169,7 +175,9 @@ function portfolio_login($userName, $userPass)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $userName) . "'";
+        $sql = "SELECT * 
+				FROM " . TABLE_USER . " 
+				WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $userName) . "'";
         $result = mysqli_query($link, $sql);
         if($result !== false)
         {
@@ -196,36 +204,6 @@ function portfolio_logout()
     return session_destroy();
 }
 
-/*
- * Registreer een gebruiker.
- */
-function portfolio_register($gebruikersnaam, $wachtwoord, $mail, $voornaam, $achternaam, $type = "student")
-{
-    $link = portfolio_connect();
-    if($link)
-    {
-        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $gebruikersnaam) . "' OR eMail='" . mysqli_real_escape_string($link, $mail) . "'";
-        $result = mysqli_query($link, $sql);
-        if(mysqli_fetch_assoc($result))
-        {
-            echo "<p>Deze gebruikersnaam of e-mail is al in gebruik!</p>";
-            return false;
-        }
-        $sql = "INSERT INTO " . TABLE_USER . " VALUES(NULL, "
-                 . "'" . mysqli_real_escape_string($link, $voornaam) . "', "
-                 . "'" . mysqli_real_escape_string($link, $achternaam) . "', "
-                 . "'" . mysqli_real_escape_string($link, $mail) . "', "
-                 . "'" . mysqli_real_escape_string($link, $gebruikersnaam) . "', "
-                 . "'" . mysqli_real_escape_string($link, password_hash($wachtwoord, PASSWORD_DEFAULT)) . "', "
-                 . "'" . mysqli_real_escape_string($link, $type) . "')";
-        $result = mysqli_query($link, $sql);
-        if($result)
-        {
-            return mysqli_insert_id($link);
-        }
-    }
-    return false;
-}
 
 /*
  * Beoordeel een materiaal met een cijfer
@@ -291,7 +269,9 @@ function portfolio_get_note($materialId)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT * FROM " . TABLE_GRADE . " WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
+        $sql = "SELECT * 
+				FROM " . TABLE_GRADE . " 
+				WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
         $result = mysqli_query($link, $sql);
         if(($row = mysqli_fetch_assoc($result)) !== null)
         {
@@ -310,7 +290,9 @@ function portfolio_get_students()
     if($link)
     {
         $return = array();
-        $sql = "SELECT * FROM " . TABLE_USER . " WHERE rol='student'";
+        $sql = "SELECT * 
+				FROM " . TABLE_USER . " 
+				WHERE rol='student'";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -330,7 +312,9 @@ function portfolio_get_users()
     if($link)
     {
         $return = array();
-        $sql = "SELECT * FROM " . TABLE_USER . " ORDER BY rol ASC";
+        $sql = "SELECT * 
+				FROM " . TABLE_USER . " 
+				ORDER BY rol ASC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -371,7 +355,9 @@ function portfolio_get_user_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT berichtId, zenderId, ontvangerId, onderwerp FROM " . TABLE_MESSAGE . " WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
+        $sql = "SELECT berichtId, zenderId, ontvangerId, onderwerp 
+				FROM " . TABLE_MESSAGE . " WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " 
+				ORDER BY berichtId DESC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -392,7 +378,10 @@ function portfolio_get_send_messages($userId)
     {
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
+        $sql = "SELECT * 
+				FROM " . TABLE_MESSAGE . " 
+				WHERE zenderId = " . mysqli_real_escape_string($link, $userId) . " 
+				ORDER BY berichtId DESC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -437,7 +426,8 @@ function portfolio_delete_material($materialId, $forceDeletion=false)
             $matData = portfolio_get_material($materialId);
             if($matData)
             {
-                $sql = "DELETE FROM " . TABLE_MATERIAL . " WHERE materiaalId=" . $materialId;
+                $sql = "DELETE FROM " . TABLE_MATERIAL . " 
+						WHERE materiaalId=" . $materialId;
                 $result = mysqli_query($link, $sql);
                 if($result)
                 {
@@ -474,7 +464,8 @@ function portfolio_delete_user($userId)
             //Verwijder het cijfer!
             if(portfolio_get_note($m['materiaalId']))
             {
-                $sql = "DELETE FROM " . TABLE_GRADE . " WHERE materiaalId=" . mysqli_real_escape_string($link, $m['materiaalId']);
+                $sql = "DELETE FROM " . TABLE_GRADE . " 
+						WHERE materiaalId=" . mysqli_real_escape_string($link, $m['materiaalId']);
                 if(!mysqli_query($link, $sql))
                 {
                     return false;
@@ -489,14 +480,16 @@ function portfolio_delete_user($userId)
         //Gegeven cijfers
         if($userData['rol'] !== 'student')
         {
-            $sql = "UPDATE " . TABLE_GRADE . " SET beoordelaarId=NULL WHERE beoordelaarId=" . mysqli_real_escape_string($link, $userData['gebruikersId']);
+            $sql = "UPDATE " . TABLE_GRADE . " 
+					SET beoordelaarId=NULL WHERE beoordelaarId=" . mysqli_real_escape_string($link, $userData['gebruikersId']);
             if(!mysqli_query($link, $sql))
             {
                 return false;
             }
         }
         //Verwijder de gebruiker
-        $sql = "DELETE FROM " . TABLE_USER . " WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
+        $sql = "DELETE FROM " . TABLE_USER . " 
+				WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
         if(mysqli_query($link, $sql))
         {
             return true;
@@ -565,7 +558,8 @@ function portfolio_add_subject($name)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "INSERT INTO " . TABLE_SUBJECT . " VALUES (NULL, '" . mysqli_real_escape_string($link, $name) . "')";
+        $sql = "INSERT INTO " . TABLE_SUBJECT . " 
+				VALUES (NULL, '" . mysqli_real_escape_string($link, $name) . "')";
         if(mysqli_query($link, $sql))
         {
             return mysqli_insert_id($link);
@@ -580,7 +574,8 @@ function portfolio_get_subjects()
     if($link)
     {
         $return = array();
-        $sql = "SELECT * FROM " . TABLE_SUBJECT;
+        $sql = "SELECT * 
+				FROM " . TABLE_SUBJECT;
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -596,7 +591,9 @@ function portfolio_get_subject($subjectId)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT * FROM " . TABLE_SUBJECT . " WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
+        $sql = "SELECT * 
+				FROM " . TABLE_SUBJECT . " 
+				WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
         $result = mysqli_query($link, $sql);
         if(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -638,7 +635,8 @@ function portfolio_delete_subject($subjectId)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "DELETE FROM " . TABLE_SUBJECT . " WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
+        $sql = "DELETE FROM " . TABLE_SUBJECT . " 
+				WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
         $result = mysqli_query($link, $sql);
         return $result;
     }
@@ -671,52 +669,59 @@ function portfolio_get_student_notes($userId)
     return null;
 }
 
-function registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol) 	
+/*
+ * Registreer een gebruiker.
+ */
+function registreer($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol) 	
 {  
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
-	$hash = crypt($pass);
+	$hash = crypt($wachtwoord);
 	
-	$stmt = $DataBaseConnect->prepare("INSERT INTO gebruiker (voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)
-									   VALUES (?, ?, ?, ?, ?, ?)");
-	$stmt->bind_param("ssssss", $voornaam, $achternaam, $mail, $hash, $gebrnaam, $rol);
-	$invoer = $stmt->execute();                                                                                                     
+	$registreer = $DataBaseConnect->prepare("INSERT INTO gebruiker (voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)
+											 VALUES (?, ?, ?, ?, ?, ?)");
+	$registreer->bind_param("ssssss", $voornaam, $achternaam, $mail, $hash, $gebrnaam, $rol);
+	$invoer = $registreer->execute();                                                                                                     
 	
 	if ($invoer === FALSE) 
 	{ 
 		echo "<p>De opdracht kan niet worden uitgevoerd.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
 	} 
-	$stmt->close();
+	$registreer->close();
 	$DataBaseConnect->close();
 }
 
 /*
- * IS - Allahoe akbar
+ * IS - Allahoe akbar    
  */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-        //Misschien niet handig als je een wachtwoord wil resetten als je het oude niet meer weet :P
+	$check = $DataBaseConnect->prepare("SELECT gebruikersId wachtwoord 
+										SET wachtwoord=?
+										WHERE userID=?");
+	$check->bind_param("i", $userID);
+	$inv = $check->execute();
+	while ($row = mysqli_fetch_assoc($QueryResult)) {      
+			$oudpass = $row['wachtwoord'];
+	}	
 	if (password_verify($oudpass, $hash)) 
 	{
-            //wat?
-		//$newhash = crypt($pass); 
-                $newhash = password_hash($nieuwpass, PASSWORD_DEFAULT);
-		$stmt = $DataBaseConnect->prepare("UPDATE userId gebruiker 
-										   SET wachtwoord=?
-										   WHERE userID=?");
-		$stmt->bind_param("si", $newhash, $userID);
-		$invoer = $stmt->execute(); 
-		
-                //Tip:
-                //($var !== false) ---> ($var), zelfde resultaat, meestal beter
-		if ($invoer) {
-			echo "<p>Your password-values have been succesfully changed</p>";
-		} else {
-			echo "<p>Password does not match</p>"; 
-			}
+		$newhash = password_hash($nieuwpass, PASSWORD_DEFAULT);
+		$reset = $DataBaseConnect->prepare("UPDATE gebruiker
+										    SET wachtwoord=?
+										    WHERE userID=?");
+		$reset->bind_param("si", $newhash, $userID);
+		$invoer = $reset->execute(); 
+		if ($invoer !== FALSE) 
+		{
+			echo "<p>Wachtwoord is succesvol her-zet</p>";
+	} 
+	else 
+	{ 
+		echo "<p>Wachtwoord incorrect</p>"; 
 	}
-	$stmt->close();
+	$reset->close();
 	$DataBaseConnect->close();
 }
 
