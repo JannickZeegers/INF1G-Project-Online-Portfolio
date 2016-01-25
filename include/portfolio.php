@@ -145,7 +145,8 @@ function portfolio_upload_material($userId, $file, $isPublic)
         if($link)
         {
             //materiaal(materiaalId, naam, eigenaarId, bestandsPad, bestandsType, isOpenbaar)
-            $sql = "INSERT INTO " . TABLE_MATERIAL . " VALUES(NULL,"
+            $sql = "INSERT INTO " . TABLE_MATERIAL . " 
+					VALUES(NULL,"
                     . "'" . mysqli_real_escape_string($link, $name) . "', "
                     . $userId . ", "
                     . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
@@ -334,7 +335,9 @@ function portfolio_get_message($mailId)
     if($link)
     {
         //$userId = $_SESSION['user']['gebruikersId'];
-        $sql = "SELECT * FROM " . TABLE_MESSAGE . " WHERE berichtID = " . mysqli_real_escape_string($link, $mailId);
+        $sql = "SELECT * 
+				FROM " . TABLE_MESSAGE . " 
+				WHERE berichtID = " . mysqli_real_escape_string($link, $mailId);
         $result = mysqli_query($link, $sql);
         if(($row = mysqli_fetch_assoc($result)) != null)
         {
@@ -356,7 +359,8 @@ function portfolio_get_user_messages($userId)
         $return = array();
         //$userId = $_SESSION['user']['gebruikersId'];
         $sql = "SELECT berichtId, zenderId, ontvangerId, onderwerp 
-				FROM " . TABLE_MESSAGE . " WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " 
+				FROM " . TABLE_MESSAGE . " 
+				WHERE ontvangerID = " . mysqli_real_escape_string($link, $userId) . " 
 				ORDER BY berichtId DESC";
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
@@ -481,7 +485,8 @@ function portfolio_delete_user($userId)
         if($userData['rol'] !== 'student')
         {
             $sql = "UPDATE " . TABLE_GRADE . " 
-					SET beoordelaarId=NULL WHERE beoordelaarId=" . mysqli_real_escape_string($link, $userData['gebruikersId']);
+					SET beoordelaarId=NULL 
+					WHERE beoordelaarId=" . mysqli_real_escape_string($link, $userData['gebruikersId']);
             if(!mysqli_query($link, $sql))
             {
                 return false;
