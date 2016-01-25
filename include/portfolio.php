@@ -748,7 +748,8 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 				$queryArray['naam'] = $row['naam'];  
 				$queryArray['url'] = $row['url'];  
 				$queryArray['ext'] = $row['ext'];
-				array_push($imgarray, $queryArray);   
+				array_push($imgarray, $queryArray); 
+	}
 }
  
 /*
