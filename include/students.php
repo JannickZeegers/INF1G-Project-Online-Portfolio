@@ -21,9 +21,9 @@ include 'portfolio.php';
 				
 
 				echo '<table>
-						<th>studentnaam</th><th>email</th><th></th>'
+						<th>studentnaam</th><th>email</th><th></th>';
 						
-						retrieve_students() 
+						retrieve_students();
 						
 				echo  '</table>'; 
             

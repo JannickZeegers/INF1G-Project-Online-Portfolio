@@ -762,8 +762,8 @@ function retrieve_students()
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, mail
-										   FROM gebruikers 
+	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, eMail
+										   FROM gebruiker
 										   WHERE rol = 'student'");
 	$retrieve->execute();
 	$retrieve->bind_result($voornaam, $achternaam, $mail);
