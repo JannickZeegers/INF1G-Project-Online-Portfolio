@@ -35,7 +35,6 @@ include_once "portfolio.php";
 					<option value="slb">SlB</option>
 					<option value="admin">Admin</option>
 				</select>
-				<p><input type="text" name="rol" /></p>
 				<p><input type="submit" value="Registreer" name="submit"/></p> 
 			</form>
             </div>
