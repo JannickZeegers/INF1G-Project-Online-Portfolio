@@ -22,7 +22,7 @@ include_once 'portfolio.php';
             {
                 $subject = '';
                 $message = '';
-                $recieverId = 1;    //Sorry martijn
+                $recieverId = 1;    //Sorry martijn   			- Geeft niet (Martijn)
                 //Boven aan pagina gezet voor makkelijker lezen
                 if(isset($_POST['send']))
                 {
@@ -55,7 +55,8 @@ include_once 'portfolio.php';
                             //Put newlines back!
                             
                             //Getallen bij een insert/where e.d. niet tussen '' zetten
-                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " VALUES(NULL, $senderId, $recieverId , '" .
+                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
+										  VALUES(NULL, $senderId, $recieverId , '" .
                                     mysqli_real_escape_string($dbConnect, $subject) . "' , '" .
                                     mysqli_real_escape_string($dbConnect, $message) . "')";
                             $QueryResult = mysqli_query($dbConnect, $SQLstring);
