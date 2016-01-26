@@ -1,26 +1,30 @@
 <?php
-include_once "portfolio.php";
+session_start();
+include 'portfolio.php';
 ?>
 <!DOCTYPE html>
-<!--
-    Inlogpagina
--->
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Overzicht studenten</title>
+        <title>Ons Portfolio - Overzicht leerlingen</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div id="container">
             <div id="header">
-                <div id="header">
-                    <?php include 'inc/header.php'; ?>
-                </div>
+                <?php include 'inc/header.php'; ?>
             </div>
             <div id="content">
-            <h1>Students</h1>
-        
+            <h2>Leerling</h2>
+            <?php
+            
+            retrieve_students();
+
+
+            foreach ($students as $student) { 
+                echo '<p><a href="img/avatar_{$student}"</p>'; 
+            }
+            ?>
             </div>
             <div id="footer">
                 INF1G - 2016
