@@ -28,18 +28,18 @@ include_once "portfolio.php";
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
-						case 'student'
+					case 'student':
 						$rol = "student";
-						break;
-						case 'docent'
+					break;
+					case 'docent':
 						$rol = "docent";
-						break; 
-						case 'slb'
+					break; 
+					case 'slb':
 						$rol = "slb"; 
-						break;
-						case 'admin'
+					break;
+					case 'admin':
 						$rol = "admin";
-						break;
+					break;
 					}
 					register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
 					echo "<p class='error'>Registratie-process gelukt, er is een mail naar u toegestuurd</p>"; 
