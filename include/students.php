@@ -18,12 +18,15 @@ include 'portfolio.php';
             <h2>Leerling</h2>
             <?php
             
-            retrieve_students();
+				
 
-
-            foreach ($students as $student) { 
-                echo '<p><a href="img/avatar_{$student}"</p>'; 
-            }
+				echo '<table>
+						<th>studentnaam</th><th>email</th><th></th>'
+						
+						retrieve_students() 
+						
+				echo  '</table>'; 
+            
             ?>
             </div>
             <div id="footer">

@@ -762,19 +762,20 @@ function retrieve_students()
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, gebruikersnaam
+	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, mail
 										   FROM gebruikers 
 										   WHERE rol = 'student'");
 	$retrieve->execute();
-	$retrieve->bind_result($voornaam, $achternaam, $gebrnaam);
+	$retrieve->bind_result($voornaam, $achternaam, $mail);
 	while ($retrieve->fetch()) {  
-		$imgarray[] = array("naam" => $voornaam, "achternaam" => $achternaam, "gebruikersnaam" => $gebrnaam);
+		$studarray[] = array("naam" => $voornaam, "achternaam" => $achternaam, "mail" => $mail);
 	}	
 	
-	foreach ($imgarray as $student) { 
-		$stunaam = $student['naam']; 
-		$stuachternaam = $student['achternaam']; 
-		$stugebrnaam =  $student['gebruikersnaam']; 
+	foreach ($studarray as $student) { 
+		$studnaam = $student['naam']; 
+		$studachternaam = $student['achternaam']; 
+		$studmail =  $student['mail']; 
+		echo '<tr><td>{$studnaam} {$studachternaam}</td><td>{$studmail}</td></tr>';
 	}
 	$retrieve->close();
 	$DataBaseConnect->close();
