@@ -39,7 +39,7 @@ include_once 'portfolio.php';
                         if($gebruikersnaam && $voornaam && $achternaam && $email &&
                                 ($rol === 'student' || $rol === 'docent' || $rol === 'slb' || $rol === 'admin'))
                         {
-                            $id = portfolio_register($gebruikersnaam, $wachtwoord, $email, $voornaam, $achternaam, $rol);
+                            $id = portfolio_register_old($gebruikersnaam, $wachtwoord, $email, $voornaam, $achternaam, $rol);
                             if($id)
                             {
                                 echo '<p>Gebruiker aangemaakt</p>';

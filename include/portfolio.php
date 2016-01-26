@@ -12,6 +12,7 @@
  */
 //Includes
 include_once "constants.php";
+include_once "portfolio_ext.php";
 
 //Session start
 session_start();
@@ -707,7 +708,7 @@ function resetpass($userID, $oudpass, $nieuwpass)
 										WHERE userID=?");
 	$check->execute();
 	$check->bind_result($userID);
-	while ($check ->fetch())) {      
+	while ($check ->fetch()) {      
 			//.................??
 	}	
 	if (password_verify($oudpass, $hash)) 
@@ -776,9 +777,6 @@ function retrieve_students()
 	}	
 	return $id;
 	return $gebrnaam;
-}
-	$retrieve->close();
-	$DataBaseConnect->close();
 }
 
 
