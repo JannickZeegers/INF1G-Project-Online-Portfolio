@@ -21,7 +21,7 @@ include_once "portfolio.php";
 				<?php 
 					$oudpass = $_POST['oudpass']; 
 					$nieuwpass = $_POST['nieuwepass'];
-					$userID = $_SESSION['user']
+					$userID = $_SESSION['user'];
 					resetpass($userID, $oudpass, $nieuwpass); 
 				?>
             </div>
