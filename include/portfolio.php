@@ -734,21 +734,25 @@ function resetpass($userID, $oudpass, $nieuwpass)
 /*
  * Ophalen mainplaatjes   
  */
-function ophalen_img($imgarray) 
+function ophalen_img() 
 { 
-$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
+$DataBaseConnect = new mysqli("localhost", "root", "", "test");
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
 										   FROM img
 										   WHERE naam LIKE 'Avatar%'");
 	$retrieve->execute();
 	$retrieve->bind_result($naam, $url, $ext);
-	$imgarray = array();
 	while ($retrieve->fetch()) {  
-		$imgarray = array("naam" => $naam, "url" => $url, "ext" => $ext);
+		$imgarray[] = array("naam" => $naam, "url" => $url, "ext" => $ext);
 	}
 	
-	
+	foreach ($imgarray as $persoon) { 
+		$imgnaam = $persoon['naam']; 
+		$imgurl = $persoon['url']; 
+		$imgext =  $persoon['ext']; 
+		echo '<li><a href="http://'.str_replace("Avatar_", "", $imgnaam).'.ons-portfolio.nl/"><img class="foto" src="'.$imgurl.''.$imgnaam.''.$imgext.'" alt="'.$imgnaam.'"><p class="textfoto">'.str_replace("Avatar_", "", $imgnaam).'<p></li></a>';
+	}
 }
  
 /*
