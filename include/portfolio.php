@@ -705,10 +705,10 @@ function resetpass($userID, $oudpass, $nieuwpass)
 	$check = $DataBaseConnect->prepare("SELECT gebruikersId wachtwoord 
 										SET wachtwoord=?
 										WHERE userID=?");
-	$check->bind_param("i", $userID);
 	$check->execute();
-	while ($row = mysqli_fetch_assoc($QueryResult)) {      
-			$oudpass = $row['wachtwoord'];
+	$check->bind_result($userID);
+	while ($check ->fetch())) {      
+			//.................??
 	}	
 	if (password_verify($oudpass, $hash)) 
 	{
@@ -741,15 +741,22 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
 										   FROM img
 										   WHERE naam LIKE 'Avatar%'");
-	$retrieve->bind_param("is", $userID, $gebrnaam);
+	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
+										   FROM img
+										   WHERE naam LIKE 'Avatar%'");
 	$retrieve->execute();
+	$retrieve->bind_result($naam, $url, $ext);
 	$imgarray = array();
-	while ($row = mysql_fetch_array($QueryResult))  {   
-				$queryArray['naam'] = $row['naam'];  
-				$queryArray['url'] = $row['url'];  
-				$queryArray['ext'] = $row['ext'];
-				array_push($imgarray, $queryArray); 
-	}
+	while ($retrieve ->fetch()) { 
+		//array_push($imgarray, $url, $naam, $ext);
+	}	
+	//$daan = $imgarray[0] . $imgarray[1] . $imgarray[2];
+	//$jannick = $imgarray[3] . $imgarray[4] . $imgarray[5]; 
+	//$manuel = $imgarray[6] . $imgarray[7] . $imgarray[8]; 
+	//$martijn = $imgarray[9] . $imgarray[10] . $imgarray[11]; 
+	//$wesley = $imgarray[12] . $imgarray[13] . $imgarray[14]; 
+	//$wouter = $imgarray[15] . $imgarray[16] . $imgarray[17]; 
+	//return $daan . $jannick . $manuel . $martijn . $wesley . $wouter;
 }
  
 /*
@@ -762,11 +769,10 @@ function retrieve_students()
 	$retrieve = $DataBaseConnect->prepare("SELECT *
 										   FROM gebruikers 
 										   WHERE rol = 'student'");
-	$retrieve->bind_param("is", $userID, $gebrnaam);
 	$retrieve->execute();
-	while ($row = mysqli_fetch_assoc($QueryResult)) {      
-		$id = $row['gebruikdersId'];
-		$gebrnaam = $row['gebruikersnaam'];
+	$retrieve->bind_result($userID, $gebrnaam);
+	while ($retrieve ->fetch()) {       
+		//...............???
 	}	
 	return $id;
 	return $gebrnaam;
