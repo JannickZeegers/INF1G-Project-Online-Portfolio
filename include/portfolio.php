@@ -731,9 +731,9 @@ function resetpass($userID, $oudpass, $nieuwpass)
 /*
  * Ophalen mainplaatjes   
  */
-function ophalen_img() 
+function retrieve_img() 
 { 
-$DataBaseConnect = new mysqli("localhost", "root", "", "test");
+$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
 										   FROM img
