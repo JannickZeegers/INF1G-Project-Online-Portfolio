@@ -17,16 +17,12 @@ include 'portfolio.php';
             <div id="content">
             <h2>Leerling</h2>
             <?php
-            
-				
-
 				echo '<table>
 						<th>studentnaam</th><th>email</th><th></th>';
 						
 						retrieve_students();
 						
 				echo  '</table>'; 
-            
             ?>
             </div>
             <div id="footer">
