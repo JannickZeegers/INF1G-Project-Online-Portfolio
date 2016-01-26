@@ -24,8 +24,8 @@ include_once "portfolio.php";
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
-					$pass = htmlentities($_POST['pass']); 
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
+					$pass = htmlentities($_POST['pass']); 
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
 					case 'student':

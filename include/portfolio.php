@@ -685,7 +685,7 @@ function register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol)
 	
 	$registreer = $DataBaseConnect->prepare("INSERT INTO gebruiker (voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)
 											 VALUES (?, ?, ?, ?, ?, ?)");
-	$registreer->bind_param("ssssss", $voornaam, $achternaam, $mail, $hash, $gebrnaam, $rol);
+	$registreer->bind_param("ssssss", $voornaam, $achternaam, $mail, $gebrnaam, $pass, $rol);
 	$invoer = $registreer->execute();                                                                                                     
 	
 	if ($invoer === FALSE) 
