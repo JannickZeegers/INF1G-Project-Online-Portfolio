@@ -703,12 +703,12 @@ function resetpass($userID, $oudpass, $nieuwpass)
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$check = $DataBaseConnect->prepare("SELECT gebruikersId wachtwoord 
-										SET wachtwoord=?
-										WHERE userID=?");
+										FROM gebruiker
+										WHERE userID={$userID}");
 	$check->execute();
-	$check->bind_result($userID);
+	$check->bind_result($wachtwoord);
 	while ($check ->fetch())) {      
-			//.................??
+		//....................................?????????????????????????????????????????
 	}	
 	if (password_verify($oudpass, $hash)) 
 	{
@@ -741,22 +741,14 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
 										   FROM img
 										   WHERE naam LIKE 'Avatar%'");
-	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
-										   FROM img
-										   WHERE naam LIKE 'Avatar%'");
 	$retrieve->execute();
 	$retrieve->bind_result($naam, $url, $ext);
 	$imgarray = array();
-	while ($retrieve ->fetch()) { 
-		//array_push($imgarray, $url, $naam, $ext);
-	}	
-	//$daan = $imgarray[0] . $imgarray[1] . $imgarray[2];
-	//$jannick = $imgarray[3] . $imgarray[4] . $imgarray[5]; 
-	//$manuel = $imgarray[6] . $imgarray[7] . $imgarray[8]; 
-	//$martijn = $imgarray[9] . $imgarray[10] . $imgarray[11]; 
-	//$wesley = $imgarray[12] . $imgarray[13] . $imgarray[14]; 
-	//$wouter = $imgarray[15] . $imgarray[16] . $imgarray[17]; 
-	//return $daan . $jannick . $manuel . $martijn . $wesley . $wouter;
+	while ($retrieve->fetch()) {  
+		$imgarray = array("naam" => $naam, "url" => $url, "ext" => $ext);
+	}
+	
+	
 }
  
 /*
@@ -766,16 +758,15 @@ function retrieve_students()
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$retrieve = $DataBaseConnect->prepare("SELECT *
+	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, gebruikersnaam
 										   FROM gebruikers 
 										   WHERE rol = 'student'");
 	$retrieve->execute();
-	$retrieve->bind_result($userID, $gebrnaam);
-	while ($retrieve ->fetch()) {       
-		//...............???
+	$retrieve->bind_result($voornaam, $achternaam, $gebrnaam);
+	while ($retrieve->fetch()) {  
+		$imgarray[] = array("naam" => $voornaam, "achternaam" => $achternaam, "gebruikersnaam" => $gebrnaam);
 	}	
-	return $id;
-	return $gebrnaam;
+	print_r($imgarray);
 }
 	$retrieve->close();
 	$DataBaseConnect->close();
