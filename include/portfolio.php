@@ -678,7 +678,7 @@ function portfolio_get_student_notes($userId)
 /*
  * Registreer een gebruiker.
  */
-function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol) 	
+function register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol) 	
 {  
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	$hash = crypt($wachtwoord);

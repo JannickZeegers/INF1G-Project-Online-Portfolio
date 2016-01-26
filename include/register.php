@@ -23,12 +23,18 @@ include_once "portfolio.php";
 				<label>Achternaam</label>
 				<p><input type="text" name="achternaam" /></p>
 				<label>Mail</label>
-				<p><input type="text" name="achternaam" /></p>
+				<p><input type="text" name="mail" /></p>
 				<label>Gebruikersnaam</label>
 				<p><input type="text" name="gebrnaam" /></p>
 				<label>Pass</label>
 				<p><input type="password" name="pass" /></p>
 				<label>Rol</label>
+				<select name="rol">
+					<option value="student">Student</option>
+					<option value="docent">Docent</option>
+					<option value="slb">SlB</option>
+					<option value="admin">Admin</option>
+				</select>
 				<p><input type="text" name="rol" /></p>
 				<p><input type="submit" value="Registreer" name="submit"/></p> 
 			</form>

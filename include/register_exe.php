@@ -20,14 +20,28 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
-				if (!empty($_POST['voornaam']) && !empty($_POST['achternaam']) && !empty($_POST['mail']) && !empty($_POST['pass']) && !empty($_POST['gebrnaam']) && !empty($_POST['rol'])) {
+				if (!empty($_POST['voornaam']) && !empty($_POST['achternaam']) && !empty($_POST['mail']) && !empty($_POST['gebrnaam']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
 					$pass = htmlentities($_POST['pass']); 
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
-					$rol = htmlentities($_POST['rol']);
-					registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
+					$optie = htmlentities($_POST['rol']);
+					switch $optie { 
+						case 'student'
+						$rol = "student";
+						break;
+						case 'docent'
+						$rol = "docent";
+						break; 
+						case 'slb'
+						$rol = "slb"; 
+						break;
+						case 'admin'
+						$rol = "admin";
+						break;
+					}
+					register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
 					echo "<p class='error'>Registratie-process gelukt, er is een mail naar u toegestuurd</p>"; 
 					header("refresh:2; url=index.php"  );
 				} else {
