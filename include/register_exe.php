@@ -3,7 +3,7 @@ include_once "portfolio.php";
 ?>
 <!DOCTYPE html>
 <!--
-    Inlogpagina
+    registreer
 -->
 <html>
     <head>
@@ -20,7 +20,7 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
-				if (!empty($_POST['voornaam']) || !empty($_POST['achternaam']) || !empty($_POST['mail']) || !empty($_POST['pass']) || !empty($_POST['gebrnaam']) || !empty($_POST['rol'])) {
+				if (!empty($_POST['voornaam']) && !empty($_POST['achternaam']) && !empty($_POST['mail']) && !empty($_POST['pass']) && !empty($_POST['gebrnaam']) && !empty($_POST['rol'])) {
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
@@ -29,7 +29,7 @@ include_once "portfolio.php";
 					$rol = htmlentities($_POST['rol']);
 					registreer($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
 					echo "<p class='error'>Registratie-process gelukt, er is een mail naar u toegestuurd</p>"; 
-					header("refresh:10; url=../../index.php"  );
+					header("refresh:2; url=index.php"  );
 				} else {
 					echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
 				} 		
