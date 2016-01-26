@@ -775,7 +775,7 @@ function retrieve_students()
 		$studnaam = $student['naam']; 
 		$studachternaam = $student['achternaam']; 
 		$studmail =  $student['mail']; 
-		echo '<tr><td>{$studnaam} {$studachternaam}</td><td>{$studmail}</td></tr>';
+		echo "<tr><td>{$studnaam} {$studachternaam}</td><td>{$studmail}</td></tr>";
 	}
 	$retrieve->close();
 	$DataBaseConnect->close();
