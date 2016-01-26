@@ -29,12 +29,12 @@ include_once "portfolio.php";
 				<label>Pass</label>
 				<p><input type="password" name="pass" /></p>
 				<label>Rol</label>
-				<select name="rol">
+				<p><select name="rol">
 					<option value="student">Student</option>
 					<option value="docent">Docent</option>
 					<option value="slb">SlB</option>
 					<option value="admin">Admin</option>
-				</select>
+				</select></p>
 				<p><input type="submit" value="Registreer" name="submit"/></p> 
 			</form>
             </div>
