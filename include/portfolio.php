@@ -12,6 +12,7 @@
  */
 //Includes
 include_once "constants.php";
+include_once "portfolio_ext.php";
 
 //Session start
 session_start();
