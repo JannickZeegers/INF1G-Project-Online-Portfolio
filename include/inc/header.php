@@ -3,7 +3,7 @@
 -->
     <a id="homelink" href="admin.php">
         <div id="title">
-            <h1 class="title_text">Ons-Portfolio</h1>
+            <h1 class="title_text">Ons Portfolio</h1>
         </div>
     </a>
     <div id="cssmenu">
