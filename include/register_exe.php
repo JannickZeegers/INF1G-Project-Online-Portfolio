@@ -20,7 +20,7 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
-				if (!empty($_POST['voornaam']) && !empty($_POST['achternaam']) && !empty($_POST['mail']) && !empty($_POST['gebrnaam']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
+				if (!empty($_POST['voornaam']) && !empty($_POST['achternaam']) && !empty($_POST['mail']) && !empty($_POST['gebrnaam']) && !empty($_POST['wachtwoord']) && !empty($_POST['rol'])) {
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
