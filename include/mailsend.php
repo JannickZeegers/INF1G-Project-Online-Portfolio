@@ -80,7 +80,7 @@ include_once 'portfolio.php';
                         echo "</select></p>";
                 echo "<p>Subject: <input type='text' name='subject' value='" . htmlentities($subject) . "'> (max 155 characters)</p>";
                 //Vervang newlines met breaks zodat het goed wordt weergeven!
-                echo "<p>Message :</p><p><textarea name='message' rows='40' cols='100'>" . htmlentities($message) . "</textarea></p>";
+                echo "<p>Message :</p><p><textarea name='message' rows='20' cols='100'>" . htmlentities($message) . "</textarea></p>";
                 echo "<p><input type='submit' name='send' value='send'></p>";
                 echo "</form>";
             }  

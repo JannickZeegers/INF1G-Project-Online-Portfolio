@@ -69,10 +69,6 @@ include_once 'portfolio.php';
                         echo '<p>U heeft geen toegang tot deze pagina</p>';
                     }
                 }
-                else
-                {
-                    echo '<p><a href="admin.php">Ga terug</a></p>';
-                }
             }
             else
             {

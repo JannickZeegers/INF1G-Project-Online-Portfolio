@@ -108,7 +108,7 @@ include_once 'portfolio.php';
                                 {
                                     if($_SESSION['user']['gebruikersId'] === $cijferData['beoordelaarId'])
                                     {
-                                        echo '<p><a href="cijfer.php?material=' . $matId . '">Wijzig cijfer</p>';
+                                        echo '<p><a href="cijfer.php?material=' . $matId . '" target="_blank">Wijzig cijfer</p>';
                                     }
                                 }
                             }
@@ -118,7 +118,7 @@ include_once 'portfolio.php';
                                 //if($_SESSION['user']['rol'] == 'slb')
                                 if(portfolio_user_is_of_type(array('slb', 'admin')))
                                 {
-                                    echo '<p><a href="cijfer.php?material=' . $matId . '">Geef cijfer</p>';
+                                    echo '<p><a href="cijfer.php?material=' . $matId . '" target="_blank">Geef cijfer</p>';
                                 }
                             }
 
@@ -132,11 +132,11 @@ include_once 'portfolio.php';
                                 {
                                     echo '<h3>Opties</h3>';
                                     //Wijzig materiaal
-                                    echo '<p><a href="editmaterial.php?material=' . $matId . '">Wijzig materiaal</a></p>';
+                                    echo '<p><a href="editmaterial.php?material=' . $matId . '" target="_blank">Wijzig materiaal</a></p>';
                                     //Alleen verwijderen als er GEEN cijfer is gegeven
                                     if(!$cijferData)
                                     {
-                                        echo '<p><a href="removematerial.php?material=' . $matId . '">Verwijder materiaal</a></p>';
+                                        echo '<p><a href="removematerial.php?material=' . $matId . '" target="_blank">Verwijder materiaal</a></p>';
                                     }
                                 }
                             }
@@ -151,7 +151,6 @@ include_once 'portfolio.php';
                         echo '<p>Materiaal niet gevonden!</p>';
                     }
                 }
-                echo '<p><a href="admin.php">Ga terug</a></p>';
             }
             else
             {

@@ -102,6 +102,7 @@ include_once 'portfolio.php';
                             echo '</table>';
                             echo '<input type="submit" name="submit" value="Apply">';
                             echo '</form>';
+                            //TODO: Dit naar de correcte pagina linken
                             echo '<p><a href="#">Reset wachtwoord van deze gebruiker</a></p>';
                             echo '<p><a href="viewuser.php?user=' . $targetId . '">Terug</a></p>';
                         }
@@ -115,10 +116,6 @@ include_once 'portfolio.php';
                         echo '<p>Gebruiker niet gevonden!</p>';
                     }
                 }
-                else
-                {
-                    echo '<p><a href="admin.php">Ga terug</a></p>';
-                }   
             }
             else
             {

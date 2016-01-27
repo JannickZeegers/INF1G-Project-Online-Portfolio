@@ -82,31 +82,7 @@ include_once 'portfolio.php';
                     <p><input type='submit' name='submit' value='Maak aan'></p>
                 </form>
                 <?php
-                    /*echo '<h3>Lijst gebruikers</h3>';
-                    $gebruikers = portfolio_get_users();
-                    if(count($gebruikers) > 0)
-                    {
-                        echo '<table class="tableLeft">';
-                        echo '<tr><th rel="col">naam</th><th rel="col">rol</th><th rel="col">details</th></tr>';
-                        foreach($gebruikers as $vak)
-                        {
-                            echo '<tr>'
-                                    . '<td>' . $vak['voornaam'] . ' ' . $vak['achternaam'] . '</td>'
-                                    . '<td>' . $vak['rol'] . '</td>'
-                                    . '<td><a href="viewuser.php?user=' . $vak['gebruikersId'] . '">bekijk</a></td>'
-                                    . '</tr>';
-                        }
-                        echo '</table>';
-                    }
-                    else
-                    {
-                        echo '<p>Er zijn geen vakken gevonden</p>';
-                    }*/
                 }
-                else
-                {
-                    echo '<p><a href="admin.php">Ga terug</a></p>';
-                }   
             }
             else
             {

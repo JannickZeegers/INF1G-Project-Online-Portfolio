@@ -51,10 +51,6 @@ include_once 'portfolio.php';
                         echo '<p>Er zijn geen vakken gevonden</p>';
                     }
                 }
-                else
-                {
-                    echo '<p><a href="admin.php">Ga terug</a></p>';
-                }   
             }
             else
             {
