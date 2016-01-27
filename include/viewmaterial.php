@@ -108,7 +108,7 @@ include_once 'portfolio.php';
                                 {
                                     if($_SESSION['user']['gebruikersId'] === $cijferData['beoordelaarId'])
                                     {
-                                        echo '<p><a href="cijfer.php?material=' . $matId . '" target="_blank">Wijzig cijfer</p>';
+                                        echo '<p><a href="cijfer.php?material=' . $matId . '">Wijzig cijfer</p>';
                                     }
                                 }
                             }
@@ -118,7 +118,7 @@ include_once 'portfolio.php';
                                 //if($_SESSION['user']['rol'] == 'slb')
                                 if(portfolio_user_is_of_type(array('slb', 'admin')))
                                 {
-                                    echo '<p><a href="cijfer.php?material=' . $matId . '" target="_blank">Geef cijfer</p>';
+                                    echo '<p><a href="cijfer.php?material=' . $matId . '">Geef cijfer</p>';
                                 }
                             }
 
