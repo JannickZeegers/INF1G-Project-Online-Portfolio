@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start(); Niet nodig, portfolio.php doet dit al voor je. :)
 include 'portfolio.php';
 ?>
 <!DOCTYPE html>

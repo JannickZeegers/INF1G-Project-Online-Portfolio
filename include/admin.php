@@ -27,58 +27,7 @@ include_once 'portfolio.php';
             {
                 //Alles
                 echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
-                
-                /*
-                 * TODO: Verplaats dit overzicht naar een andere pagina?
-                 * Admin pagina links geven naar verschillende pagina's die de nodige overzichten bieden
-                 * In FO staat misschien wel welke overzichten we nodig hebben per rol
-                 */
-                
-                /*
-                 * TEST VOOR SLB ACCOUNT
-                 * Lijst alle materialen, gegroepeerd student
-                 */
-                //if($_SESSION['user']['rol'] == 'slb')
-                if(portfolio_user_is_of_type(array('admin', 'slb', 'docent')))
-                {
-                    //TEST: Lijst met alle materialen van 'test'
-                    echo '<h2>LIJST MATERIALEN</h2>';
-                    echo '<hr>';
-
-                    $students = portfolio_get_students();
-                    foreach($students as $s)
-                    {
-                        echo '<h3>' . $s['voornaam'] . ' ' . $s['achternaam'] . '</h3>';
-                        $mats = portfolio_get_user_materials($s['gebruikersId']);
-                        echo '<table class="tableLeft">';
-                        foreach($mats as $mat)
-                        {
-                            //echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
-                            echo '<tr><td><a href="viewmaterial.php?material=' . $mat['materiaalId'] . '">' . $mat['naam'] . '</a></td></tr>';
-                        }
-                        echo '</table>';
-                    }
-                }
-                /*
-                 * TEST VOOR STUDENT ACCOUNT
-                 * Lijst alle materialen van deze student
-                 */
-                else if($_SESSION['user']['rol'] == 'student')
-                {
-                    //TEST: Lijst met alle materialen van 'test'
-                    echo '<h2>LIJST MATERIALEN</h2>';
-                    echo '<hr>';
-
-                    echo '<h3>Jouw materialen</h3>';
-                    $mats = portfolio_get_user_materials($_SESSION['user']['gebruikersId']);
-                    echo '<table class="tableLeft">';
-                    foreach($mats as $mat)
-                    {
-                        //echo '<p>' . $mat['materiaalId'] . ' - ' . $mat['naam'] . ' - <a href="cijfer.php?material=' . $mat['materiaalId'] . '">Geef cijfer</a></p>';
-                        echo '<tr><td><a href="viewmaterial.php?material=' . $mat['materiaalId'] . '">' . $mat['naam'] . '</a></td></tr>';
-                    }
-                    echo '</table>';
-                }
+                echo "<p>Hier moet nog iets komen</p>";
             }
             else
             {

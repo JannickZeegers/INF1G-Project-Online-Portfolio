@@ -4,10 +4,7 @@ include_once 'portfolio.php';
 <!DOCTYPE html>
 <!--
     
-    Deze pagina laat gegevens van een materiaal zien.
-    Welke dit zijn is afhankelijk van wie is ingelogd.
-    Daarnaast bevat deze pagina links naar andere paginas die de gebruiker in staat stellen
-    acties uit te voeren op dit materiaal, denk aan beoordelen, gegevens aanpassen of het materiaal verwijderen
+    
 
 -->
 <html>
@@ -36,6 +33,23 @@ include_once 'portfolio.php';
                         {
                             echo "<h2>Onderwerp: " . htmlentities($mailData['onderwerp']) . "</h2>";
                             
+                            //Mail removal code
+                            $action = filter_input(INPUT_GET, 'action');
+                            switch($action)
+                            {
+                                case 'remove':  //No confirmation, it just sorta deletes it
+                                    if(portfolio_delete_mail_message($mailId)){
+                                        echo '<p>Mail verwijderd</p>';
+                                    }else{
+                                        portfolio_error();
+                                    }
+                                    break;
+                                default:
+                                    echo '<p><a href="mailview.php?' . $_SERVER['QUERY_STRING'] . '&action=remove">Verwijderen</a></p>';
+                                    break;
+                            }
+                            //
+                            
                             $sender = portfolio_get_user_details($mailData['zenderId']);
                             $reciever = portfolio_get_user_details($mailData['ontvangerId']);
                             echo '<table class="tableLeft"><tr><th rel="row">Zender:</th><td>';
@@ -56,7 +70,7 @@ include_once 'portfolio.php';
                         echo '<p>Mail niet gevonden!</p>';
                     }
                 }
-                echo '<p><a href="mailinbox.php">Ga terug</a></p>';
+                echo '<p><a href="mailinbox.php">Terug naar inbox</a></p>';
             }
             else
             {

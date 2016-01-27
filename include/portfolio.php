@@ -18,7 +18,8 @@ include_once "portfolio_debug.php";
 //Session start
 session_start();
 //Code die altijd gerunt wordt
-
+//Clear errors op page refresh?
+portfolio_clear_error();
 /*
  * De url van de pagina waarvan de gebruiker net is gekomen
  */
@@ -123,14 +124,14 @@ function portfolio_get_user_details($gebruikersId)
 
 /*
  * Upload een bestand voor de huidige gebruiker. $file is de naam van het bestand e.g. $_FILES[$file]
+ * Opmerking: Werkt alleen op server!
  */
 function portfolio_upload_material($userId, $file, $isPublic)
 {
-    if(!filter_var($userId, FILTER_VALIDATE_INT) || !isset($_FILES[$file]))
+    if(!filter_var($userId, FILTER_VALIDATE_INT) || !isset($_FILES[$file]) || $_FILES[$file]['error'] > 0)
     {
         return false;
     }
-    // TODO: Filetype blacklist!
     $blacklist = array('application/octet-stream', 'application/x-bsh', 'application/x-sh', 'application/x-shar', 'text/x-script.sh', 'text/html', 'text/x-server-parsed-html');
     if(in_array($_FILES[$file]['type'], $blacklist))
     {
@@ -140,13 +141,12 @@ function portfolio_upload_material($userId, $file, $isPublic)
     $name = $_FILES[$file]['name'];
     $ext = pathinfo($name)['extension'];
     $newName = time() . '.' . $ext;
-    // MOGELIJKE BUG: portfolio.php MOET in dezelfde map staan als PORTFOLIO_UPLOAD_DIR!!!!
+    // OPMERKING: portfolio.php MOET in dezelfde map staan als PORTFOLIO_UPLOAD_DIR!!!!
     if(move_uploaded_file($_FILES[$file]['tmp_name'], __DIR__ . '/'  . PORTFOLIO_UPLOAD_DIR . "/" . $newName))
     {
         $link = portfolio_connect();
         if($link)
         {
-            //materiaal(materiaalId, naam, eigenaarId, bestandsPad, bestandsType, isOpenbaar)
             $sql = "INSERT INTO " . TABLE_MATERIAL . " 
 					VALUES(NULL,"
                     . "'" . mysqli_real_escape_string($link, $name) . "', "
@@ -154,10 +154,7 @@ function portfolio_upload_material($userId, $file, $isPublic)
                     . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
                     . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "', "
                     . $isPublic . ")";
-            if(mysqli_query($link, $sql))
-            {
-                return true;
-            }
+            return mysqli_query($link, $sql);
         }
     }
     else 
@@ -198,6 +195,9 @@ function portfolio_login($userName, $userPass)
     return $userId;
 }
 
+/*
+ * Unset $_SESSION['user'] en vernietigd de sessie waardoor de user wordt uitgelogd.
+ */
 function portfolio_logout()
 {
     if(isset($_SESSION['user']))
@@ -299,7 +299,9 @@ function portfolio_get_students()
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
-            array_push($return, $row);
+            $r = $row;
+            $r['wachtwoord'] = null;    //Krijg je niet!
+            array_push($return, $r);
         }
         return $return;
     }
@@ -307,7 +309,7 @@ function portfolio_get_students()
 }
 
 /*
- * Geeft alle studentinfo terug
+ * Geeft alle gebruikersinfo terug
  */
 function portfolio_get_users()
 {
@@ -321,7 +323,9 @@ function portfolio_get_users()
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
-            array_push($return, $row);
+            $r = $row;
+            $r['wachtwoord'] = null;    //Krijg je niet!
+            array_push($return, $r);
         }
         return $return;
     }
@@ -651,26 +655,26 @@ function portfolio_delete_subject($subjectId)
 }
 
 /*
- * Geeft alle cijfers van een student terug
+ * Geeft alle cijfers (inclusief materiaalnaam en vakken) van een student terug
  */
-function portfolio_get_student_notes($userId)
+function portfolio_get_student_notes_ext($userId)
 {
     $link = portfolio_connect();
     if($link)
     {
-        $mats = portfolio_get_user_materials($userId);
-        if(count($mats) > 0)
+        $sql = "SELECT cijfer.cijfer AS cijfer, materiaal.naam AS naam, materiaal.materiaalId AS materiaalId
+FROM materiaal, cijfer
+WHERE cijfer.materiaalId = materiaal.materiaalId AND materiaal.eigenaarId = " . mysqli_real_escape_string($link, $userId) .
+" ORDER BY materiaal.materiaalId ASC";
+        $result = mysqli_query($link, $sql);
+        if($result)
         {
-            $result = array();
-            foreach($mats as $m)
+            $return = array();
+            while(($row = mysqli_fetch_assoc($result)) != null)
             {
-                $c = portfolio_get_note($m['materiaalId']);
-                if($c)
-                {
-                    array_push($result, $c);
-                }
+                $return[] = $row;
             }
-            return $result;
+            return $return;
         }
     }
     return null;
@@ -741,8 +745,43 @@ function portfolio_delete_guestbook_message($messageId)
             }
             else
             {
-                portfolio_push_error(PORTFOLIO_ERROR_UNAUTHORIZED);
+                portfolio_set_error(PORTFOLIO_ERROR_UNAUTHORIZED);
             }
+        }
+        else
+        {
+            portfolio_set_error(PORTFOLIO_ERROR_NOT_FOUND);
+        }
+    }
+    return null;
+}
+
+/*
+ * Verwijderd een mail bericht
+ */
+function portfolio_delete_mail_message($mailId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $msgData = portfolio_get_message($mailId);
+        if($msgData)
+        {
+            if((portfolio_user_is_of_type(array('student', 'slb', 'docent')) && $_SESSION['user']['gebruikersId'] == $msgData['zenderId'])
+                || (portfolio_user_is_of_type(array('student', 'slb', 'docent')) && $_SESSION['user']['gebruikersId'] == $msgData['ontvangerId'])
+                || portfolio_user_is_of_type(array('admin')))
+            {
+                $sql = "DELETE FROM " . TABLE_MESSAGE . " WHERE berichtId=" . mysqli_real_escape_string($link, $mailId);
+                return mysqli_query($link, $sql);
+            }
+            else
+            {
+                portfolio_set_error(PORTFOLIO_ERROR_UNAUTHORIZED);
+            }
+        }
+        else
+        {
+            portfolio_set_error(PORTFOLIO_ERROR_NOT_FOUND);
         }
     }
     return null;
