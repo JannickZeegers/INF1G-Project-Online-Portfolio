@@ -15,7 +15,7 @@ include_once 'portfolio.php';
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- TODO: EVERYTHING -->
+        
         <div id="container">
             <div id="header">
                 <?php include 'inc/header.php'; ?>
@@ -30,7 +30,6 @@ include_once 'portfolio.php';
                     
                     echo '<p><a href="adduser.php">Maak nieuwe gebruiker aan</a></p>';
                     echo '<h3>Lijst gebruikers</h3>';
-                    //TODO: Verander dit naar ALLE gebruikers
                     $gebruikers = portfolio_get_users();
                     if(count($gebruikers) > 0)
                     {

@@ -12,7 +12,7 @@ include_once 'portfolio.php';
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- TODO: EVERYTHING -->
+        
         <div id="container">
             <div id="header">
                 <?php include 'inc/header.php'; ?>
@@ -45,17 +45,12 @@ include_once 'portfolio.php';
 
                             echo '</table>';
                             
-                            /*
-                             * TODO: Pagina's voor deze opties
-                             */
                             if($targetData['rol'] === 'student')
                             {
                                 echo '<h3>Opties</h3>';
                                 echo '<p><a href="viewnotes.php?student=' . $targetId . '">Overzicht cijfers</a></p>';
                                 echo '<p><a href="viewmaterials.php?student=' . $targetId . '">Overzicht materialen</a></p>';
                             }
-                            //Ga naar cijferoverzicht student
-                            //Ga naar materiaaloverzicht student
                             
                             if(portfolio_user_is_of_type(array('admin')))
                             {

@@ -7,8 +7,6 @@ include_once "portfolio.php";
     Pagina voor uploaden van nieuwe materialen.
     Mag nu alleen gedaan worden door een ingelogde STUDENT. 
 
-    TODO: (Check FO of dit gedrag correct is)
-
 -->
 <html>
     <head>

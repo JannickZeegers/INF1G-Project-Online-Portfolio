@@ -12,7 +12,7 @@ include_once 'portfolio.php';
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- TODO: EVERYTHING -->
+        
         <div id="container">
             <div id="header">
                 <?php include 'inc/header.php'; ?>
@@ -39,7 +39,7 @@ include_once 'portfolio.php';
                             if(isset($_POST['submit']))
                             {
                                 /*
-                                 * TODO: Deze meuk
+                                 * TODO: Some POST processing
                                  */
                                 /*$gebruikersnaam = filter_input(INPUT_POST, 'gebruikersnaam', FILTER_SANITIZE_STRING);
                                 $voornaam = filter_input(INPUT_POST, 'voornaam', FILTER_SANITIZE_STRING);

@@ -15,7 +15,6 @@ include_once 'portfolio.php';
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- TODO: EVERYTHING -->
         <div id="container">
             <div id="header">
                 <?php include 'inc/header.php'; ?>
