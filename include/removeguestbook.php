@@ -11,7 +11,7 @@ include_once 'portfolio.php';
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Verwijder vak</title>
+        <title>Ons Portfolio - Verwijder gastenboek bericht</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -25,24 +25,23 @@ include_once 'portfolio.php';
             if(isset($_SESSION['user']))
             {
                 //$matId = filter_input(INPUT_GET, 'material', FILTER_VALIDATE_INT);
-                $subjectId = filter_input(INPUT_GET, 'subject', FILTER_VALIDATE_INT);
-                if($subjectId)
+                $matId = filter_input(INPUT_GET, 'message', FILTER_VALIDATE_INT);
+                if($matId)
                 {
                     //Alles
                     echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
-                    $subjectData = portfolio_get_subject($subjectId);
-                    if($subjectData)
+                    $matData = portfolio_get_guestbook_message($matId);
+                    if($matData)
                     {
-                        echo '<h2>Verwijder ' . $subjectData['vaknaam'] . '</h2>';
-                        
+                        echo '<h2>Verwijderen gastenboek bericht</h2>';
                         /*
                          * Checks + verwijderen van materiaal.
                          */
-                        if(portfolio_user_is_of_type(array('admin')))
+                        if($_SESSION['user']['gebruikersId'] === $matData['ontvangerId'] || portfolio_user_is_of_type(array('admin')))
                         {
                             $pwCorrect = false;
                             $deleted = false;
-                            if(isset($_POST['submit']) && isset($_SESSION['user']) && $subjectId)
+                            if(isset($_POST['submit']) && isset($_SESSION['user']) && $matId)
                             {
                                 $userId = $_SESSION['user']['gebruikersId'];
                                 $userPass = filter_input(INPUT_POST, 'userPass');
@@ -58,7 +57,7 @@ include_once 'portfolio.php';
                                             if(password_verify($userPass, $array['wachtwoord']))
                                             {
                                                 $pwCorrect = true;
-                                                $deleted = portfolio_delete_subject($subjectId);
+                                                $deleted = portfolio_delete_guestbook_message($matId);
                                             }
                                         }
                                     }
@@ -70,7 +69,7 @@ include_once 'portfolio.php';
                              */
                             if(!$pwCorrect)
                             {
-                                echo '<h3>Typ hieronder uw wachtwoord in om het vak te verwijderen</h3>';
+                                echo '<h3>Typ hieronder uw wachtwoord in om het bericht te verwijderen</h3>';
                                 ?>
                                 <form action='<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING']?>' method='post' enctype="multipart/form-data">
                                     <p>Wachtwoord:<br><input type='password' name='userPass'></p>
@@ -80,23 +79,23 @@ include_once 'portfolio.php';
                             }
                             else if($deleted)
                             {
-                                echo '<p>Vak verwijderd</p>';
+                                echo '<p>Bericht verwijderd</p>';
                             }
                             else
                             {
-                                echo '<p>Kon vak niet verwijderen</p>';
+                                echo '<p>Kon bericht niet verwijderen</p>';
                             }
                         }
                         else
                         {
-                            echo '<p>U bent niet gemachtigd dit vak te verwijderen</p>';
+                            echo '<p>U bent niet gemachtigd dit bericht te verwijderen</p>';
                         }
                     }
                     else
                     {
-                        echo '<p>Vak niet gevonden!</p>';
+                        echo '<p>Bericht niet gevonden!</p>';
                     }
-                }                
+                }
             }
             else
             {

@@ -13,6 +13,7 @@
 //Includes
 include_once "constants.php";
 include_once "portfolio_ext.php";
+include_once "portfolio_debug.php";
 
 //Session start
 session_start();
@@ -674,6 +675,79 @@ function portfolio_get_student_notes($userId)
     }
     return null;
 }
+
+/*
+ * Geeft alle berichten terug (tekst ook) die in het gastenboek van de gebruiker staan
+ * Resultaat kan een lege array zijn!
+ * Berichten staan in omgekeerd chronologische volgorde
+ */
+function portfolio_get_guestbook_messages($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $messageArray = array();
+        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE ontvangerId=" . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
+        $result = mysqli_query($link, $sql);
+        if($result){
+            $messageArray = array();
+            while(($row = mysqli_fetch_assoc($result))){
+                array_push($messageArray, $row);
+            }
+            return $messageArray;
+        }
+    }
+    return null;
+}
+
+/*
+ * Geeft alle berichten terug (tekst ook) die in het gastenboek van de gebruiker staan
+ * Resultaat kan een lege array zijn!
+ * Berichten staan in omgekeerd chronologische volgorde
+ */
+function portfolio_get_guestbook_message($messageId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $messageArray = array();
+        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
+        $result = mysqli_query($link, $sql);
+        if($result){
+            if(($row = mysqli_fetch_assoc($result))){
+                return $row;
+            }
+        }
+    }
+    return null;
+}
+
+/*
+ * Verwijderd een gastenboekbericht
+ */
+function portfolio_delete_guestbook_message($messageId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $msgData = portfolio_get_guestbook_message($messageId);
+        if($msgData)
+        {
+            if((portfolio_user_is_of_type(array('student')) && $_SESSION['user']['gebruikersId'] == $msgData['ontvangerId'])
+                    || portfolio_user_is_of_type(array('admin')))
+            {
+                $sql = "DELETE FROM " . TABLE_GUESTBOOK . " WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
+                return mysqli_query($link, $sql);
+            }
+            else
+            {
+                portfolio_push_error(PORTFOLIO_ERROR_UNAUTHORIZED);
+            }
+        }
+    }
+    return null;
+}
+
 
 /*
  * Registreer een gebruiker.

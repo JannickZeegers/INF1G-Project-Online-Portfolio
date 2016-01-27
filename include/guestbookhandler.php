@@ -14,7 +14,7 @@ switch($action)
         if($userId){
             $link = portfolio_connect();
             if($link){
-                $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE ontvangerID=" . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtID DESC";
+                $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE ontvangerId=" . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
                 $result = mysqli_query($link, $sql);
                 if($result){
                     $messageArray = array();

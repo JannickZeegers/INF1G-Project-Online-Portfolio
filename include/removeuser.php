@@ -96,9 +96,7 @@ include_once 'portfolio.php';
                     {
                         echo '<p>Gebruiker niet gevonden!</p>';
                     }
-                }
-                echo '<p><a href="admin.php">Ga terug</a></p>';
-                
+                }                
             }
             else
             {

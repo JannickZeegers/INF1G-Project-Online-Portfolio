@@ -27,7 +27,7 @@ and open the template in the editor.
             if($logout)
             {
                 echo '<p>U bent uitgelogd</p>';
-                echo '<p><a href="index.php">Ga terug naar de homepage</a></p>';
+                echo '<p><a href="admin.php">Ga terug naar de homepage</a></p>';
             }
             else
             {

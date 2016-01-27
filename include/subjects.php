@@ -68,7 +68,7 @@ include_once 'portfolio.php';
                         echo '<tr><th rel="col">vak id</th><th rel="col">naam</td></tr><th rel="col"></th>';
                         foreach($vakken as $vak)
                         {
-                            echo '<tr><td>' . $vak['vakId'] . '</td><td>' . $vak['vaknaam'] . '</td><td><a href="removesubject.php?subject=' . $vak['vakId'] . '">verwijder</a></td></tr>';
+                            echo '<tr><td>' . $vak['vakId'] . '</td><td>' . $vak['vaknaam'] . '</td><td><a href="removesubject.php?subject=' . $vak['vakId'] . '" target="_blank">verwijder</a></td></tr>';
                         }
                         echo '</table>';
                     }
