@@ -915,7 +915,7 @@ function retrieve_students()
 										   FROM gebruiker
 										   WHERE rol = 'student'");
 	$retrieve->execute();
-	$retrieve->bind_result($voornaam, $achternaam, $mail);
+	$retrieve->bind_result($voornaam, $achternaam, $mail, $img);
 	while ($retrieve->fetch()) {  
 		$studarray[] = array("voornaam" => $voornaam, "achternaam" => $achternaam, "eMail" => $mail, "imgurl" => $img);
 	}	
@@ -923,7 +923,7 @@ function retrieve_students()
 	foreach ($studarray as $student) { 
 		$studnaam = $student['voornaam']; 
 		$studachternaam = $student['achternaam']; 
-		$studmail =  $student['Email'];
+		$studmail =  $student['eMail'];
 		$studimg =  $student['imgurl']; 		
 		echo "<tr><td>{$studnaam} {$studachternaam}</td><td>{$studmail}</td><td><img class='thumbnail' src='{$studimg}'</td></tr>";
 	}
