@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once "portfolio.php";
 ?>
 <!DOCTYPE html>
@@ -20,7 +21,8 @@ include_once "portfolio.php";
 				<?php 
 					$oudpass = $_POST['oudpass']; 
 					$nieuwpass = $_POST['nieuwepass'];
-					resetpass($oudpass, $nieuwpass); 
+					$userID = $_SESSION['user'];
+					resetpass($userID, $oudpass, $nieuwpass); 
 				?>
             </div>
             <div id="footer">

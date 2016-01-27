@@ -1,26 +1,29 @@
 <?php
-include_once "portfolio.php";
+//session_start(); Niet nodig, portfolio.php doet dit al voor je. :)
+include 'portfolio.php';
 ?>
 <!DOCTYPE html>
-<!--
-    Inlogpagina
--->
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Overzicht studenten</title>
+        <title>Ons Portfolio - Overzicht leerlingen</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div id="container">
             <div id="header">
-                <div id="header">
-                    <?php include 'inc/header.php'; ?>
-                </div>
+                <?php include 'inc/header.php'; ?>
             </div>
             <div id="content">
-            <h1>Students</h1>
-        
+            <h2>Leerling</h2>
+            <?php
+				echo '<table>
+						<th>studentnaam</th><th>email</th><th></th>';
+						
+						retrieve_students();
+						
+				echo  '</table>'; 
+            ?>
             </div>
             <div id="footer">
                 INF1G - 2016

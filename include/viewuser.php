@@ -51,8 +51,8 @@ include_once 'portfolio.php';
                             if($targetData['rol'] === 'student')
                             {
                                 echo '<h3>Opties</h3>';
-                                echo '<p><a href="viewnotes.php?student=' . $targetId . '">Overzicht cijfers</a></p>';
-                                echo '<p><a href="viewmaterials.php?student=' . $targetId . '">Overzicht materialen</a></p>';
+                                echo '<p><a href="viewnotes.php?student=' . $targetId . '" target="_blank">Overzicht cijfers</a></p>';
+                                echo '<p><a href="viewmaterials.php?student=' . $targetId . '" target="_blank">Overzicht materialen</a></p>';
                             }
                             //Ga naar cijferoverzicht student
                             //Ga naar materiaaloverzicht student
@@ -60,8 +60,9 @@ include_once 'portfolio.php';
                             if(portfolio_user_is_of_type(array('admin')))
                             {
                                 echo '<h3>Administratie</h3>';
-                                echo '<p><a href="edituser.php?user=' . $targetId . '">Wijzig gebruiker</a></p>';
-                                echo '<p><a href="removeuser.php?user=' . $targetId . '">Verwijder gebruiker</a></p>';
+                                echo '<p><a href="guestbook.php?user=' . $targetId . '" target="_blank">Bekijk gastenboek gebruiker</a></p>';
+                                echo '<p><a href="edituser.php?user=' . $targetId . '" target="_blank">Wijzig gebruiker</a></p>';
+                                echo '<p><a href="removeuser.php?user=' . $targetId . '" target="_blank">Verwijder gebruiker</a></p>';
                             }
                         }
                         else

@@ -13,12 +13,13 @@
 //Includes
 include_once "constants.php";
 include_once "portfolio_ext.php";
-
+include_once "portfolio_debug.php";
 
 //Session start
 session_start();
 //Code die altijd gerunt wordt
-
+//Clear errors op page refresh?
+portfolio_clear_error();
 /*
  * De url van de pagina waarvan de gebruiker net is gekomen
  */
@@ -123,14 +124,14 @@ function portfolio_get_user_details($gebruikersId)
 
 /*
  * Upload een bestand voor de huidige gebruiker. $file is de naam van het bestand e.g. $_FILES[$file]
+ * Opmerking: Werkt alleen op server!
  */
 function portfolio_upload_material($userId, $file, $isPublic)
 {
-    if(!filter_var($userId, FILTER_VALIDATE_INT) || !isset($_FILES[$file]))
+    if(!filter_var($userId, FILTER_VALIDATE_INT) || !isset($_FILES[$file]) || $_FILES[$file]['error'] > 0)
     {
         return false;
     }
-    // TODO: Filetype blacklist!
     $blacklist = array('application/octet-stream', 'application/x-bsh', 'application/x-sh', 'application/x-shar', 'text/x-script.sh', 'text/html', 'text/x-server-parsed-html');
     if(in_array($_FILES[$file]['type'], $blacklist))
     {
@@ -140,13 +141,12 @@ function portfolio_upload_material($userId, $file, $isPublic)
     $name = $_FILES[$file]['name'];
     $ext = pathinfo($name)['extension'];
     $newName = time() . '.' . $ext;
-    // MOGELIJKE BUG: portfolio.php MOET in dezelfde map staan als PORTFOLIO_UPLOAD_DIR!!!!
+    // OPMERKING: portfolio.php MOET in dezelfde map staan als PORTFOLIO_UPLOAD_DIR!!!!
     if(move_uploaded_file($_FILES[$file]['tmp_name'], __DIR__ . '/'  . PORTFOLIO_UPLOAD_DIR . "/" . $newName))
     {
         $link = portfolio_connect();
         if($link)
         {
-            //materiaal(materiaalId, naam, eigenaarId, bestandsPad, bestandsType, isOpenbaar)
             $sql = "INSERT INTO " . TABLE_MATERIAL . " 
 					VALUES(NULL,"
                     . "'" . mysqli_real_escape_string($link, $name) . "', "
@@ -154,10 +154,7 @@ function portfolio_upload_material($userId, $file, $isPublic)
                     . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
                     . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "', "
                     . $isPublic . ")";
-            if(mysqli_query($link, $sql))
-            {
-                return true;
-            }
+            return mysqli_query($link, $sql);
         }
     }
     else 
@@ -198,6 +195,9 @@ function portfolio_login($userName, $userPass)
     return $userId;
 }
 
+/*
+ * Unset $_SESSION['user'] en vernietigd de sessie waardoor de user wordt uitgelogd.
+ */
 function portfolio_logout()
 {
     if(isset($_SESSION['user']))
@@ -299,7 +299,9 @@ function portfolio_get_students()
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
-            array_push($return, $row);
+            $r = $row;
+            $r['wachtwoord'] = null;    //Krijg je niet!
+            array_push($return, $r);
         }
         return $return;
     }
@@ -307,7 +309,7 @@ function portfolio_get_students()
 }
 
 /*
- * Geeft alle studentinfo terug
+ * Geeft alle gebruikersinfo terug
  */
 function portfolio_get_users()
 {
@@ -321,7 +323,9 @@ function portfolio_get_users()
         $result = mysqli_query($link, $sql);
         while(($row = mysqli_fetch_assoc($result)) != null)
         {
-            array_push($return, $row);
+            $r = $row;
+            $r['wachtwoord'] = null;    //Krijg je niet!
+            array_push($return, $r);
         }
         return $return;
     }
@@ -651,30 +655,138 @@ function portfolio_delete_subject($subjectId)
 }
 
 /*
- * Geeft alle cijfers van een student terug
+ * Geeft alle cijfers (inclusief materiaalnaam en vakken) van een student terug
  */
-function portfolio_get_student_notes($userId)
+function portfolio_get_student_notes_ext($userId)
 {
     $link = portfolio_connect();
     if($link)
     {
-        $mats = portfolio_get_user_materials($userId);
-        if(count($mats) > 0)
+        $sql = "SELECT cijfer.cijfer AS cijfer, materiaal.naam AS naam, materiaal.materiaalId AS materiaalId
+FROM materiaal, cijfer
+WHERE cijfer.materiaalId = materiaal.materiaalId AND materiaal.eigenaarId = " . mysqli_real_escape_string($link, $userId) .
+" ORDER BY materiaal.materiaalId ASC";
+        $result = mysqli_query($link, $sql);
+        if($result)
         {
-            $result = array();
-            foreach($mats as $m)
+            $return = array();
+            while(($row = mysqli_fetch_assoc($result)) != null)
             {
-                $c = portfolio_get_note($m['materiaalId']);
-                if($c)
-                {
-                    array_push($result, $c);
-                }
+                $return[] = $row;
             }
-            return $result;
+            return $return;
         }
     }
     return null;
 }
+
+/*
+ * Geeft alle berichten terug (tekst ook) die in het gastenboek van de gebruiker staan
+ * Resultaat kan een lege array zijn!
+ * Berichten staan in omgekeerd chronologische volgorde
+ */
+function portfolio_get_guestbook_messages($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $messageArray = array();
+        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE ontvangerId=" . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
+        $result = mysqli_query($link, $sql);
+        if($result){
+            $messageArray = array();
+            while(($row = mysqli_fetch_assoc($result))){
+                array_push($messageArray, $row);
+            }
+            return $messageArray;
+        }
+    }
+    return null;
+}
+
+/*
+ * Geeft alle berichten terug (tekst ook) die in het gastenboek van de gebruiker staan
+ * Resultaat kan een lege array zijn!
+ * Berichten staan in omgekeerd chronologische volgorde
+ */
+function portfolio_get_guestbook_message($messageId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $messageArray = array();
+        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
+        $result = mysqli_query($link, $sql);
+        if($result){
+            if(($row = mysqli_fetch_assoc($result))){
+                return $row;
+            }
+        }
+    }
+    return null;
+}
+
+/*
+ * Verwijderd een gastenboekbericht
+ */
+function portfolio_delete_guestbook_message($messageId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $msgData = portfolio_get_guestbook_message($messageId);
+        if($msgData)
+        {
+            if((portfolio_user_is_of_type(array('student')) && $_SESSION['user']['gebruikersId'] == $msgData['ontvangerId'])
+                    || portfolio_user_is_of_type(array('admin')))
+            {
+                $sql = "DELETE FROM " . TABLE_GUESTBOOK . " WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
+                return mysqli_query($link, $sql);
+            }
+            else
+            {
+                portfolio_set_error(PORTFOLIO_ERROR_UNAUTHORIZED);
+            }
+        }
+        else
+        {
+            portfolio_set_error(PORTFOLIO_ERROR_NOT_FOUND);
+        }
+    }
+    return null;
+}
+
+/*
+ * Verwijderd een mail bericht
+ */
+function portfolio_delete_mail_message($mailId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $msgData = portfolio_get_message($mailId);
+        if($msgData)
+        {
+            if((portfolio_user_is_of_type(array('student', 'slb', 'docent')) && $_SESSION['user']['gebruikersId'] == $msgData['zenderId'])
+                || (portfolio_user_is_of_type(array('student', 'slb', 'docent')) && $_SESSION['user']['gebruikersId'] == $msgData['ontvangerId'])
+                || portfolio_user_is_of_type(array('admin')))
+            {
+                $sql = "DELETE FROM " . TABLE_MESSAGE . " WHERE berichtId=" . mysqli_real_escape_string($link, $mailId);
+                return mysqli_query($link, $sql);
+            }
+            else
+            {
+                portfolio_set_error(PORTFOLIO_ERROR_UNAUTHORIZED);
+            }
+        }
+        else
+        {
+            portfolio_set_error(PORTFOLIO_ERROR_NOT_FOUND);
+        }
+    }
+    return null;
+}
+
 
 /*
  * Registreer een gebruiker.
@@ -686,12 +798,12 @@ function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 	
 	$registreer = $DataBaseConnect->prepare("INSERT INTO gebruiker (voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)
 											 VALUES (?, ?, ?, ?, ?, ?)");
-	$registreer->bind_param("ssssss", $voornaam, $achternaam, $mail, $hash, $gebrnaam, $rol);
+	$registreer->bind_param("ssssss", $voornaam, $achternaam, $mail, $gebrnaam, $hash, $rol);
 	$invoer = $registreer->execute();                                                                                                     
 	
 	if ($invoer === FALSE) 
 	{ 
-		echo "<p>De opdracht kan niet worden uitgevoerd.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
+		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
 	} 
 	$registreer->close();
 	$DataBaseConnect->close();
@@ -705,13 +817,10 @@ function resetpass($userID, $oudpass, $nieuwpass)
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$check = $DataBaseConnect->prepare("SELECT gebruikersId wachtwoord 
-										SET wachtwoord=?
-										WHERE userID=?");
+										FROM gebruiker
+										WHERE userID={$userID}");
 	$check->execute();
-	$check->bind_result($userID);
-	while ($check ->fetch()) {      
-			//.................??
-	}	
+	$check->bind_result($oudpass);	
 	if (password_verify($oudpass, $hash)) 
 	{
 		$newhash = password_hash($nieuwpass, PASSWORD_DEFAULT);
@@ -736,29 +845,27 @@ function resetpass($userID, $oudpass, $nieuwpass)
 /*
  * Ophalen mainplaatjes   
  */
-function ophalen_img($imgarray) 
+function retrieve_img() 
 { 
 $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
 										   FROM img
 										   WHERE naam LIKE 'Avatar%'");
-	$retrieve = $DataBaseConnect->prepare("SELECT naam, url, ext 
-										   FROM img
-										   WHERE naam LIKE 'Avatar%'");
 	$retrieve->execute();
 	$retrieve->bind_result($naam, $url, $ext);
-	$imgarray = array();
-	while ($retrieve ->fetch()) { 
-		//array_push($imgarray, $url, $naam, $ext);
-	}	
-	//$daan = $imgarray[0] . $imgarray[1] . $imgarray[2];
-	//$jannick = $imgarray[3] . $imgarray[4] . $imgarray[5]; 
-	//$manuel = $imgarray[6] . $imgarray[7] . $imgarray[8]; 
-	//$martijn = $imgarray[9] . $imgarray[10] . $imgarray[11]; 
-	//$wesley = $imgarray[12] . $imgarray[13] . $imgarray[14]; 
-	//$wouter = $imgarray[15] . $imgarray[16] . $imgarray[17]; 
-	//return $daan . $jannick . $manuel . $martijn . $wesley . $wouter;
+	while ($retrieve->fetch()) {  
+		$imgarray[] = array("naam" => $naam, "url" => $url, "ext" => $ext);
+	}
+	
+	foreach ($imgarray as $persoon) { 
+		$imgnaam = $persoon['naam']; 
+		$imgurl = $persoon['url']; 
+		$imgext =  $persoon['ext']; 
+		echo '<li><a href="http://'.str_replace("Avatar_", "", $imgnaam).'.ons-portfolio.nl/"><img class="foto" src="'.$imgurl.''.$imgnaam.''.$imgext.'" alt="'.$imgnaam.'"><p class="textfoto">'.str_replace("Avatar_", "", $imgnaam).'<p></li></a>';
+	}
+	$retrieve->close();
+	$DataBaseConnect->close();
 }
  
 /*
@@ -768,18 +875,24 @@ function retrieve_students()
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$retrieve = $DataBaseConnect->prepare("SELECT *
-										   FROM gebruikers 
+	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, eMail
+										   FROM gebruiker
 										   WHERE rol = 'student'");
 	$retrieve->execute();
-	$retrieve->bind_result($userID, $gebrnaam);
-	while ($retrieve ->fetch()) {       
-		//...............???
+	$retrieve->bind_result($voornaam, $achternaam, $mail);
+	while ($retrieve->fetch()) {  
+		$studarray[] = array("naam" => $voornaam, "achternaam" => $achternaam, "mail" => $mail);
 	}	
-	return $id;
-	return $gebrnaam;
+	
+	foreach ($studarray as $student) { 
+		$studnaam = $student['naam']; 
+		$studachternaam = $student['achternaam']; 
+		$studmail =  $student['mail']; 
+		echo "<tr><td>{$studnaam} {$studachternaam}</td><td>{$studmail}</td></tr>";
+	}
+	$retrieve->close();
+	$DataBaseConnect->close();
 }
 
 
-
-
+?>

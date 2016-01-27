@@ -24,14 +24,12 @@ include_once "portfolio.php";
                 </div>
             </div>
             <div id="content">
-                <h2>Upload</h2>
+                <h2>Upload materiaal</h2>
                 <?php
                 if(isset($_SESSION['user']))
                 {
                     if($_SESSION['user']['rol'] === 'student')
                     {
-                        echo "<p>Gebruiker: " . $_SESSION['user']['gebruikersnaam'] . "</p>";
-                        // put your code here
                         if(isset($_POST["submit"]))
                         {
                             $public = 0;
@@ -49,7 +47,7 @@ include_once "portfolio.php";
                         ?>
                         <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
                             <p>File<br><input type="file" name="file"></p>
-                            <p>Openbaar zichtbaar?<br><input type="checkbox" name="public" value="true" checked="checked"></p>
+                            <p><span title="Dit wil zeggen dat iedereen het materiaal op kan roepen via getmaterial.php. Laat dit aan als je van plan bent het materiaal hiermee op te halen vanaf een andere pagina.">Openbaar zichtbaar?</span><br><input type="checkbox" name="public" value="true" checked="checked"></p>
                             <p><input type='submit' name='submit' value='upload'></p>
                         </form>
                     <?php

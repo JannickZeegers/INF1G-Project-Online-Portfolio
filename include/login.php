@@ -66,7 +66,7 @@ if(isset($_POST["submit"]))
             else
             {
                 echo '<p>U bent al ingelogd als ' . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . '</p>';
-                echo '<p><a href="admin.php">Ga terug</a></p>';
+                echo '<p><a href="admin.php">Naar de homepage</a></p>';
             }
             ?>
             </div>

@@ -12,7 +12,6 @@ include_once 'portfolio.php';
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- TODO: EVERYTHING -->
         <div id="container">
             <div id="header">
                 <?php include 'inc/header.php'; ?>
@@ -36,18 +35,18 @@ include_once 'portfolio.php';
                         {
                             echo '<h2>' . $targetData['voornaam'] . ' ' . $targetData['achternaam'] . '</h2>';
                             echo '<h3>Cijfers</h3>';
-                            $notes = portfolio_get_student_notes($targetId);
+                            $notes = portfolio_get_student_notes_ext($targetId);
                             if(count($notes) > 0)
                             {
                                 echo '<table class="tableLeft">';
                                 echo '<tr><th rel="col">naam materiaal</th><th rel="col">verbonden vakken</th><th rel="col">cijfer</th></tr>';
+                                
                                 foreach($notes as $n)
                                 {
-                                    $m = portfolio_get_material($n['materiaalId']);
                                     $v = portfolio_get_material_subjects($n['materiaalId']);
                                     echo '<tr>';
                                     //naam
-                                    echo '<td><a href="viewmaterial.php?material=' . $m['materiaalId'] . '">' . $m['naam'] . '</a></td>';
+                                    echo '<td><a href="viewmaterial.php?material=' . $n['materiaalId'] . '">' . $n['naam'] . '</a></td>';
                                     //vakken
                                     echo '<td>';
                                     for($i = 0; $i < count($v); $i++)
