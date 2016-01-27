@@ -161,7 +161,6 @@ function portfolio_upload_material($userId, $file, $isPublic)
     {
         echo "<p>ERROR WHEN MOVING FILE</p>";
     }
-    //
     
     return false;
 }
