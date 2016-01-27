@@ -925,7 +925,7 @@ function retrieve_students()
 		$studachternaam = $student['achternaam']; 
 		$studmail =  $student['eMail'];
 		$studimg =  $student['imgurl']; 		
-		echo "<tr><td>{$studnaam} {$studachternaam}</td><td>{$studmail}</td><td><img class='thumbnail' src='{$studimg}'</td></tr>";
+		echo "<tr><td class='student'>{$studnaam} {$studachternaam}</td><td class='student'>{$studmail}</td><td class='student'><img class='thumbnail' src='{$studimg}'</td></tr>";
 	}
 	$retrieve->close();
 	$DataBaseConnect->close();

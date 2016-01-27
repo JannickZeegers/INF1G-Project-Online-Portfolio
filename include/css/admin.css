@@ -215,10 +215,15 @@ form.registreer{
     text-align: left;
 }
 
+td.student{
+	padding: 00px 70px;
+}
+
 .thumbnail{ 
 	width: 80px; height: 80px;
 	border-style: solid; 
 	border-color: grey;
 }
+
 
 
