@@ -32,6 +32,10 @@ a{
     color: inherit;
 }
 
+th, td{
+    padding: 2px;
+}
+
 body{
     background-color: #21386a;
     /*background-image: url("background-pattern.jpg"); */
@@ -206,13 +210,12 @@ form.registreer{
     text-align: center;
 }
 
-/*
-    TABEL KLASSEN VOOR OVERZICHTEN
-*/
+
 .tableLeft{
     text-align: left;
 }
 
-th, td{
-    padding: 2px;
-}
+.thumbnail{ 
+	width: 100px; height: 100px;}
+
+
