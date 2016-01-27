@@ -17,10 +17,8 @@ include 'portfolio.php';
             <div id="content">
             <h2>Leerling</h2>
             <?php
-				echo '<table>';
-						
+				echo '<table>';			
 						retrieve_students();
-						
 				echo  '</table>'; 
             ?>
             </div>
