@@ -26,8 +26,6 @@ include_once "portfolio.php";
 				<p><input type="text" name="mail" /></p>
 				<label>Gebruikersnaam</label>
 				<p><input type="text" name="gebrnaam" /></p>
-				<label>Pass</label>
-				<p><input type="password" name="wachtwoord" /></p>
 				<label>Rol</label>
 				<p><select name="rol">
 					<option value="student">Student</option>
