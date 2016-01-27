@@ -752,7 +752,7 @@ function portfolio_delete_guestbook_message($messageId)
 /*
  * Registreer een gebruiker.
  */
-function register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol) 	
+function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol) 	
 {  
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	$hash = crypt($wachtwoord);

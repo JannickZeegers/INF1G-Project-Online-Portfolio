@@ -25,7 +25,7 @@ include_once "portfolio.php";
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
-					$pass = htmlentities($_POST['pass']); 
+					$pass = htmlentities($_POST['wachtwoord']); 
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
 					case 'student':
@@ -41,7 +41,7 @@ include_once "portfolio.php";
 						$rol = "admin";
 					break;
 					}
-					register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
+					register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);  
 					echo "<p class='error'>Registratie-process gelukt, er is een mail naar u toegestuurd</p>"; 
 					header("refresh:2; url=index.php"  );
 				} else {
