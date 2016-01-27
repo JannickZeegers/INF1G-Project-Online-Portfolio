@@ -30,7 +30,7 @@ include_once 'portfolio.php';
                 
                 //Als een student ingelogd is, dan is targetUser de student. Anders pakken we hem via GET
                 $targetUser = portfolio_user_is_of_type(array('student')) ? $_SESSION['user']['gebruikersId'] : filter_input(INPUT_GET, 'student', FILTER_VALIDATE_INT);
-                
+
                 if($targetUser)
                 {
                     $mats = portfolio_get_user_materials($targetUser);
@@ -56,7 +56,7 @@ include_once 'portfolio.php';
                     }
                     else
                     {
-                        echo '<p>Student niet gevonden!</p>';
+                        echo '<p>Geen materialen gevonden!</p>';
                     }
                 }
                 else

@@ -38,31 +38,38 @@ include_once 'portfolio.php';
                             //HIER SUBMIT TROEP
                             if(isset($_POST['submit']))
                             {
-                                /*
-                                 * TODO: Some POST processing
-                                 */
-                                /*$gebruikersnaam = filter_input(INPUT_POST, 'gebruikersnaam', FILTER_SANITIZE_STRING);
-                                $voornaam = filter_input(INPUT_POST, 'voornaam', FILTER_SANITIZE_STRING);
-                                $achternaam = filter_input(INPUT_POST, 'achternaam', FILTER_SANITIZE_STRING);
-                                $email = filter_input(INPUT_POST, 'eMail', FILTER_SANITIZE_STRING);
-                                $rol = filter_input(INPUT_POST, 'rol', FILTER_SANITIZE_STRING);
-                                if($gebruikersnaam && $voornaam && $achternaam && $email &&
-                                        ($rol === 'student' || $rol === 'docent' || $rol === 'slb' || $rol === 'admin'))
+                                $naam = filter_input(INPUT_POST, 'naam');
+                                $isPublic = filter_input(INPUT_POST, 'isOpenbaar');
+                                if(!empty($naam))
                                 {
-                                    if(portfolio_update_user($targetId, $voornaam, $achternaam, $gebruikersnaam, $email, $rol))
+                                    switch($isPublic)
                                     {
-                                        echo '<p>Gebruiker aangepast</p>';
-                                        $targetData = portfolio_get_user_details($targetId);
+                                        case 0: $isPublic = 0; break;
+                                        case 1: $isPublic = 1; break;
+                                        default: $isPublic = 0; break;
+                                    }
+                                    //VAKKEN
+                                    $vakken = array();
+                                    $vakData = portfolio_get_subjects();
+                                    foreach($vakData as $vak)
+                                    {
+                                        $input = filter_input(INPUT_POST, 'vak' . $vak['vakId']);
+                                        if($input)
+                                        {
+                                            $vakken[] = $vak['vakId'];
+                                        }
+                                    }
+                                    //UPDATE 
+                                    if(portfolio_update_material($targetId, $naam, $isPublic, $vakken))
+                                    {
+                                        echo '<p>Materiaal aangepast</p>';
+                                        $targetData = portfolio_get_material($targetId);
                                     }
                                     else
                                     {
-                                        echo '<p>Gebruiker kon niet worden aangepast</p>';
+                                        echo '<p>Kon materiaal niet aanpassen</p>';
                                     }
                                 }
-                                else
-                                {
-                                    echo '<p>Niet alle velden zijn correct ingevuld!</p>';
-                                }*/
                             }
 
                             echo '<h3>Gegevens</h3>';
@@ -99,8 +106,26 @@ include_once 'portfolio.php';
                             echo '</select>';
                             echo '</td></tr>';
                             /*
-                             * TODO: Iets met vakken
+                             * Iets met vakken
                              */
+                            $vakkenActief = portfolio_get_material_subjects($targetId);
+                            echo '<tr><th rel="row">' . 'Vakken' . '</th><td>';
+                            $vakken = portfolio_get_subjects();
+                            foreach($vakken as $r)
+                            {
+                                echo '<input type="checkbox" name="vak' . $r['vakId'] . '"';
+                                foreach($vakkenActief as $va)
+                                {
+                                    if($r['vakId'] === $va['vakId'])
+                                    {
+                                        echo ' checked="checked"';
+                                        continue;
+                                    }
+                                }
+                                echo '>' . $r['vaknaam'] . '<br>';
+                            }
+                            echo '</td></tr>';
+                            
                             echo '</table>';
                             
                             echo '<input type="submit" name="submit" value="Apply">';

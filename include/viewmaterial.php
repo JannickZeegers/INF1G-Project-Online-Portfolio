@@ -132,11 +132,11 @@ include_once 'portfolio.php';
                                 {
                                     echo '<h3>Opties</h3>';
                                     //Wijzig materiaal
-                                    echo '<p><a href="editmaterial.php?material=' . $matId . '" target="_blank">Wijzig materiaal</a></p>';
+                                    echo '<p><a href="editmaterial.php?material=' . $matId . '">Wijzig materiaal</a></p>';
                                     //Alleen verwijderen als er GEEN cijfer is gegeven
                                     if(!$cijferData)
                                     {
-                                        echo '<p><a href="removematerial.php?material=' . $matId . '" target="_blank">Verwijder materiaal</a></p>';
+                                        echo '<p><a href="removematerial.php?material=' . $matId . '">Verwijder materiaal</a></p>';
                                     }
                                 }
                             }

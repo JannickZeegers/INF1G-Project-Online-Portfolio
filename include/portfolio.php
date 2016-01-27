@@ -405,20 +405,41 @@ function portfolio_get_send_messages($userId)
 /*
  * Update gegevens van een materiaal
  */
-function portfolio_update_material($materialId, $name=null, $isPublic=null)
+function portfolio_update_material($materialId, $name, $isPublic, $subjects)
 {
     $link = portfolio_connect();
-    if($link && ($name != null || $isPublic != null))
+    if($link)
     {
+        $result = false;
         $sql = "UPDATE " . TABLE_MATERIAL . " SET ";
-        if($name != null)
-            $sql .= "naam='" . mysqli_real_escape_string($link, $name) . "' ";
-        if($isPublic != null)
-            $sql .= "isOpenbaar='" . mysqli_real_escape_string($link, $isPublic) . "' ";
+        $sql .= "naam='" . mysqli_real_escape_string($link, $name) . "', ";
+        $sql .= "isOpenbaar=" . mysqli_real_escape_string($link, $isPublic) . " ";
         $sql .= "WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
-        $result = mysqli_query($link, $sql);
-        if($result)
-            return true;
+        if(mysqli_query($link, $sql))
+        {
+            $sql = "DELETE FROM " . TABLE_MATERIAL_SUBJECT . " WHERE materiaalId=" . mysqli_real_escape_string($link, $materialId);
+            if(mysqli_query($link, $sql))
+            {
+                if(count($subjects) > 0)
+                {
+                    $sql = "INSERT INTO " . TABLE_MATERIAL_SUBJECT . "(materiaalId, vakId) VALUES ";
+                    foreach($subjects as $index => $subject)
+                    {
+                        $sql .= "(" . mysqli_real_escape_string($link, $materialId) . ", " . mysqli_real_escape_string($link, $subject) . ")";
+                        if($index < count($subjects) - 1)
+                        {
+                            $sql .= ", ";
+                        }
+                    }
+                    $result = mysqli_query($link, $sql);
+                }
+                else
+                {
+                    $result = true;
+                }
+            }
+        }
+        return $result;
     }
     return null;
 }
@@ -593,6 +614,22 @@ function portfolio_get_subjects()
             array_push($return, $row);
         }
         return $return;
+    }
+    return null;
+}
+
+function portfolio_get_subject_count()
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "SELECT COUNT(*) 
+				FROM " . TABLE_SUBJECT;
+        $result = mysqli_query($link, $sql);
+        if(($row = mysqli_fetch_array($result)) != null)
+        {
+            return (int)$row[0];
+        }
     }
     return null;
 }
