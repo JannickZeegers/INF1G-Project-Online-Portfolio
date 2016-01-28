@@ -66,6 +66,7 @@ if(isset($_POST["submit"]))
                     <p><input type='submit' name='submit' value='login'></p>
                 </form>
                 <p><a href="pwreset.php">Wachtwoord vergeten? Klik hier voor een nieuw wachtwoord</a></p>
+                <p><a href="register.php">Geen account? Klik hier om te registeren</a></p>
                 <?php
             }
             else

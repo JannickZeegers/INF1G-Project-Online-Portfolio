@@ -53,6 +53,42 @@ function portfolio_connect()
 }
 
 /*
+ * afblijven AUB
+ */
+
+/*
+ * Registreer een gebruiker.
+ */
+function portfolio_register_old($gebruikersnaam, $wachtwoord, $mail, $voornaam, $achternaam, $type = "student")
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " WHERE gebruikersnaam='" . mysqli_real_escape_string($link, $gebruikersnaam) . "' OR eMail='" . mysqli_real_escape_string($link, $mail) . "'";
+        $result = mysqli_query($link, $sql);
+        if(mysqli_fetch_assoc($result))
+        {
+            echo "<p>Deze gebruikersnaam of e-mail is al in gebruik!</p>";
+            return false;
+        }
+        $sql = "INSERT INTO " . TABLE_USER . "(gebruikersId, voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)"
+                . "  VALUES(NULL, "
+                 . "'" . mysqli_real_escape_string($link, $voornaam) . "', "
+                 . "'" . mysqli_real_escape_string($link, $achternaam) . "', "
+                 . "'" . mysqli_real_escape_string($link, $mail) . "', "
+                 . "'" . mysqli_real_escape_string($link, $gebruikersnaam) . "', "
+                 . "'" . mysqli_real_escape_string($link, password_hash($wachtwoord, PASSWORD_DEFAULT)) . "', "
+                 . "'" . mysqli_real_escape_string($link, $type) . "')";
+        $result = mysqli_query($link, $sql);
+        if($result)
+        {
+            return mysqli_insert_id($link);
+        }
+    }
+    return false;
+}
+
+/*
  * Krijg alle materialen van een gebruiker
  */
 function portfolio_get_user_materials($userId)
