@@ -44,6 +44,7 @@ include_once "portfolio.php";
 					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
 					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande link klikken";
 					$link = "www.ons-portfolio.nl/register_exe.php";
+
 					
 					$message = "{$autohead}
 								user_{$voornaam}  

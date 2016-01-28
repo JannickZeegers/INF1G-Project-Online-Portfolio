@@ -20,11 +20,18 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
-				if (retrieve_request($bericht)) { 
-					print_r ($fetcharray);  
-				} 
-			
 				
+				retrieve_request();
+				foreach ($fetched as $bericht) { 
+					$voornaam = $opgehaald['naam'];  
+					$achternaam = $opgehaald['achternaam']; 
+					$mail = $opgehaald['mail']; 
+					$gebrnaam = $opgehaald['gebrnaam']; 
+					$optie = $opgehaald['rol'];
+				}
+					
+				
+					
 			
 				//if (     ) {}
 					//$voornaam = 

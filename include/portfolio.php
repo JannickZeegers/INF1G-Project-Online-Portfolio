@@ -1010,7 +1010,7 @@ function resetpass($userID, $oudpass, $nieuwpass)
 /*
  * Ophalen aanmeldVerzoek  
  */
-function retrieve_request($bericht) {  
+function retrieve_request() {  
 $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT bericht 
@@ -1019,9 +1019,12 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 	$retrieve->execute();
 	$retrieve->bind_result($bericht);
 	while ($retrieve->fetch()) {  
-		$bericht = array($retrieve); 
-		return $bericht;
+		$berichtarray[] = array("bericht" => $bericht); 	
     }
+	foreach ($berichtarray as $persoon) { 
+		$opgehaald = $persoon['bericht'];
+		echo $opgehaald;
+	}
 }
 
 /*
