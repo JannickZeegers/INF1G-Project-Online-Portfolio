@@ -21,7 +21,14 @@ include_once "portfolio.php";
             <div id="content">
 			<?php
 				$userId = $_GET['user']; 
-				portfolio_reset_pass($userId);
+				if(portfolio_reset_pass($userId))
+                                {
+                                    echo '<p>Gebruiker geaccepteerd!</p>';
+                                }
+                                else
+                                {
+                                    echo '<p>Er ging iets mis. Probeer het later nog een keer</p>';
+                                }
 			?>
             </div>
             <div id="footer">
