@@ -2,6 +2,10 @@
 include_once "portfolio.php";
 
 /*
+ * Pagina om in te loggen
+ * 
+ * 
+ * 
  * Code voor de rest van de pagina zodat het menu klopt na inloggen
  */
 $loggedIn = false;

@@ -1,5 +1,8 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina die een materiaal verwijderd, door de eigenaar of admin, mits er geen cijfer aan gekoppeld is.
+ */
 ?>
 <!DOCTYPE html>
 <!--

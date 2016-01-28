@@ -1,13 +1,10 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * De hoofdpagina van het backend. Staat verassend weinig op.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">

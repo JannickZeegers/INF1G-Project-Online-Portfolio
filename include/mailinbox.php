@@ -1,5 +1,8 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina die de inbox van de interne berichtendienst laat zien voor de huidige gebruiker
+ */
 ?>
 <!DOCTYPE html>
 <html>

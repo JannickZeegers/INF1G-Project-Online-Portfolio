@@ -1,6 +1,8 @@
 <?php
 /*
  * Geeft een afbeelding terug volgens de img tabel
+ * Voor gebruik op een ander domein (eigen pagina's dus)
+ * <img src="http://ons-portfolio.nl/getimg.php?name=Avatar_Wouter">
  */
 if(!isset($_GET['name']) || !filter_input(INPUT_GET, 'name'))
 {

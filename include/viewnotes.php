@@ -1,10 +1,11 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Laat cijfers van een student zien, met het materiaal waarvoor het cijfer is gegeven.
+ * Via url (subject) kan het tot een bepaald vak beperkt worden.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    Pagina waarop een lijst met cijfers van een student wordt weergeven.
--->
 <html>
     <head>
         <meta charset="UTF-8">

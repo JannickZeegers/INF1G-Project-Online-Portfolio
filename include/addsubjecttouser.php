@@ -1,13 +1,12 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina waarop een vak aan een gebruiker wordt gekoppeld.
+ * Mag alleen gedaan worden door een admin.
+ * Deze pagina wordt alleen gelinkt door usersubjects.php
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -23,7 +22,7 @@ include_once 'portfolio.php';
             </div>
             <div id="content">
             <?php
-            if(isset($_SESSION['user']))
+            if(portfolio_user_is_of_type(array('admin')))
             {
                 //Alles
                 echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";

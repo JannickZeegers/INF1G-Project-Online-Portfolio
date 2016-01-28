@@ -1,13 +1,11 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina waarop gastenboekberichten worden weergeven.
+ * Alleen zichtbaar voor admin of eigenaar, bevat links om berichten te verwijderen
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">

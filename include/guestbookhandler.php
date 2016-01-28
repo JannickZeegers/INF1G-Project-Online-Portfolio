@@ -6,6 +6,7 @@ $action = filter_input(INPUT_POST, 'action');
 /*
  * This is a php page that handles guestbook interaction via post requests.
  * Returns json encoded stuff.
+ * Author: Wouter
  */
 switch($action)
 {

@@ -1,13 +1,12 @@
 <?php
 include_once "portfolio.php";
+/*
+ * Deze pagina heeft een form voor het uploaden van een nieuw materiaal.
+ * Alleen een student kan materialen uploaden.
+ * Na uploaden komt er een link om de materiaalgegevens te bekijken (en aan te passen)
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    
-    Pagina voor uploaden van nieuwe materialen.
-    Mag nu alleen gedaan worden door een ingelogde STUDENT. 
-
--->
 <html>
     <head>
         <meta charset="UTF-8">

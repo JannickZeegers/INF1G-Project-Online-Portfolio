@@ -553,6 +553,7 @@ function portfolio_delete_user($userId)
             return null;
         }
         $userData = portfolio_get_user_details($userId);
+        //Dat doen we dus mooi niet
         if($userData['gebruikersId'] === $_SESSION['user']['gebruikersId'])
         {
             return null;

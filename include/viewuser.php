@@ -1,10 +1,12 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina waarop gegevens van een gebruiker te zien zijn.
+ * Niet zichtbaar voor studenten.
+ * Admin heeft optie tot bewerken.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    Een pagina waarop gegevens van een gebruiker worden weergeven. Bevat links naar andere pagina's,afhankelijk van context.
--->
 <html>
     <head>
         <meta charset="UTF-8">
