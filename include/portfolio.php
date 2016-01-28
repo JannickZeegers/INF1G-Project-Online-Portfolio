@@ -459,20 +459,6 @@ function portfolio_send_message_anon($subject, $message, $recieverId)
 	$registreer->close();
 	$DataBaseConnect->close();
 }
-	
-	
-	
-	
-    if($link){ 
-        //Getallen bij een insert/where e.d. niet tussen '' zetten
-        $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
-                      VALUES(NULL, NULL, $recieverId , '" .
-                mysqli_real_escape_string($link, $subject) . "' , '" .
-                mysqli_real_escape_string($link, $message) . "')";
-        return mysqli_query($link, $SQLstring);
-    }
-    return null;
-}
 
 /*
  * Update gegevens van een materiaal
