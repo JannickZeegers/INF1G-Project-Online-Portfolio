@@ -12,6 +12,7 @@
  */
 //Includes
 include_once "constants.php";
+include_once "portfolio_ext.php";
 include_once "portfolio_debug.php";
 
 //Session start
@@ -153,7 +154,10 @@ function portfolio_upload_material($userId, $file, $isPublic)
                     . "'" . mysqli_real_escape_string($link, PORTFOLIO_UPLOAD_DIR . "/" . $newName) . "', "
                     . "'" . mysqli_real_escape_string($link, $_FILES[$file]['type']) . "', "
                     . $isPublic . ")";
-            return mysqli_query($link, $sql);
+            if(mysqli_query($link, $sql))
+            {
+                return mysqli_insert_id($link);
+            }
         }
     }
     else 
@@ -764,6 +768,19 @@ function portfolio_get_user_subjects($userId)
             array_push($return, $row);
         }
         return $return;
+    }
+    return null;
+}
+
+function portfolio_add_user_subject($userId, $subjectId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "INSERT INTO " . TABLE_USER_SUBJECT . "(gebruikersId, vakId) VALUES("
+                . mysqli_real_escape_string($link, $userId) . ", "
+                . mysqli_real_escape_string($link, $subjectId) . ")";
+        return mysqli_query($link, $sql);
     }
     return null;
 }
