@@ -53,13 +53,15 @@ include_once "portfolio.php";
 								{$optie}
 								{$automelding}
 								{$link}";
-					portfolio_send_message(999, 'Aanmeldings-verzoek', $message, 1);
-					//register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);  
-					echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
-					header("refresh:2; url=index.php");
+					if (portfolio_send_message_anon($subject, $message, $recieverId)) {
+						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
+						header("refresh:2; url=index.php");
+					} else {
+						echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
+					}
 				} else {
 					echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
-				} 		
+					} 		
 			?>
             </div>
             <div id="footer">
