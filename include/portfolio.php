@@ -969,13 +969,13 @@ function retrieve_students()
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, eMail, imgurl
+	$retrieve = $DataBaseConnect->prepare("SELECT gebruikersId, voornaam, achternaam, eMail, imgurl
 										   FROM gebruiker
 										   WHERE rol = 'student'");
 	$retrieve->execute();
-	$retrieve->bind_result($voornaam, $achternaam, $mail, $img);
+	$retrieve->bind_result($gebruikersId, $voornaam, $achternaam, $mail, $img);
 	while ($retrieve->fetch()) {  
-		$studarray[] = array("voornaam" => $voornaam, "achternaam" => $achternaam, "eMail" => $mail, "imgurl" => $img);
+		$studarray[] = array("gebruikersId" => $gebruikersId, "voornaam" => $voornaam, "achternaam" => $achternaam, "eMail" => $mail, "imgurl" => $img);
 	}	
 	
 	foreach ($studarray as $student) { 
@@ -983,7 +983,7 @@ function retrieve_students()
 		$studachternaam = $student['achternaam']; 
 		$studmail =  $student['eMail'];
 		$studimg =  $student['imgurl']; 		
-		echo "<tr><td class='student'>{$studnaam} {$studachternaam}</td><td class='student'>{$studmail}</td><td class='student'><img class='thumbnail' src='{$studimg}'</td></tr>";
+        echo "<tr><td class='student'><a href='viewuser.php?user={$student['gebruikersId']}'>{$studnaam} {$studachternaam}</a></td><td class='student'>{$studmail}</td><td class='student'><img class='thumbnail' src='{$studimg}'</td></tr>";
 	}
 	$retrieve->close();
 	$DataBaseConnect->close();
