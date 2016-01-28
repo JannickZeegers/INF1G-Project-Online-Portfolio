@@ -24,6 +24,7 @@ include_once "portfolio.php";
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
+					$wachtwoord = "Allekrabbenhebbenpiemels";
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
@@ -42,19 +43,16 @@ include_once "portfolio.php";
 					}
 					
 					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
-					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande link klikken";
-					$link = "www.ons-portfolio.nl/register_exe.php";
-
-					
-					$message = "{$autohead}
-								user_{$voornaam}  
-								user_{$achternaam} 
-								user_{$mail} 
-								user_{$gebrnaam} 
-								user_{$optie}
+					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande link gebruiken";
+					$link = "www.ons-portfolio.nl/register_exe.php";$message = "{$autohead}
+								voornaam: {$voornaam}  
+								achternaam: {$achternaam} 
+								mail: {$mail} 
+								gewenste gebruikersnaam: {$gebrnaam} 
+								zijn/haar gewenste rol: {$optie}
 								{$automelding}
 								{$link}";
-					if (portfolio_send_message_anon(1, "Verzoek tot aanmelding", $message)) {
+					if (portfolio_send_message_anon(1, "Verzoek tot aanmelding", $message) && register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)) {
 						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
 						header("refresh:2; url=index.php");
 					} else {
