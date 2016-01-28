@@ -10,13 +10,16 @@ if(isset($_POST['submit']))
     $newpass = filter_input(INPUT_POST, 'newpass');
     $newpass2 = filter_input(INPUT_POST, 'newpass2');
     
-    $userId = $_SESSION['user']['gebruikersId'];
+    $userId = $_SESSION['user']['gebruikersId'];    //Zolang je niet uitlogt tijdens het veranderen van je wachtwoord is het helemaal prima
     
     if(!empty($curpass) && !empty($newpass) && !empty($newpass2))
     {
         if($newpass === $newpass2)
         {
-            if(0)   /// Bepaal welke methode wordt gebruikt. 0 -> resetpass functie 1 -> code hier
+            /*
+             * Bepaal welke methode wordt gebruikt. 0 -> resetpass functie 1 -> code op deze pagina
+             */
+            if(0)   /// 
             {       ///
             $link = portfolio_connect();
             if($link)
@@ -77,16 +80,10 @@ if(isset($_POST['submit']))
 }
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ons Portfolio - Reset wachtwoord</title>
+        <title>Ons Portfolio - Verander wachtwoord</title>
         <link href="css/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
