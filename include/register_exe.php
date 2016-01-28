@@ -42,21 +42,35 @@ include_once "portfolio.php";
 					}
 					
 					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
-					$automedling = "Indien u hiermee akkoord gaat, gaarne de onderstaande klikken";
-					$link = "http//www.ons-portfolio.nl/register_exe"
+					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande klikken";
+					$link = "http//www.ons-portfolio.nl/register_exe";
 					
-					$message = "{$autohead}
-								{$voornaam}  
-								{$achternaam} 
-								{$mail} 
-								{$gebrnaam} 
-								{$optie}
-								{$automelding}
-								{$link}";
-					portfolio_send_message(999, 'Aanmeldings-verzoek', $message, 1);
+					$message = $autohead . "\r\n" .
+								"voornaam: " . $voornaam . "\r\n" .
+								"achternaam: " . $achternaam . "\r\n" .
+								"email: " . $mail . "\r\n" .
+								"gebruikersnaam: " . $gebrnaam . "\r\n" .
+								"rol: " . $optie . "\r\n" .
+								$automelding . "\r\n" .
+								$link;
+                    //Naar alle admins
+                    $admins = portfolio_get_admins();
+                    $success = false;
+                    foreach($admins as $admin)
+                    {
+                        $success = portfolio_send_message_anon('Aanmeldings-verzoek', $message, $admin['gebruikersId']);
+                    }
+                    if($success)
+                    {
+                        echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>";
+                    }
+                    else
+                    {
+                        echo "<p class='error'>FUCK</p>";
+                    }
 					//register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);  
-					echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
-					header("refresh:2; url=index.php");
+					
+					//header("refresh:2; url=index.php");
 				} else {
 					echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
 				} 		

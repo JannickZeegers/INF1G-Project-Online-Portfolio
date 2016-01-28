@@ -284,6 +284,30 @@ function portfolio_get_note($materialId)
 }
 
 /*
+ * Geeft alle admins terug
+ */
+function portfolio_get_admins()
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT * 
+				FROM " . TABLE_USER . " 
+				WHERE rol='admin'";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            $r = $row;
+            $r['wachtwoord'] = null;    //Krijg je niet!
+            array_push($return, $r);
+        }
+        return $return;
+    }
+    return null;
+}
+
+/*
  * Geeft alle studentinfo terug
  */
 function portfolio_get_students()
@@ -407,15 +431,32 @@ function portfolio_get_send_messages($userId)
 function portfolio_send_message($senderId, $subject, $message,  $recieverId)
 {
 	$link = portfolio_connect();
-		if($link){ 
-			//Getallen bij een insert/where e.d. niet tussen '' zetten
-			$SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
-						  VALUES(NULL, $senderId, $recieverId , '" .
-					mysqli_real_escape_string($dbConnect, $subject) . "' , '" .
-					mysqli_real_escape_string($dbConnect, $message) . "')";
-			$QueryResult = mysqli_query($dbConnect, $SQLstring);
-			echo "<p>Your message has been send!</p>";
-		}
+    if($link){ 
+        //Getallen bij een insert/where e.d. niet tussen '' zetten
+        $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
+                      VALUES(NULL, $senderId, $recieverId , '" .
+                mysqli_real_escape_string($link, $subject) . "' , '" .
+                mysqli_real_escape_string($link, $message) . "')";
+        return mysqli_query($link, $SQLstring);
+    }
+    return null;
+}
+
+/*
+ * Verzendt de berichten
+ */
+function portfolio_send_message_anon($subject, $message,  $recieverId)
+{
+	$link = portfolio_connect();
+    if($link){ 
+        //Getallen bij een insert/where e.d. niet tussen '' zetten
+        $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
+                      VALUES(NULL, NULL, $recieverId , '" .
+                mysqli_real_escape_string($link, $subject) . "' , '" .
+                mysqli_real_escape_string($link, $message) . "')";
+        return mysqli_query($link, $SQLstring);
+    }
+    return null;
 }
 
 /*
@@ -928,13 +969,13 @@ function retrieve_students()
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$retrieve = $DataBaseConnect->prepare("SELECT voornaam, achternaam, eMail, imgurl
+	$retrieve = $DataBaseConnect->prepare("SELECT gebruikersId, voornaam, achternaam, eMail, imgurl
 										   FROM gebruiker
 										   WHERE rol = 'student'");
 	$retrieve->execute();
-	$retrieve->bind_result($voornaam, $achternaam, $mail, $img);
+	$retrieve->bind_result($gebruikersId, $voornaam, $achternaam, $mail, $img);
 	while ($retrieve->fetch()) {  
-		$studarray[] = array("voornaam" => $voornaam, "achternaam" => $achternaam, "eMail" => $mail, "imgurl" => $img);
+		$studarray[] = array("gebruikersId" => $gebruikersId, "voornaam" => $voornaam, "achternaam" => $achternaam, "eMail" => $mail, "imgurl" => $img);
 	}	
 	
 	foreach ($studarray as $student) { 
@@ -942,7 +983,7 @@ function retrieve_students()
 		$studachternaam = $student['achternaam']; 
 		$studmail =  $student['eMail'];
 		$studimg =  $student['imgurl']; 		
-		echo "<tr><td class='student'>{$studnaam} {$studachternaam}</td><td class='student'>{$studmail}</td><td class='student'><img class='thumbnail' src='{$studimg}'</td></tr>";
+        echo "<tr><td class='student'><a href='viewuser.php?user={$student['gebruikersId']}'>{$studnaam} {$studachternaam}</a></td><td class='student'>{$studmail}</td><td class='student'><img class='thumbnail' src='{$studimg}'</td></tr>";
 	}
 	$retrieve->close();
 	$DataBaseConnect->close();

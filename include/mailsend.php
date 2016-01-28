@@ -52,7 +52,14 @@ include_once 'portfolio.php';
                         else
                         { 
                             $senderId = $_SESSION['user']['gebruikersId'];
-                            portfolio_send_message($senderId, $subject, $message,  $recieverId);
+                            if(portfolio_send_message($senderId, $subject, $message,  $recieverId))
+                            {
+                                echo '<p>Bericht verzonden</p>';
+                            }
+                            else
+                            {
+                                echo '<p>Kon bericht niet verzenden</p>';
+                            }
                         }
                     }                   
                 }
