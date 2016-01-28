@@ -24,7 +24,7 @@ include_once "portfolio.php";
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
-					$wachtwoord = "Allekrabbenhebben[REDACTED]";
+					$wachtwoord = "Allekrabbenhebbenpoten";
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
@@ -45,7 +45,7 @@ include_once "portfolio.php";
 					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
 					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande link gebruiken";
 					//$insertId = register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);
-                                        //Dan maar de oude
+                                        //Dan maar de oude, die werkt in elk geval
                                         $insertId = portfolio_register_old($gebrnaam, $wachtwoord, $mail, $voornaam, $achternaam, $rol);
 					$link = "www.ons-portfolio.nl/register_exe.php?user={$insertId}";
 					
@@ -70,7 +70,7 @@ include_once "portfolio.php";
                                             echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
                                         }
 				} else {
-                                    echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
+                                    echo "<p class='error'>U dient wel alle velden in te vullen.</p>";
                                 } 		
 			?>
             </div>
