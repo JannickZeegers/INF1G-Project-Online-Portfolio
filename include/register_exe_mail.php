@@ -60,7 +60,7 @@ include_once "portfolio.php";
 						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
 						header("refresh:2; url=index.php");
 					} else {
-						echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
+						echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens{$insertId}</p>"; 
                                         }
 				} else {
 					echo "<p class='error'>U dient wel alle velden in te vullen.</p>";
