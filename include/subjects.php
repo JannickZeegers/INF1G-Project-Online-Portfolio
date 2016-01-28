@@ -63,10 +63,10 @@ include_once 'portfolio.php';
                     if(count($vakken) > 0)
                     {
                         echo '<table class="tableLeft">';
-                        echo '<tr><th rel="col">vak id</th><th rel="col">naam</td></tr><th rel="col"></th>';
+                        echo '<tr><th rel="col">vak id</th><th rel="col">naam</td><th rel="col"></th><th rel="col"></th></tr>';
                         foreach($vakken as $vak)
                         {
-                            echo '<tr><td>' . $vak['vakId'] . '</td><td>' . $vak['vaknaam'] . '</td><td><a href="removesubject.php?subject=' . $vak['vakId'] . '" target="_blank">verwijder</a></td></tr>';
+                            echo '<tr><td>' . $vak['vakId'] . '</td><td>' . $vak['vaknaam'] . '</td><td><a href="removesubject.php?subject=' . $vak['vakId'] . '" target="_blank">verwijder</a></td><td><a href="addsubjecttouser.php?user=-1&subject=' . $vak['vakId'] . '" target="_blank">ken toe aan alle studenten</a></tr>';
                         }
                         echo '</table>';
                     }

@@ -4,6 +4,9 @@ include_once 'portfolio.php';
  * Pagina waarop een vak aan een gebruiker wordt gekoppeld.
  * Mag alleen gedaan worden door een admin.
  * Deze pagina wordt alleen gelinkt door usersubjects.php
+ * 
+ * Opmerking:
+ * bij user van -1 wordt het vak aan alle STUDENTEN toegevoegd.
  */
 ?>
 <!DOCTYPE html>
@@ -32,13 +35,27 @@ include_once 'portfolio.php';
                 
                 if($user && $subject)
                 {
-                    if(portfolio_add_user_subject($user, $subject))
+                    if($user < 0)   //Voeg toe aan alle studenten
                     {
-                        echo '<p>Vak toegevoegd aan gebruiker!</p>';
+                        $students = portfolio_get_students();
+                        foreach($students as $s)
+                        {
+                            if(portfolio_add_user_subject($s['gebruikersId'], $subject))
+                            {
+                                echo '<p>Vak toegevoegd aan student ' . $s['voornaam'] . ' ' . $s['achternaam'] . '</p>';
+                            }
+                        }
                     }
-                    else
+                    else    //Voeg aan een gebruiker toe
                     {
-                        echo '<p>Kon vak niet toevoegen! Mogelijk is dit vak al aan de gebruiker toegewezen!</p>';
+                        if(portfolio_add_user_subject($user, $subject))
+                        {
+                            echo '<p>Vak toegevoegd aan gebruiker!</p>';
+                        }
+                        else
+                        {
+                            echo '<p>Kon vak niet toevoegen! Mogelijk is dit vak al aan de gebruiker toegewezen!</p>';
+                        }
                     }
                 }
             }
