@@ -451,13 +451,7 @@ function portfolio_send_message($senderId, $recieverId, $subject, $message)
 	$send = $DataBaseConnect->prepare("INSERT INTO bericht (zenderId, ontvangerId, onderwerp, bericht)
 										   VALUES (?, ?, ?, ?)");
 	$send->bind_param("iiss", $senderId, $recieverId, $subject, $message);
-	$invoer = $send->execute();      
-	if ($invoer === FALSE) 
-	{ 
-		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
-	}
-	$send->close();
-	$DataBaseConnect->close();
+	return $send->execute();
 }
 
 /*
@@ -470,13 +464,7 @@ function portfolio_send_message_anon($recieverId, $subject, $message)
 	$sendAnon = $DataBaseConnect->prepare("INSERT INTO bericht (ontvangerId, onderwerp, bericht)
 										   VALUES (?, ?, ?)");
 	$sendAnon->bind_param("iss", $recieverId, $subject, $message);
-	$invoer = $sendAnon->execute();      
-	if ($invoer === FALSE) 
-	{ 
-		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
-	}
-	$sendAnon->close();
-	$DataBaseConnect->close();
+	return $sendAnon->execute();      
 }
 
 /*
