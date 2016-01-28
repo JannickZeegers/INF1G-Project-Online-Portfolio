@@ -55,7 +55,7 @@ include_once "portfolio.php";
 								 zijn/haar gewenste rol: {$optie}
 								 {$automelding}
 								 {$link}";
-					 && {
+					if (register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)) { 
 						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
 						header("refresh:2; url=index.php");
 					} else {
