@@ -1,14 +1,10 @@
 <?php
 
 /* 
- * Error code. Gebruik portfolio_set_error om een error vast te leggen.
+ * Error log code. Gebruik portfolio_set_error om een error vast te leggen.
  * Gebruik portfolio_error om de laatste error weer te geven.
- */
-
-/*
  * 
- *                          Debug meuk
- * 
+ * Wordt niet erg veel gebruikt.
  */
 
 define("PORTFOLIO_ERROR_CONNECT", 1);

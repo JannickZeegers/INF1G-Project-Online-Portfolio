@@ -1,6 +1,8 @@
 <?php
-//session_start(); Niet nodig, portfolio.php doet dit al voor je. :)
 include 'portfolio.php';
+/*
+ * Geeft een lijst van alle studenten weer, inclusief mail en foto
+ */
 ?>
 <!DOCTYPE html>
 <html>

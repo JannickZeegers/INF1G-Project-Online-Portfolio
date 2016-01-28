@@ -1,5 +1,8 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina om een mail te verzenden via de interne berichtendienst.
+ */
 ?>
 <!DOCTYPE html>
 <html>

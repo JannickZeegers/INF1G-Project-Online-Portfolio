@@ -1,10 +1,11 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina waarme een admin een gebruikersaccount aan kan passen.
+ * Wachtwoord kan niet bekeken of aangepast worden via deze pagina.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    Een scherm waarmee een admin een gebruikersaccount aan kan passen.
--->
 <html>
     <head>
         <meta charset="UTF-8">

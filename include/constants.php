@@ -3,6 +3,7 @@
 /* 
  * Constantes
  * ZET PORTFOLIO_DATABASE_MODE OP PORTFOLIO_MODE_SERVER VOOR UPLOAD NAAR SERVER!
+ * Edit: is niet per se nodig, maar doe toch maar
  * 
  * NOOT: Voor PORTFOLIO_MODE_LOCAL is het nodig om een database te hebben op de localhost.
  * Zie de dropbox - Project -/SQL map voor de benodigde SQL scripts om dit op te zetten.
@@ -37,6 +38,7 @@ else        //PORTFOLIO_MODE_SERVER
     define("MYSQL_USER", "u219753_pfs");
     define("MYSQL_PASS", "{ix38ZA(XF8tRK|o");
 }
+//Tabelnamen en dergelijke
 define("TABLE_USER", "gebruiker");
 define("TABLE_MATERIAL", "materiaal");
 define("TABLE_GRADE", "cijfer");

@@ -1,15 +1,12 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Deze pagina laat de gegevens van een materiaal zien.
+ * Alleen toegangkelijk voor docent, slb, admin en eigenaar van het materiaal.
+ * Opties om het materiaal en/of toegewezen cijfer te bewerken zijn afhankelijk van de rol van de gebruiker.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    
-    Deze pagina laat gegevens van een materiaal zien.
-    Welke dit zijn is afhankelijk van wie is ingelogd.
-    Daarnaast bevat deze pagina links naar andere paginas die de gebruiker in staat stellen
-    acties uit te voeren op dit materiaal, denk aan beoordelen, gegevens aanpassen of het materiaal verwijderen
-
--->
 <html>
     <head>
         <meta charset="UTF-8">

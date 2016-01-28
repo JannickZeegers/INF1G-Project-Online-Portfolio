@@ -1,10 +1,12 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina waarmee gegevens van een materiaal aangepast kunnen worden.
+ * Dit zijn de titel, openbaar bool en de vakken waar dit materiaal bij hoort.
+ * Kan alleen gedaan worden door de eigenaar van het materiaal of een admin.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    Een scherm waarmee een admin een gebruikersaccount aan kan passen.
--->
 <html>
     <head>
         <meta charset="UTF-8">

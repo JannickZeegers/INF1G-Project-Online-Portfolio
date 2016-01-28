@@ -1,13 +1,11 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Verwijderd een vak. Materialen en gebruikers die er aan gekoppeld zijn blijven.
+ * Kan alleen door admin worden gedaan.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">

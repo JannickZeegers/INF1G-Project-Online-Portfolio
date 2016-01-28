@@ -1,13 +1,12 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Verwijdert een gebruiker. Kan alleen gedaan worden door admin.
+ * Materialen en cijfers worden ook verwijderd.
+ * Gegeven cijfers blijven, maar de beoordelaar wordt op NULL gezet.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">

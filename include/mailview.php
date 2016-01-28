@@ -1,12 +1,10 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina om een mail te bekijken. Alleen zender of ontvanger kan mail zien.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    
-    
-
--->
 <html>
     <head>
         <meta charset="UTF-8">

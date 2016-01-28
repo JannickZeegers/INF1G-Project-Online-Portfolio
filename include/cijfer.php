@@ -1,13 +1,11 @@
 <?php
 include_once "portfolio.php";
+/*
+ * Deze pagina stelt de gebruiker (alleen ingelogde SLBer of admin) in staat een cijfer te geven aan een materiaal.
+ * Dit kan echter alleen wanneer er nog geen cijfer is gegeven OF de momenteel ingelogde SLBer/admin het eerdere cijfer heeft gegeven.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-    
-    Deze pagina stelt de gebruiker (alleen ingelogde SLBer) in staat een cijfer te geven aan een materiaal.
-    Dit kan echter alleen wanneer er nog geen cijfer is gegeven OF de momenteel ingelogde SLBer het eerdere cijfer heeft gegeven.
-
--->
 <html>
     <head>
         <meta charset="UTF-8">

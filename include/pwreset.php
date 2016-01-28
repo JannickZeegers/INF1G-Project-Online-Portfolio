@@ -1,6 +1,11 @@
 <?php
 include_once 'portfolio.php';
-
+/*
+ * Pagina om het wachtwoord te resetten aan de hand van mailadres.
+ * Er wordt een mail verstuurd met het nieuwe wachtwoord.
+ * Daarnaast kan een mailadres worden meegegeven in de url, welke meteen ingevuld wordt in de form.
+ * Dit wordt gebruikt om via edituser.php het wachtwoord te resetten.
+ */
 $urlmail = filter_input(INPUT_GET, 'mail', FILTER_VALIDATE_EMAIL);
 
 $wasReset = false;

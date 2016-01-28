@@ -1,13 +1,12 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Geeft alle vakken weer die aan een gebruiker zijn gekoppeld. Dit kan zijn als student of docent.
+ * Admin kan via deze pagina meer vakken toewijzen aan de gebruiker.
+ * Via hier kan men ook naar het cijferoverzicht van een student voor een bepaald vak gaan.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">

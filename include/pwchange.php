@@ -1,6 +1,8 @@
 <?php
 include_once 'portfolio.php';
-
+/*
+ * Op deze pagina kan een ingelogde gebruiker zijn of haar wachtwoord veranderen.
+ */
 $wasChanged = false;
 $message = '';
 

@@ -1,13 +1,15 @@
 <?php
 include_once 'portfolio.php';
+/*
+ * Pagina waarop een vak aan een gebruiker wordt gekoppeld.
+ * Mag alleen gedaan worden door een admin.
+ * Deze pagina wordt alleen gelinkt door usersubjects.php
+ * 
+ * Opmerking:
+ * bij user van -1 wordt het vak aan alle STUDENTEN toegevoegd.
+ */
 ?>
 <!DOCTYPE html>
-<!--
-
-    Dit is een admin paneel waar een ingelogde gebruiker menus heeft om dingen te doen.
-    Bijvoorbeeld een materiaal uploaden, materialen, vakken en cijfers bekijken of dingen beoordelen.
-    Ook het gastenboek/berichtensysteem via dit bereikbaar?
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -23,7 +25,7 @@ include_once 'portfolio.php';
             </div>
             <div id="content">
             <?php
-            if(isset($_SESSION['user']))
+            if(portfolio_user_is_of_type(array('admin')))
             {
                 //Alles
                 echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
@@ -33,13 +35,27 @@ include_once 'portfolio.php';
                 
                 if($user && $subject)
                 {
-                    if(portfolio_add_user_subject($user, $subject))
+                    if($user < 0)   //Voeg toe aan alle studenten
                     {
-                        echo '<p>Vak toegevoegd aan gebruiker!</p>';
+                        $students = portfolio_get_students();
+                        foreach($students as $s)
+                        {
+                            if(portfolio_add_user_subject($s['gebruikersId'], $subject))
+                            {
+                                echo '<p>Vak toegevoegd aan student ' . $s['voornaam'] . ' ' . $s['achternaam'] . '</p>';
+                            }
+                        }
                     }
-                    else
+                    else    //Voeg aan een gebruiker toe
                     {
-                        echo '<p>Kon vak niet toevoegen! Mogelijk is dit vak al aan de gebruiker toegewezen!</p>';
+                        if(portfolio_add_user_subject($user, $subject))
+                        {
+                            echo '<p>Vak toegevoegd aan gebruiker!</p>';
+                        }
+                        else
+                        {
+                            echo '<p>Kon vak niet toevoegen! Mogelijk is dit vak al aan de gebruiker toegewezen!</p>';
+                        }
                     }
                 }
             }
