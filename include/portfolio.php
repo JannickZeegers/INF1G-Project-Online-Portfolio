@@ -444,26 +444,25 @@ function portfolio_get_send_messages($userId)
 /*
  * Verzendt de berichten
  */
-function portfolio_send_message($senderId, $subject, $message,  $recieverId)
+function portfolio_send_message_anon($subject, $message, $recieverId)
 {
-	$link = portfolio_connect();
-    if($link){ 
-        //Getallen bij een insert/where e.d. niet tussen '' zetten
-        $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
-                      VALUES(NULL, $senderId, $recieverId , '" .
-                mysqli_real_escape_string($link, $subject) . "' , '" .
-                mysqli_real_escape_string($link, $message) . "')";
-        return mysqli_query($link, $SQLstring);
-    }
-    return null;
+	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
+	
+	$sendAnon = $DataBaseConnect->prepare("INSERT INTO bericht (ontvangerId, onderwerp, bericht)
+										   VALUES (?, ?, ?)");
+	$sendAnon->bind_param("iss", $recieverId, $subject, $message);
+	$invoer = $registreer->execute();      
+	if ($invoer === FALSE) 
+	{ 
+		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
+	}
+	$registreer->close();
+	$DataBaseConnect->close();
 }
-
-/*
- * Verzendt de berichten
- */
-function portfolio_send_message_anon($subject, $message,  $recieverId)
-{
-	$link = portfolio_connect();
+	
+	
+	
+	
     if($link){ 
         //Getallen bij een insert/where e.d. niet tussen '' zetten
         $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
@@ -773,9 +772,9 @@ function portfolio_get_student_notes_ext($userId)
     if($link)
     {
         $sql = "SELECT cijfer.cijfer AS cijfer, materiaal.naam AS naam, materiaal.materiaalId AS materiaalId
-FROM materiaal, cijfer
-WHERE cijfer.materiaalId = materiaal.materiaalId AND materiaal.eigenaarId = " . mysqli_real_escape_string($link, $userId) .
-" ORDER BY materiaal.materiaalId ASC";
+				FROM materiaal, cijfer
+				WHERE cijfer.materiaalId = materiaal.materiaalId AND materiaal.eigenaarId = " . mysqli_real_escape_string($link, $userId) .
+				" ORDER BY materiaal.materiaalId ASC";
         $result = mysqli_query($link, $sql);
         if($result)
         {
@@ -801,7 +800,9 @@ function portfolio_get_guestbook_messages($userId)
     if($link)
     {
         $messageArray = array();
-        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE ontvangerId=" . mysqli_real_escape_string($link, $userId) . " ORDER BY berichtId DESC";
+        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " 
+				WHERE ontvangerId=" . mysqli_real_escape_string($link, $userId) . " 
+				ORDER BY berichtId DESC";
         $result = mysqli_query($link, $sql);
         if($result){
             $messageArray = array();
@@ -825,7 +826,9 @@ function portfolio_get_guestbook_message($messageId)
     if($link)
     {
         $messageArray = array();
-        $sql = "SELECT * FROM " . TABLE_GUESTBOOK . " WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
+        $sql = "SELECT * 
+				FROM " . TABLE_GUESTBOOK . " 
+				WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
         $result = mysqli_query($link, $sql);
         if($result){
             if(($row = mysqli_fetch_assoc($result))){
@@ -850,7 +853,8 @@ function portfolio_delete_guestbook_message($messageId)
             if((portfolio_user_is_of_type(array('student')) && $_SESSION['user']['gebruikersId'] == $msgData['ontvangerId'])
                     || portfolio_user_is_of_type(array('admin')))
             {
-                $sql = "DELETE FROM " . TABLE_GUESTBOOK . " WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
+                $sql = "DELETE FROM " . TABLE_GUESTBOOK . " 
+						WHERE berichtId=" . mysqli_real_escape_string($link, $messageId);
                 return mysqli_query($link, $sql);
             }
             else
@@ -881,7 +885,8 @@ function portfolio_delete_mail_message($mailId)
                 || (portfolio_user_is_of_type(array('student', 'slb', 'docent')) && $_SESSION['user']['gebruikersId'] == $msgData['ontvangerId'])
                 || portfolio_user_is_of_type(array('admin')))
             {
-                $sql = "DELETE FROM " . TABLE_MESSAGE . " WHERE berichtId=" . mysqli_real_escape_string($link, $mailId);
+                $sql = "DELETE FROM " . TABLE_MESSAGE . " 
+						WHERE berichtId=" . mysqli_real_escape_string($link, $mailId);
                 return mysqli_query($link, $sql);
             }
             else
