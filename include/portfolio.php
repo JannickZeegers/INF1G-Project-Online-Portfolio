@@ -969,7 +969,7 @@ function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 }
 
 /*
- * Reset een wachtwoord.    
+ * Reset een wachtwoord.
  */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {
@@ -1017,6 +1017,7 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 	while ($retrieve->fetch()) {  
 		$bericht = array($retrieve); 
 		return $bericht;
+    }
 }
 
 /*
@@ -1071,6 +1072,3 @@ function retrieve_students()
 	$retrieve->close();
 	$DataBaseConnect->close();
 }
-
-
-?>

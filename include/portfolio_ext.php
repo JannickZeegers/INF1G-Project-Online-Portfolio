@@ -65,6 +65,8 @@ function portfolio_get_user_id_by_mail($email)
 
 /*
  * Reset het wachtwoord van een gebruiker
+ * Genereert een wachtwoord, stelt dit in als het wachtwoord van de gebruiker 
+ * en stuurt een mail naar de gebruiker met het nieuwe wachtwoord daar in.
  */
 function portfolio_reset_pass($userId)
 {
