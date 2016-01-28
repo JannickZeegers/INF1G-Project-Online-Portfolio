@@ -35,7 +35,7 @@ include_once 'portfolio.php';
                 {
                     $mats = portfolio_get_user_materials($targetUser);
                     $userData = portfolio_get_user_details($targetUser);
-                    if(count($mats) > 0)
+                    if($userData)
                     {
                         echo '<h2>Materialen van ' .$userData['voornaam'] . ' ' . $userData['achternaam'] . '</h2>';
                         if(!portfolio_user_is_of_type(array('student')))
@@ -47,6 +47,9 @@ include_once 'portfolio.php';
                             echo '<p><a href="upload.php">Upload nieuw materiaal</a></p>';
                         }
                         echo '<hr>';
+                    }                    
+                    if(count($mats) > 0)
+                    {
                         echo '<table class="tableLeft">';
                         foreach($mats as $mat)
                         {

@@ -25,7 +25,8 @@ function portfolio_register_old($gebruikersnaam, $wachtwoord, $mail, $voornaam, 
             echo "<p>Deze gebruikersnaam of e-mail is al in gebruik!</p>";
             return false;
         }
-        $sql = "INSERT INTO " . TABLE_USER . " VALUES(NULL, "
+        $sql = "INSERT INTO " . TABLE_USER . "(gebruikersId, voornaam, achternaam, eMail, gebruikersnaam, wachtwoord, rol)"
+                . "  VALUES(NULL, "
                  . "'" . mysqli_real_escape_string($link, $voornaam) . "', "
                  . "'" . mysqli_real_escape_string($link, $achternaam) . "', "
                  . "'" . mysqli_real_escape_string($link, $mail) . "', "
@@ -49,9 +50,9 @@ function portfolio_get_user_id_by_mail($email)
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT userId FROM " . TABLE_USER . " WHERE eMail=" . mysqli_real_escape_string($link, $email);
+        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " WHERE eMail='" . mysqli_real_escape_string($link, $email) . "'";
         $result = mysqli_query($link, $sql);
-        if($result !== false)
+        if($result)
         {
             if(($array = mysqli_fetch_assoc($result)) != null)
             {

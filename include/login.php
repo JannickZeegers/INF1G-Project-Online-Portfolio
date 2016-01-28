@@ -61,6 +61,7 @@ if(isset($_POST["submit"]))
                     <p>Wachtwoord:<br><input type='password' name='userPass'></p>
                     <p><input type='submit' name='submit' value='login'></p>
                 </form>
+                <p><a href="pwreset.php">Wachtwoord vergeten? Klik hier voor een nieuw wachtwoord</a></p>
                 <?php
             }
             else

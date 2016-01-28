@@ -28,6 +28,7 @@ include_once 'portfolio.php';
                 //Alles
                 echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
                 echo "<p>Hier moet nog iets komen</p>";
+                echo '<p><a href="pwchange.php">Wachtwoord veranderen</a></p>';
             }
             else
             {

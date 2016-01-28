@@ -917,30 +917,32 @@ function resetpass($userID, $oudpass, $nieuwpass)
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
-	$check = $DataBaseConnect->prepare("SELECT gebruikersId wachtwoord 
+	$check = $DataBaseConnect->prepare("SELECT wachtwoord 
 										FROM gebruiker
-										WHERE userID={$userID}");
+										WHERE gebruikersId=?");
+    $check->bind_param("i", $userID);
 	$check->execute();
-	$check->bind_result($oudpass);	
-	if (password_verify($oudpass, $hash)) 
+	$check->bind_result($hash);	
+    $check->fetch();
+    $check->close();    //Moet blijkbaar voor een nieuwe prepare wordt aangeroepen
+	if(password_verify($oudpass, $hash)) 
 	{
 		$newhash = password_hash($nieuwpass, PASSWORD_DEFAULT);
-		$reset = $DataBaseConnect->prepare("UPDATE gebruiker
-										    SET wachtwoord=?
-										    WHERE userID=?");
+		$reset = $DataBaseConnect->prepare("UPDATE gebruiker SET wachtwoord=? WHERE gebruikersId=?");
 		$reset->bind_param("si", $newhash, $userID);
 		$invoer = $reset->execute(); 
 		if ($invoer !== FALSE) 
 		{
-			echo "<p>Wachtwoord is succesvol her-zet</p>";
+			return true;//echo "<p>Wachtwoord is succesvol her-zet</p>";
 		}
+        $reset->close();
 	}
 	else 
 	{ 
-		echo "<p>Wachtwoord incorrect</p>"; 
+		//echo "<p>Wachtwoord incorrect</p>"; 
 	}
-	$reset->close();
 	$DataBaseConnect->close();
+    return null;
 }
 
 /*
