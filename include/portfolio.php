@@ -402,6 +402,23 @@ function portfolio_get_send_messages($userId)
 }
 
 /*
+ * Verzendt de berichten
+ */
+function portfolio_send_message($senderId, $subject, $message,  $recieverId)
+{
+	$link = portfolio_connect();
+		if($link){ 
+			//Getallen bij een insert/where e.d. niet tussen '' zetten
+			$SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
+						  VALUES(NULL, $senderId, $recieverId , '" .
+					mysqli_real_escape_string($dbConnect, $subject) . "' , '" .
+					mysqli_real_escape_string($dbConnect, $message) . "')";
+			$QueryResult = mysqli_query($dbConnect, $SQLstring);
+			echo "<p>Your message has been send!</p>";
+		}
+}
+
+/*
  * Update gegevens van een materiaal
  */
 function portfolio_update_material($materialId, $name, $isPublic, $subjects)

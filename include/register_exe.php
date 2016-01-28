@@ -25,7 +25,6 @@ include_once "portfolio.php";
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
-					//$pass = htmlentities($_POST['wachtwoord']); 
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
 					case 'student':
@@ -42,15 +41,22 @@ include_once "portfolio.php";
 					break;
 					}
 					
-					$bericht = "<p>{$voornaam}</p>  
-								<p>{$achternaam}</p> 
-								<p>{$mail}</p> 
-								<p>{$gebrnaam}</p> 
-								<p>{$optie}</p>";
-					mail ('info@ons-portfolio.nl', 'Aanmeldings-verzoek', $bericht); 
+					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
+					$automedling = "Indien u hiermee akkoord gaat, gaarne de onderstaande klikken";
+					$link = "http//www.ons-portfolio.nl/register_exe"
+					
+					$message = "{$autohead}
+								{$voornaam}  
+								{$achternaam} 
+								{$mail} 
+								{$gebrnaam} 
+								{$optie}
+								{$automelding}
+								{$link}";
+					portfolio_send_message(999, 'Aanmeldings-verzoek', $message, 1);
 					//register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);  
 					echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
-					header("refresh:2; url=index.php"  );
+					header("refresh:2; url=index.php");
 				} else {
 					echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
 				} 		

@@ -50,17 +50,9 @@ include_once 'portfolio.php';
                             }
                         }
                         else
-                        {
+                        { 
                             $senderId = $_SESSION['user']['gebruikersId'];
-                            //Put newlines back!
-                            
-                            //Getallen bij een insert/where e.d. niet tussen '' zetten
-                            $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
-										  VALUES(NULL, $senderId, $recieverId , '" .
-                                    mysqli_real_escape_string($dbConnect, $subject) . "' , '" .
-                                    mysqli_real_escape_string($dbConnect, $message) . "')";
-                            $QueryResult = mysqli_query($dbConnect, $SQLstring);
-                            echo "<p>Your message has been send!</p>";
+                            portfolio_send_message($senderId, $subject, $message,  $recieverId);
                         }
                     }                   
                 }
