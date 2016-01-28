@@ -103,7 +103,7 @@ include_once 'portfolio.php';
                             echo '<input type="submit" name="submit" value="Apply">';
                             echo '</form>';
                             //TODO: Dit naar de correcte pagina linken
-                            echo '<p><a href="#">Reset wachtwoord van deze gebruiker</a></p>';
+                            echo '<p><a href="pwreset.php?mail=' . $targetData['eMail'] . '">Reset wachtwoord van deze gebruiker</a></p>';
                             echo '<p><a href="viewuser.php?user=' . $targetId . '">Terug</a></p>';
                         }
                         else

@@ -49,13 +49,38 @@ include_once 'portfolio.php';
                         echo '<table class="tableLeft">';
                         foreach($subjects as $sub)
                         {
-                            echo '<tr><td><a href="viewnotes.php?student=' . $targetUser . '&subject=' . $sub['vakId'] . '">' . $sub['vaknaam'] . '</a></td></tr>';
+                            if($userData['rol'] != 'student')
+                            {
+                                //Geen link
+                                echo '<tr><td>' . $sub['vaknaam'] . '</td></tr>';
+                            }
+                            else
+                            {
+                                //Wel link
+                                echo '<tr><td><a href="viewnotes.php?student=' . $targetUser . '&subject=' . $sub['vakId'] . '">' . $sub['vaknaam'] . '</a></td></tr>';
+                            }
                         }
-                        echo '</table>';                        
+                        echo '</table>';
                     }
                     else
                     {
                         echo '<p>Geen vakken gevonden!</p>';
+                    }
+                    if(portfolio_user_is_of_type(array('admin')))
+                    {
+                        echo '<hr>';
+                        echo '<p></p>';
+                        echo '<h3>Voeg vak toe aan gebruiker</h3>';
+                        $allSubjects = portfolio_get_subjects();
+                        if(count($allSubjects) > 0)
+                        {
+                            echo '<table class="tableLeft">';
+                            foreach($allSubjects as $sub)
+                            {
+                                echo '<tr><td><a href="addsubjecttouser.php?user=' . $targetUser . '&subject=' . $sub['vakId'] . '" target="_blank">' . $sub['vaknaam'] . '</a></td></tr>';
+                            }
+                            echo '</table>';
+                        }
                     }
                 }
                 else

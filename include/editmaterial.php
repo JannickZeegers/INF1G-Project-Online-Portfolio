@@ -50,7 +50,7 @@ include_once 'portfolio.php';
                                     }
                                     //VAKKEN
                                     $vakken = array();
-                                    $vakData = portfolio_get_subjects();
+                                    $vakData = portfolio_get_user_subjects($targetData['eigenaarId']);
                                     foreach($vakData as $vak)
                                     {
                                         $input = filter_input(INPUT_POST, 'vak' . $vak['vakId']);
@@ -110,7 +110,7 @@ include_once 'portfolio.php';
                              */
                             $vakkenActief = portfolio_get_material_subjects($targetId);
                             echo '<tr><th rel="row">' . 'Vakken' . '</th><td>';
-                            $vakken = portfolio_get_subjects();
+                            $vakken = portfolio_get_user_subjects($targetData['eigenaarId']);
                             foreach($vakken as $r)
                             {
                                 echo '<input type="checkbox" name="vak' . $r['vakId'] . '"';

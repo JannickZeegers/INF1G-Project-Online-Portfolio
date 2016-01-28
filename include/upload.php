@@ -33,9 +33,11 @@ include_once "portfolio.php";
                             $public = 0;
                             if(isset($_POST['public']) && $_POST['public'] === "true")
                                 $public = true;
-                            if(portfolio_upload_material($_SESSION['user']['gebruikersId'], 'file', $public))
+                            $id = portfolio_upload_material($_SESSION['user']['gebruikersId'], 'file', $public);
+                            if($id)
                             {
                                 echo '<p>Upload succesvol</p>';
+                                echo '<p><a href="viewmaterial.php?material=' . $id . '">Bekijk</a></p>';
                             }
                             else
                             {

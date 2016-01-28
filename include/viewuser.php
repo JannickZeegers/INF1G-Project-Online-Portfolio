@@ -45,9 +45,13 @@ include_once 'portfolio.php';
 
                             echo '</table>';
                             
-                            if($targetData['rol'] === 'student')
+                            if($targetData['rol'] === 'student' || $targetData['rol'] === 'docent' || $targetData['rol'] === 'slb')
                             {
                                 echo '<h3>Opties</h3>';
+                                echo '<p><a href="usersubjects.php?user=' . $targetId . '">Overzicht vakken</a></p>';
+                            }
+                            if($targetData['rol'] === 'student')
+                            {
                                 echo '<p><a href="viewnotes.php?student=' . $targetId . '">Overzicht cijfers</a></p>';
                                 echo '<p><a href="viewmaterials.php?student=' . $targetId . '">Overzicht materialen</a></p>';
                             }
