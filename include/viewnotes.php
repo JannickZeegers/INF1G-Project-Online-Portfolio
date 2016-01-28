@@ -21,6 +21,7 @@ include_once 'portfolio.php';
             if(isset($_SESSION['user']))
             {
                 $targetId = filter_input(INPUT_GET, 'student', FILTER_VALIDATE_INT);
+                $targetSubject = filter_input(INPUT_GET, 'subject', FILTER_VALIDATE_INT);
                 if($targetId)
                 {
                     //Alles
@@ -34,8 +35,19 @@ include_once 'portfolio.php';
                             || $targetId == $_SESSION['user']['gebruikersId'])
                         {
                             echo '<h2>' . $targetData['voornaam'] . ' ' . $targetData['achternaam'] . '</h2>';
-                            echo '<h3>Cijfers</h3>';
-                            $notes = portfolio_get_student_notes_ext($targetId);
+                            
+                            $targetSubjectData = portfolio_get_subject($targetSubject);
+                            if($targetSubjectData)
+                            {
+                                echo '<h3>Cijfers voor vak ' . $targetSubjectData['vaknaam'] . '</h3>';
+                            }
+                            else
+                            {
+                                echo '<h3>Cijfers</h3>';
+                                $targetSubject = 0;
+                            }
+                            
+                            $notes = portfolio_get_student_notes_ext($targetId, $targetSubject);
                             if(count($notes) > 0)
                             {
                                 echo '<table class="tableLeft">';

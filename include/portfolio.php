@@ -447,16 +447,16 @@ function portfolio_get_send_messages($userId)
 function portfolio_send_message($senderId, $recieverId, $subject, $message)
 {
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
-	
-	$sendAnon = $DataBaseConnect->prepare("INSERT INTO bericht (ontvangerId, onderwerp, bericht)
+	//var_dump($senderId, $recieverId, $subject, $message);
+	$send = $DataBaseConnect->prepare("INSERT INTO bericht (zenderId, ontvangerId, onderwerp, bericht)
 										   VALUES (?, ?, ?, ?)");
-	$sendAnon->bind_param("iiss", $recieverId, $subject, $message);
-	$invoer = $sendAnon->execute();      
+	$send->bind_param("iiss", $senderId, $recieverId, $subject, $message);
+	$invoer = $send->execute();      
 	if ($invoer === FALSE) 
 	{ 
 		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
 	}
-	$sendAnon->close();
+	$send->close();
 	$DataBaseConnect->close();
 }
 
@@ -703,7 +703,7 @@ function portfolio_get_subject_count()
         $sql = "SELECT COUNT(*) 
 				FROM " . TABLE_SUBJECT;
         $result = mysqli_query($link, $sql);
-        if(($row = mysqli_fetch_array($result)) != null)
+        if($result && ($row = mysqli_fetch_array($result)) != null)
         {
             return (int)$row[0];
         }
@@ -720,7 +720,7 @@ function portfolio_get_subject($subjectId)
 				FROM " . TABLE_SUBJECT . " 
 				WHERE vakId=" . mysqli_real_escape_string($link, $subjectId);
         $result = mysqli_query($link, $sql);
-        if(($row = mysqli_fetch_assoc($result)) != null)
+        if($result && ($row = mysqli_fetch_assoc($result)) != null)
         {
             return $row;
         }
@@ -755,6 +755,32 @@ function portfolio_get_material_subjects($materialId)
     return null;
 }
 
+/*
+ * Geeft de vakken die bij een bepaalde gebruiker horen terug in een array. 
+ * Array kan leeg zijn als de gebruiker niet bestaat of geen vakken aan zich gekoppeld heeft.
+ * NOOT: Geeft ook vaknaam terug!
+ */
+function portfolio_get_user_subjects($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT " . TABLE_USER_SUBJECT . ".vakId AS vakId, "
+                . TABLE_SUBJECT . ".vaknaam AS vaknaam"
+                . " FROM " . TABLE_USER_SUBJECT . ", " . TABLE_SUBJECT
+                . " WHERE " . TABLE_USER_SUBJECT . ".gebruikersId=" . mysqli_real_escape_string($link, $userId)
+                . " AND " . TABLE_USER_SUBJECT . ".vakId=" . TABLE_SUBJECT . ".vakId";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            array_push($return, $row);
+        }
+        return $return;
+    }
+    return null;
+}
+
 function portfolio_delete_subject($subjectId)
 {
     $link = portfolio_connect();
@@ -770,16 +796,29 @@ function portfolio_delete_subject($subjectId)
 
 /*
  * Geeft alle cijfers (inclusief materiaalnaam en vakken) van een student terug
+ * Bij subjectId = 0 komen alle cijfers terug!
  */
-function portfolio_get_student_notes_ext($userId)
+function portfolio_get_student_notes_ext($userId, $subjectId = 0)
 {
     $link = portfolio_connect();
     if($link)
     {
-        $sql = "SELECT cijfer.cijfer AS cijfer, materiaal.naam AS naam, materiaal.materiaalId AS materiaalId
+        if($subjectId > 0)
+        {
+            $sql = "SELECT cijfer.cijfer AS cijfer, materiaal.naam AS naam, materiaal.materiaalId AS materiaalId
+				FROM materiaal, cijfer, materiaal_vak
+				WHERE cijfer.materiaalId = materiaal.materiaalId AND materiaal.eigenaarId = " . mysqli_real_escape_string($link, $userId) .
+				" AND materiaal_vak.materiaalId = materiaal.materiaalId AND materiaal_vak.vakId = " . mysqli_real_escape_string($link, $subjectId) .
+                " ORDER BY materiaal.materiaalId ASC";
+        }
+        else
+        {
+            $sql = "SELECT cijfer.cijfer AS cijfer, materiaal.naam AS naam, materiaal.materiaalId AS materiaalId
 				FROM materiaal, cijfer
 				WHERE cijfer.materiaalId = materiaal.materiaalId AND materiaal.eigenaarId = " . mysqli_real_escape_string($link, $userId) .
 				" ORDER BY materiaal.materiaalId ASC";
+        }
+        
         $result = mysqli_query($link, $sql);
         if($result)
         {
@@ -930,7 +969,7 @@ function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 }
 
 /*
- * Reset een wachtwoord.    
+ * Reset een wachtwoord.
  */
 function resetpass($userID, $oudpass, $nieuwpass) 
 {
@@ -978,6 +1017,7 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 	while ($retrieve->fetch()) {  
 		$bericht = array($retrieve); 
 		return $bericht;
+    }
 }
 
 /*
@@ -1083,3 +1123,4 @@ function portfolio_reset_pass($userId)
 
 
 ?>
+

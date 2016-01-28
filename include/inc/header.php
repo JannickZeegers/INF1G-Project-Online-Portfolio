@@ -12,6 +12,11 @@
             if(isset($_SESSION['user']))
             {
                 //echo '<li><a href="admin.php">Home</a></li>';
+                if($_SESSION['user']['rol'] === 'docent' || $_SESSION['user']['rol'] === 'slb' || $_SESSION['user']['rol'] === 'student')
+                {
+                    //Naar overzicht eigen vakken
+                    echo '<li><a href="usersubjects.php?user=' . $_SESSION['user']['gebruikersId'] . '">Mijn vakken</a></li>';
+                }
                 if($_SESSION['user']['rol'] === 'student')
                 {
                     echo '<li><a href="viewnotes.php?student=' . $_SESSION['user']['gebruikersId'] . '">Mijn cijfers</a></li>';
@@ -23,6 +28,7 @@
                     //Naar overzicht studenten
                     echo '<li><a href="students.php">Studenten</a></li>';
                 }
+                
                 if($_SESSION['user']['rol'] === 'admin')
                 {
                     //Naar overzicht gebruikers
