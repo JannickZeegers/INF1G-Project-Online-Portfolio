@@ -44,9 +44,7 @@ include_once "portfolio.php";
 					
 					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
 					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande link gebruiken";
-					//$insertId = register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);
-                                        //Dan maar de oude, die werkt in elk geval
-                                        $insertId = portfolio_register_old($gebrnaam, $wachtwoord, $mail, $voornaam, $achternaam, $rol);
+					$insertId = register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol);				// Mijne dient ook te werken
 					$link = "www.ons-portfolio.nl/register_exe.php?user={$insertId}";
 					
 					$message = "{$autohead}
@@ -57,21 +55,16 @@ include_once "portfolio.php";
 								 zijn/haar gewenste rol: {$optie}
 								 {$automelding}
 								 {$link}";
-					if($insertId)
-                                        {
-                                            //Mail ons
-                                            mail("info@ons-portfolio.nl", "aanmelding gebruiker", $message);
-                                            
-                                            echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
-                                            header("refresh:2; url=index.php");
-					} 
-                                        else 
-                                        {
-                                            echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
+					if ($insertId) {
+						mail("info@ons-portfolio.nl", "verzoek aanmelding gebruiker", $message);
+						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
+						header("refresh:2; url=index.php");
+					} else {
+						echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
                                         }
 				} else {
-                                    echo "<p class='error'>U dient wel alle velden in te vullen.</p>";
-                                } 		
+					echo "<p class='error'>U dient wel alle velden in te vullen.</p>";
+                    } 		
 			?>
             </div>
             <div id="footer">
