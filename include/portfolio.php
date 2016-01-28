@@ -264,6 +264,22 @@ function portfolio_set_note($materialId, $note)
 }
 
 /*
+ * Verwijder cijfer
+ */
+
+function portfolio_delete_note($materialId)
+{
+    $link = portfolio_connect();
+    
+    if($link && portfolio_user_is_of_type(array('slb', 'admin')))
+    {
+        $sql = 'DELETE FROM ' . TABLE_GRADE . ' WHERE materiaalId=' . mysqli_real_escape_string($link, $materialId);
+        return mysqli_query($link, $sql);
+    }
+    return false;
+}
+
+/*
  * Geeft info over het cijfer (indien aanwezig) van een materiaal
  */
 function portfolio_get_note($materialId)

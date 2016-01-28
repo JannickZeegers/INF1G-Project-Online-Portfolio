@@ -39,45 +39,7 @@ include_once 'portfolio.php';
                          */
                         if($_SESSION['user']['gebruikersId'] === $msgData['ontvangerId'] || portfolio_user_is_of_type(array('admin')))
                         {
-                            $pwCorrect = false;
-                            $deleted = false;
-                            if(isset($_POST['submit']) && isset($_SESSION['user']) && $msgId)
-                            {
-                                $userId = $_SESSION['user']['gebruikersId'];
-                                $userPass = filter_input(INPUT_POST, 'userPass');
-                                $link = portfolio_connect();
-                                if($link)
-                                {
-                                    $sql = "SELECT * FROM " . TABLE_USER . " WHERE gebruikersId='" . mysqli_real_escape_string($link, $userId) . "'";
-                                    $result = mysqli_query($link, $sql);
-                                    if($result !== false)
-                                    {
-                                         if(($array = mysqli_fetch_assoc($result)) != null)
-                                        {
-                                            if(password_verify($userPass, $array['wachtwoord']))
-                                            {
-                                                $pwCorrect = true;
-                                                $deleted = portfolio_delete_guestbook_message($msgId);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            /*
-                             * Wachtwoord prompt + teruggave info over succes van verwijderen
-                             */
-                            if(!$pwCorrect)
-                            {
-                                echo '<h3>Typ hieronder uw wachtwoord in om het bericht te verwijderen</h3>';
-                                ?>
-                                <form action='<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING']?>' method='post' enctype="multipart/form-data">
-                                    <p>Wachtwoord:<br><input type='password' name='userPass'></p>
-                                    <p><input type='submit' name='submit' value='login'></p>
-                                </form>
-                                <?php
-                            }
-                            else if($deleted)
+                            if(portfolio_delete_guestbook_message($msgId))
                             {
                                 echo '<p>Bericht verwijderd</p>';
                             }

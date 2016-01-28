@@ -37,7 +37,7 @@ include_once 'portfolio.php';
                             $msgData = portfolio_get_guestbook_messages($targetId);
                             
                             echo "<h2>Welkom " . $_SESSION['user']['voornaam'] . " " . $_SESSION['user']['achternaam'] . "</h2>";
-                            echo '<h2>Gastenboek van ' . $usrData['voornaam'] . ' ' . $usrData['achternaam'] . '</h2>';
+                            echo '<h2>Gastenboek van ' . $usrData['voornaam'] . ' ' . $usrData['achternaam'] . '</h2>';                            
                             echo '<h3>Lijst berichten</h3>';
                             if(count($msgData) > 0)
                             {
