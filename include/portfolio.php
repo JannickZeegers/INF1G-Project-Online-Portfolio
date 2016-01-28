@@ -969,6 +969,8 @@ function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 	{ 
 		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
 	} 
+	
+	return mysqli_insert_id($DataBaseConnect);
 	$registreer->close();
 	$DataBaseConnect->close();
 }
@@ -1011,7 +1013,8 @@ function resetpass($userID, $oudpass, $nieuwpass)
 /*
  * Ophalen aanmeldVerzoek  
  */
-function retrieve_request() {  
+function retrieve_requester() 
+{  
 $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT bericht 

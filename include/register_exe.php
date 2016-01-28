@@ -20,31 +20,8 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
-				
-				retrieve_request();
-				foreach ($fetched as $bericht) { 
-					$voornaam = $opgehaald['naam'];  
-					$achternaam = $opgehaald['achternaam']; 
-					$mail = $opgehaald['mail']; 
-					$gebrnaam = $opgehaald['gebrnaam']; 
-					$optie = $opgehaald['rol'];
-				}
-					
-				
-					
-			
-				//if (     ) {}
-					//$voornaam = 
-					//$achternaam = 
-					//$mail = 
-					//$gebrnaam = 
-					//$pass = 
-					//$optie = 
-					
-					
-					//register($voornaam, $achternaam, $mail, $pass, $gebrnaam, $rol);  
-					//header("refresh:2; url=index.php"  );
-				//} 		
+				$userId = $_GET['user']; 
+				portfolio_reset_pass($userId);
 			?>
             </div>
             <div id="footer">
