@@ -24,7 +24,7 @@ include_once "portfolio.php";
 					$voornaam = htmlentities($_POST['voornaam']);
 					$achternaam = htmlentities($_POST['achternaam']);
 					$mail = htmlentities($_POST['mail']);
-					$wachtwoord = "Allekrabbenhebbenpiemels";
+					$wachtwoord = "Allekrabbenhebben[REDACTED]";
 					$gebrnaam = htmlentities($_POST['gebrnaam']);
 					$optie = htmlentities($_POST['rol']);
 					switch ($optie) { 
@@ -55,12 +55,15 @@ include_once "portfolio.php";
 								 zijn/haar gewenste rol: {$optie}
 								 {$automelding}
 								 {$link}";
-					 && {
-						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
-						header("refresh:2; url=index.php");
-					} else {
-						echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
-						}
+					if($insertId)
+                                        {
+                                            echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
+                                            header("refresh:2; url=index.php");
+					} 
+                                        else 
+                                        {
+                                            echo "<p class='error'>Registratie-process mislukt, probeer het later nog eens</p>"; 
+                                        }
 				} else {
 					echo "<p class='error'>U dient wel beide velden in te vullen.</p>";
 					} 		
