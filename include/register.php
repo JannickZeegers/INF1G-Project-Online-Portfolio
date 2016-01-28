@@ -17,7 +17,7 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<h1>Registreer</h1>
-			<form id="registreer" method="POST" action="register_exe.php"> 
+			<form id="registreer" method="POST" action="register_exe_mail.php"> 
 				<label>Voornaam</label>
 				<p><input type="text" name="voornaam" /></p>
 				<label>Achternaam</label>
