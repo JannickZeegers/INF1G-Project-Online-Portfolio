@@ -454,7 +454,7 @@ function portfolio_send_message_anon($recieverId, $subject, $message)
 	$sendAnon = $DataBaseConnect->prepare("INSERT INTO bericht (ontvangerId, onderwerp, bericht)
 										   VALUES (?, ?, ?)");
 	$sendAnon->bind_param("iss", $recieverId, $subject, $message);
-	$invoer = $registreer->execute();      
+	$invoer = $sendAnon->execute();      
 	if ($invoer === FALSE) 
 	{ 
 		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
