@@ -1109,6 +1109,4 @@ function portfolio_reset_pass($userId)
     return null;
 }
 
-
 ?>
-
