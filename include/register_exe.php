@@ -20,6 +20,13 @@ include_once "portfolio.php";
             </div>
             <div id="content">
 			<?php
+				$bericht = ''; 
+				if (retrieve_request($bericht)) { 
+					$fetcharray = $bericht; 
+				} 
+			
+				print_r ($fetcharray); 
+			
 				//if (     ) {}
 					//$voornaam = 
 					//$achternaam = 

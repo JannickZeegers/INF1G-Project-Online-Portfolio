@@ -965,6 +965,22 @@ function resetpass($userID, $oudpass, $nieuwpass)
 }
 
 /*
+ * Ophalen aanmeldVerzoek  
+ */
+function retrieve_request($bericht) {  
+$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
+	
+	$retrieve = $DataBaseConnect->prepare("SELECT bericht 
+										   FROM bericht
+										   WHERE naam === 'Verzoek tot aanmelding'");
+	$retrieve->execute();
+	$retrieve->bind_result($bericht);
+	while ($retrieve->fetch()) {  
+		$bericht = array($retrieve); 
+		return $bericht;
+}
+
+/*
  * Ophalen mainplaatjes   
  */
 function retrieve_img() 
