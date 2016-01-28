@@ -1004,7 +1004,7 @@ function register($voornaam, $achternaam, $mail, $wachtwoord, $gebrnaam, $rol)
 	if ($invoer === FALSE) {
 		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";   
 	} 
-	return mysqli_insert_id($DataBaseConnect);
+	$user = $DataBaseConnect->insert_id;
 }
 
 /*
