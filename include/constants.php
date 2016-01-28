@@ -44,5 +44,6 @@ define("TABLE_SUBJECT", "vak");
 define("TABLE_MESSAGE", "bericht");
 define("TABLE_GUESTBOOK", "gastenboek");
 define("TABLE_MATERIAL_SUBJECT", "materiaal_vak");
+define("TABLE_USER_SUBJECT", "gebruiker_vak");
 define("PORTFOLIO_UPLOAD_DIR", "files");
 define("SITE_HTTP_NAME", "http://ons-portfolio.nl/");
