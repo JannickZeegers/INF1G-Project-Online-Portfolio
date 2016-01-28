@@ -444,8 +444,11 @@ function portfolio_get_send_messages($userId)
 /*
  * Verzendt de berichten
  */
-function portfolio_send_message_anon($subject, $message, $recieverId)
+function portfolio_send_message_anon($recieverId, $subject, $message)
 {
+	var_dump($recieverId);
+	var_dump($subject); 
+	var_dump($message);
 	$DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(XF8tRK|o", "db219753_portfolio_systeem");
 	
 	$sendAnon = $DataBaseConnect->prepare("INSERT INTO bericht (ontvangerId, onderwerp, bericht)
@@ -456,7 +459,7 @@ function portfolio_send_message_anon($subject, $message, $recieverId)
 	{ 
 		echo "<p>Registratie mislukt.</p>" . "<p class='error'>Error code " . mysqli_errno($DataBaseConnect) . ": " . mysqli_error($DataBaseConnect) . "</p>";       
 	}
-	$registreer->close();
+	$sendAnon->close();
 	$DataBaseConnect->close();
 }
 
