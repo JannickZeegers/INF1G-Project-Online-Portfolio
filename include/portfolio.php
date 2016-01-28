@@ -1033,5 +1033,53 @@ function retrieve_students()
 	$DataBaseConnect->close();
 }
 
+/*
+ * Zoekt een gebruikersId op dat bij een bepaald mail adres hoort
+ */
+function portfolio_get_user_id_by_mail($email)
+{    
+    $link = portfolio_connect();
+    if($link)
+    {
+        $sql = "SELECT gebruikersId FROM " . TABLE_USER . " 
+			    WHERE eMail='" . mysqli_real_escape_string($link, $email) . "'";
+        $result = mysqli_query($link, $sql);
+        if($result)
+        {
+            if(($array = mysqli_fetch_assoc($result)) != null)
+            {
+                return $array['gebruikersId'];
+            }
+        }
+    }
+    return null;
+}
+
+/*
+ * Reset het wachtwoord van een gebruiker
+ */
+function portfolio_reset_pass($userId)
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $userData = portfolio_get_user_details($userId);
+        if(count($userData) > 0)
+        {
+            $newPass = dechex(rand(268435456, 4294967295)) . dechex(rand(268435456, 4294967295)); //Will result in 16 hexadecimal 'digits'
+            $hashed = password_hash($newPass, PASSWORD_DEFAULT);
+            $sql = "UPDATE " . TABLE_USER . " 
+					SET wachtwoord='" . mysqli_real_escape_string($link, $hashed) . "' 
+					WHERE gebruikersId=" . mysqli_real_escape_string($link, $userId);
+            if(mysqli_query($link, $sql))
+            {
+                mail($userData['eMail'], 'Password reset for portfolio', "Hello " . $userData['voornaam'] . "\r\n\r\nA password reset was requested for your portfolio account.\r\nYour new password is " . $newPass . "\r\n\r\nThe admin team");
+                return true;
+            }
+        }        
+    }
+    return null;
+}
+
 
 ?>
