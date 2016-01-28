@@ -42,8 +42,8 @@ include_once "portfolio.php";
 					}
 					
 					$autohead = "Aanmmeldingsverzoek van: {$voornaam} {$achternaam}";
-					$automedling = "Indien u hiermee akkoord gaat, gaarne de onderstaande klikken";
-					$link = "<a href='http://www.ons-portfolio.nl/register.exe'>Bevestig</a>;
+					$automelding = "Indien u hiermee akkoord gaat, gaarne de onderstaande link klikken";
+					$link = "www.ons-portfolio.nl/register_exe.php";
 					
 					$message = "{$autohead}
 								user_{$voornaam}  
@@ -51,7 +51,7 @@ include_once "portfolio.php";
 								user_{$mail} 
 								user_{$gebrnaam} 
 								user_{$optie}
-								user_{$automelding}
+								{$automelding}
 								{$link}";
 					if (portfolio_send_message_anon(1, "Verzoek tot aanmelding", $message)) {
 						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 

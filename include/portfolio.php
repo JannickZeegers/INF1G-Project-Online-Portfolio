@@ -1015,7 +1015,7 @@ $DataBaseConnect = new mysqli("mysql765.cp.hostnet.nl", "u219753_pfs", "{ix38ZA(
 	
 	$retrieve = $DataBaseConnect->prepare("SELECT bericht 
 										   FROM bericht
-										   WHERE naam === 'Verzoek tot aanmelding'");
+										   WHERE onderwerp = 'Verzoek tot aanmelding'");
 	$retrieve->execute();
 	$retrieve->bind_result($bericht);
 	while ($retrieve->fetch()) {  
