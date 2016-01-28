@@ -46,13 +46,13 @@ include_once "portfolio.php";
 					$link = "http//www.ons-portfolio.nl/register_exe";
 					
 					$message = "{$autohead}
-								{$voornaam}  
-								{$achternaam} 
-								{$mail} 
-								{$gebrnaam} 
-								{$optie}
-								{$automelding}
-								{$link}";
+								user_{$voornaam}  
+								user_{$achternaam} 
+								user_{$mail} 
+								user_{$gebrnaam} 
+								user_{$optie}
+								user_{$automelding}
+								user_{$link}";
 					if (portfolio_send_message_anon(1, "Verzoek tot aanmelding", $message)) {
 						echo "<p class='error'>Registratie-process gelukt, bevestiging aanmedling volgt spoedig</p>"; 
 						header("refresh:2; url=index.php");
