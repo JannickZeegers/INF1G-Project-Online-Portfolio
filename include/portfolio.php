@@ -284,6 +284,30 @@ function portfolio_get_note($materialId)
 }
 
 /*
+ * Geeft alle admins terug
+ */
+function portfolio_get_admins()
+{
+    $link = portfolio_connect();
+    if($link)
+    {
+        $return = array();
+        $sql = "SELECT * 
+				FROM " . TABLE_USER . " 
+				WHERE rol='admin'";
+        $result = mysqli_query($link, $sql);
+        while(($row = mysqli_fetch_assoc($result)) != null)
+        {
+            $r = $row;
+            $r['wachtwoord'] = null;    //Krijg je niet!
+            array_push($return, $r);
+        }
+        return $return;
+    }
+    return null;
+}
+
+/*
  * Geeft alle studentinfo terug
  */
 function portfolio_get_students()
@@ -407,15 +431,32 @@ function portfolio_get_send_messages($userId)
 function portfolio_send_message($senderId, $subject, $message,  $recieverId)
 {
 	$link = portfolio_connect();
-		if($link){ 
-			//Getallen bij een insert/where e.d. niet tussen '' zetten
-			$SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
-						  VALUES(NULL, $senderId, $recieverId , '" .
-					mysqli_real_escape_string($dbConnect, $subject) . "' , '" .
-					mysqli_real_escape_string($dbConnect, $message) . "')";
-			$QueryResult = mysqli_query($dbConnect, $SQLstring);
-			echo "<p>Your message has been send!</p>";
-		}
+    if($link){ 
+        //Getallen bij een insert/where e.d. niet tussen '' zetten
+        $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
+                      VALUES(NULL, $senderId, $recieverId , '" .
+                mysqli_real_escape_string($link, $subject) . "' , '" .
+                mysqli_real_escape_string($link, $message) . "')";
+        return mysqli_query($link, $SQLstring);
+    }
+    return null;
+}
+
+/*
+ * Verzendt de berichten
+ */
+function portfolio_send_message_anon($subject, $message,  $recieverId)
+{
+	$link = portfolio_connect();
+    if($link){ 
+        //Getallen bij een insert/where e.d. niet tussen '' zetten
+        $SQLstring = "INSERT INTO " . TABLE_MESSAGE . " 
+                      VALUES(NULL, NULL, $recieverId , '" .
+                mysqli_real_escape_string($link, $subject) . "' , '" .
+                mysqli_real_escape_string($link, $message) . "')";
+        return mysqli_query($link, $SQLstring);
+    }
+    return null;
 }
 
 /*
